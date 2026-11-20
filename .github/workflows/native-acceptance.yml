@@ -25,9 +25,6 @@ jobs:
       REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
       CARGO_INCREMENTAL: '0'
       CARGO_BUILD_JOBS: '1'
-      CARGO_HOME: ${{ runner.temp }}/hearthrun-cargo
-      CARGO_TARGET_DIR: ${{ runner.temp }}/hearthrun-target
-      RUSTUP_HOME: ${{ runner.temp }}/hearthrun-rustup
     steps:
       - name: Validate commit syntax
         shell: bash
@@ -41,6 +38,11 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" = "$REVIEWED_COMMIT"
           git merge-base --is-ancestor HEAD origin/main
+      - name: Isolate build paths in the runner temp directory
+        run: |
+          printf '%s\n' "CARGO_HOME=$RUNNER_TEMP/hearthrun-cargo" \
+            "CARGO_TARGET_DIR=$RUNNER_TEMP/hearthrun-target" \
+            "RUSTUP_HOME=$RUNNER_TEMP/hearthrun-rustup" >> "$GITHUB_ENV"
       - name: Install minimal pinned toolchain
         run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
       - name: Require actual host capability

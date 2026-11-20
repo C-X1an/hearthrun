@@ -1,4 +1,4 @@
-name: Rust domain checks
+name: Rust workspace checks
 on:
   push:
     branches: [main]
@@ -15,13 +15,15 @@ jobs:
     env:
       CARGO_INCREMENTAL: '0'
       CARGO_BUILD_JOBS: '1'
-      CARGO_HOME: ${{ runner.temp }}/hearthrun-cargo
-      CARGO_TARGET_DIR: ${{ runner.temp }}/hearthrun-target
-      RUSTUP_HOME: ${{ runner.temp }}/hearthrun-rustup
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           persist-credentials: false
+      - name: Isolate build paths in the runner temp directory
+        run: |
+          printf '%s\n' "CARGO_HOME=$RUNNER_TEMP/hearthrun-cargo" \
+            "CARGO_TARGET_DIR=$RUNNER_TEMP/hearthrun-target" \
+            "RUSTUP_HOME=$RUNNER_TEMP/hearthrun-rustup" >> "$GITHUB_ENV"
       - name: Install explicit toolchain using runner rustup
         run: |
           command -v rustup
