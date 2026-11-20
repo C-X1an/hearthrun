@@ -1,0 +1,27 @@
+[package]
+name = "hearthrun-domain"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Pure lifecycle and admission contracts for the experimental HearthRun runtime"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+serde = "=1.0.229"
+serde_json = "=1.0.151"
+
+[[test]]
+name = "protocol_contract"
+path = "../../tests/contract/protocol.rs"
+
+[[test]]
+name = "lifecycle_properties"
+path = "../../tests/property/lifecycle.rs"
+
+[[test]]
+name = "protocol_corpus"
+path = "../../tests/fuzz/protocol.rs"

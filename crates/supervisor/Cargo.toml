@@ -1,0 +1,16 @@
+[package]
+name = "hearthrun-supervisor"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+hearthrun-domain.workspace = true
+hearthrun-launcher.workspace = true
+rustix.workspace = true
+libc.workspace = true
+serde = { workspace = true, features = ["derive"] }
+serde_json.workspace = true
+sha2.workspace = true

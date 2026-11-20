@@ -1,0 +1,217 @@
+{
+  "actual_duration_seconds": 1.1231452149995675,
+  "captured_command_status": "PASS",
+  "captured_exit_code": 0,
+  "environment": {
+    "kernel": "6.18.58.1-microsoft-standard-WSL2",
+    "machine": "x86_64",
+    "python": "3.14.4",
+    "system": "Linux"
+  },
+  "evidence_run_id": "20261118T151629-5536f2efe2fe",
+  "observations": {
+    "captured_bytes": 19798,
+    "commands": 35,
+    "facts": {
+      "admission_refusal": {
+        "admitted": false,
+        "boundary": "operator profile admission; this rejection did not execute a guest",
+        "cgroup_inventory_unchanged": true,
+        "code": "PROFILE_NOT_FOUND",
+        "host_canary_sha256_after": "a9d463fb830bceb63cadcc1f609ff7d8343ce6278560cf3fd82865583645f3cb",
+        "host_canary_sha256_before": "a9d463fb830bceb63cadcc1f609ff7d8343ce6278560cf3fd82865583645f3cb",
+        "record_count_unchanged": true
+      },
+      "cancellation": {
+        "cgroup_removed": true,
+        "cleanup_confirmed": true,
+        "executable_sha256": "42dd9f38576274a97735346ff4f3439459db3aca540fc41d86e564f4a231adff",
+        "job_id": "b999975a91d54cc98782b21c26305bbf",
+        "launcher_reaped": true,
+        "metadata": {
+          "artifacts": [],
+          "cleanup_confirmed": true,
+          "environment_id": "linux-x86_64-309504bfab961330b67e5d42e7d9394858a87f7ab228a82c2277de0a770c70cd",
+          "exit_code": null,
+          "job_id": "b999975a91d54cc98782b21c26305bbf",
+          "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
+          "signal": null,
+          "status": "CANCELLED",
+          "stderr_truncated": false,
+          "stdout_truncated": false,
+          "v": 1
+        },
+        "observed_cgroup_processes": 4,
+        "observed_exit": null,
+        "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
+        "profile_digest": "ab621d0bf7e0e0985937fe6359e76dfa60a9511c8af7b3add54a2282cd834a5c",
+        "result_digest": "3661112b510973da55b3f6ce1da23c391fcb67e9558b6d2ce844302287281bc6",
+        "state": "CANCELLED"
+      },
+      "guest_denial": {
+        "cleanup_confirmed": true,
+        "executable_sha256": "42dd9f38576274a97735346ff4f3439459db3aca540fc41d86e564f4a231adff",
+        "guest_check_exit_zero": true,
+        "host_canary_sha256": "a9d463fb830bceb63cadcc1f609ff7d8343ce6278560cf3fd82865583645f3cb",
+        "host_canary_unchanged": true,
+        "job_id": "dcbc3f6b93f58a89d19fbf8f2c631f27",
+        "metadata": {
+          "artifacts": [],
+          "cleanup_confirmed": true,
+          "environment_id": "linux-x86_64-309504bfab961330b67e5d42e7d9394858a87f7ab228a82c2277de0a770c70cd",
+          "exit_code": 0,
+          "job_id": "dcbc3f6b93f58a89d19fbf8f2c631f27",
+          "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
+          "signal": null,
+          "status": "SUCCEEDED",
+          "stderr_truncated": false,
+          "stdout_truncated": false,
+          "v": 1
+        },
+        "observed_exit": {
+          "exit_code": 0,
+          "signal": null
+        },
+        "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
+        "profile_digest": "ab621d0bf7e0e0985937fe6359e76dfa60a9511c8af7b3add54a2282cd834a5c",
+        "result_digest": "e4a5a3792e3d3f95f233fe149bbe18b40ea18235fd8c3da5ec7bbc5bdb080e0d",
+        "scope": "one synthetic host canary and the staged input; approved check fixture also checked its fixed environment and descriptors",
+        "staged_input_sha256": "a27e53fa6cb709af40792c52aeb7dd44cfcf387758aa603506d992e22678a82e",
+        "staged_input_unchanged": true,
+        "state": "SUCCEEDED",
+        "stdout_sha256": "cc398d3464f680149b52c3565820eea1f6a28f75e15cd91d68d1f987b686c897"
+      },
+      "host": {
+        "compatible": true,
+        "landlock_abi": 7
+      },
+      "input": {
+        "logical_path": "data.ndjson",
+        "sha256": "a27e53fa6cb709af40792c52aeb7dd44cfcf387758aa603506d992e22678a82e",
+        "size_bytes": 50,
+        "stage_manifest_digest": "d67d2cb33358895bdda4c70ba761184808b8020285f4400510088c7f4ca76366",
+        "synthetic": true
+      },
+      "transformation": {
+        "cgroup_removed": true,
+        "cleanup_confirmed": true,
+        "executable_sha256": "42dd9f38576274a97735346ff4f3439459db3aca540fc41d86e564f4a231adff",
+        "job_id": "c03d56b82e9b5044febe80058ee42a61",
+        "metadata": {
+          "artifacts": [
+            {
+              "path": "summary.json",
+              "sha256": "cb33efd2d82a5de619eab6f4d8c960fb467ff47e044a429d2981f605a79cfed2",
+              "size_bytes": 21
+            }
+          ],
+          "cleanup_confirmed": true,
+          "environment_id": "linux-x86_64-309504bfab961330b67e5d42e7d9394858a87f7ab228a82c2277de0a770c70cd",
+          "exit_code": 0,
+          "job_id": "c03d56b82e9b5044febe80058ee42a61",
+          "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
+          "signal": null,
+          "status": "SUCCEEDED",
+          "stderr_truncated": false,
+          "stdout_truncated": false,
+          "v": 1
+        },
+        "observed_exit": {
+          "exit_code": 0,
+          "signal": null
+        },
+        "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
+        "profile_digest": "ab621d0bf7e0e0985937fe6359e76dfa60a9511c8af7b3add54a2282cd834a5c",
+        "result_digest": "09192b3139d297e6eaacbf8d3c5388e8e4107f1a32c5ec3416c756b345e65adc",
+        "state": "SUCCEEDED",
+        "summary": {
+          "count": 4,
+          "sum": 16
+        }
+      }
+    },
+    "reason": null,
+    "schema_version": 1,
+    "status": "PASS",
+    "teardown": {
+      "owned_cgroups_remaining": 0,
+      "owned_children_reaped": true,
+      "status": "PASS"
+    },
+    "timeline": [
+      {
+        "case": "doctor_and_socket",
+        "details": {
+          "compatible": true,
+          "socket_mode": "0600"
+        },
+        "elapsed_ms": 12,
+        "started_ms": 400,
+        "status": "PASS"
+      },
+      {
+        "case": "approved_transformation",
+        "details": {
+          "cleanup_confirmed": true,
+          "count": 4,
+          "job_id": "c03d56b82e9b5044febe80058ee42a61",
+          "result_digest": "09192b3139d297e6eaacbf8d3c5388e8e4107f1a32c5ec3416c756b345e65adc",
+          "sum": 16
+        },
+        "elapsed_ms": 173,
+        "started_ms": 426,
+        "status": "PASS"
+      },
+      {
+        "case": "typed_admission_refusal",
+        "details": {
+          "admitted": false,
+          "code": "PROFILE_NOT_FOUND",
+          "host_canary_unchanged": true
+        },
+        "elapsed_ms": 13,
+        "started_ms": 599,
+        "status": "PASS"
+      },
+      {
+        "case": "guest_canary_and_input_denial",
+        "details": {
+          "cleanup_confirmed": true,
+          "host_canary_unchanged": true,
+          "job_id": "dcbc3f6b93f58a89d19fbf8f2c631f27",
+          "staged_input_unchanged": true
+        },
+        "elapsed_ms": 138,
+        "started_ms": 612,
+        "status": "PASS"
+      },
+      {
+        "case": "detached_cancellation",
+        "details": {
+          "cgroup_removed": true,
+          "job_id": "b999975a91d54cc98782b21c26305bbf",
+          "launcher_reaped": true,
+          "observed_cgroup_processes": 4
+        },
+        "elapsed_ms": 299,
+        "started_ms": 750,
+        "status": "PASS"
+      }
+    ]
+  },
+  "observed_end_utc": "2026-11-18T15:16:30.383443+00:00",
+  "observed_start_utc": "2026-11-18T15:16:29.260094+00:00",
+  "outer_teardown": {
+    "diagnostics": "inspect private captured diagnostics if errors occurred",
+    "error_count": 0,
+    "status": "PASS"
+  },
+  "schema_version": 1,
+  "scope": "finite local native demo; not full acceptance or a publication approval",
+  "source_changed_during_run": false,
+  "source_commit": null,
+  "source_dirty": false,
+  "source_sha256_after": "fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415",
+  "source_sha256_before": "fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415",
+  "status": "PASS"
+}

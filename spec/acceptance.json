@@ -1,0 +1,405 @@
+{
+  "schema_version": 1,
+  "project": "hearthrun",
+  "acceptance_spec_locked": true,
+  "requirements": [
+    {
+      "id": "FR-001",
+      "text": "Bounded version-1 local protocol with unknown-field rejection, stable error codes and same-UID peer admission."
+    },
+    {
+      "id": "FR-002",
+      "text": "FIFO bounded admission: 4 running jobs and 16 waiting jobs; admission rejection has no execution side effect."
+    },
+    {
+      "id": "FR-003",
+      "text": "Execute only operator-approved static x86-64 ELF profiles and immutable staged inputs; no arbitrary host paths or shell command strings."
+    },
+    {
+      "id": "FR-004",
+      "text": "Expose submit, inspect, cancel, events and result export through a local CLI and owner-only Unix socket."
+    },
+    {
+      "id": "FR-005",
+      "text": "Request identity survives restart: same ID and same canonical payload return the prior job; a different payload conflicts; uncertain work is never replayed automatically."
+    },
+    {
+      "id": "SEC-001",
+      "text": "Refuse execution unless every mandatory kernel and delegation feature actually passes a disposable feature probe."
+    },
+    {
+      "id": "SEC-002",
+      "text": "Untrusted code cannot run before cgroup placement, limits, namespace/root construction, no_new_privs, privilege drop, Landlock, seccomp and descriptor closure complete."
+    },
+    {
+      "id": "SEC-003",
+      "text": "Guest has read-only approved executable/input, private bounded output, no host home/proc/cgroup/device/socket visibility and no network access."
+    },
+    {
+      "id": "SEC-004",
+      "text": "Artifacts are exported only after all untrusted processes are gone, using descriptor-relative resolution and regular-file/link/count/byte checks."
+    },
+    {
+      "id": "SEC-005",
+      "text": "All secrets, host environment and control descriptors are excluded from guests; logs and filenames are untrusted data, not instructions or HTML."
+    },
+    {
+      "id": "SEC-006",
+      "text": "Dependency, CI, license, secret and public-file audits are required before release. No privileged untrusted-PR jobs."
+    },
+    {
+      "id": "REL-001",
+      "text": "Terminal completion requires the launcher to be reaped AND the job cgroup to report populated=0 AND artifact publication outcome to be recorded."
+    },
+    {
+      "id": "REL-002",
+      "text": "Cancellation kills the job cgroup, including setsid/double-fork descendants, rather than only its process group."
+    },
+    {
+      "id": "REL-003",
+      "text": "Supervisor death/restart causes orphan cleanup and explicit interrupted/unknown outcomes, never assumed success or automatic resubmission."
+    },
+    {
+      "id": "REL-004",
+      "text": "Results are atomically published after fsync; storage failure, malformed state or incomplete recovery must not produce a successful terminal record."
+    },
+    {
+      "id": "REL-005",
+      "text": "Output streams, event retention, queue entries, inputs, artifacts and persistent storage have enforceable limits and teardown behavior."
+    },
+    {
+      "id": "PERF-001",
+      "text": "Measure native empty-action startup, legitimate task overhead, cancellation latency, queue behavior, RSS and cleanup under declared hardware and policy; targets are not observations."
+    },
+    {
+      "id": "NFR-001",
+      "text": "Core is Linux x86-64 with kernel >=6.6 plus feature probes; no credential, model API, database, Docker or cloud account needed on a compatible host."
+    },
+    {
+      "id": "NFR-002",
+      "text": "A fresh checkout supports documented build, checks, local demo and teardown; unsupported environments report BLOCKED, not PASS."
+    },
+    {
+      "id": "NFR-003",
+      "text": "Every material claim maps to actual machine-captured evidence. Negative controls demonstrate critical tests can detect defects."
+    },
+    {
+      "id": "UX-001",
+      "text": "CLI is keyboard-native and readable without color; report is static, escaped HTML with semantic headings and text alternatives; every result shows policy and environment identity."
+    }
+  ],
+  "criteria": [
+    {
+      "id": "AC-001",
+      "parent_requirement": "FR-001",
+      "precondition": "Socket owned by current user",
+      "input": "Oversize, duplicate keys, unknown fields, wrong version, peer UID mismatch",
+      "behavior": "Reject before queue or execution",
+      "expected_result": "Stable typed rejection; no job created",
+      "tolerance": "exact",
+      "test_level": "contract",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/protocol.rs",
+      "negative_control": "remove size/unknown-field guard"
+    },
+    {
+      "id": "AC-002",
+      "parent_requirement": "FR-002",
+      "precondition": "Four deliberately blocked running jobs and sixteen waiting",
+      "input": "Submit twenty-first request",
+      "behavior": "Reject QUEUE_FULL and preserve FIFO among queued jobs",
+      "expected_result": "No over-admission or starvation on finite jobs",
+      "tolerance": "exact",
+      "test_level": "system",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/admission.rs",
+      "negative_control": "remove capacity increment"
+    },
+    {
+      "id": "AC-003",
+      "parent_requirement": "SEC-001",
+      "precondition": "Each mandatory feature disabled separately in disposable host/adapter and one real unsupported host",
+      "input": "Submit approved action",
+      "behavior": "Refuse with named missing capability",
+      "expected_result": "No guest instruction executes; simulated probes not real isolation evidence",
+      "tolerance": "exact",
+      "test_level": "system",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/doctor.rs",
+      "negative_control": "treat unavailable as supported"
+    },
+    {
+      "id": "AC-004",
+      "parent_requirement": "SEC-002",
+      "precondition": "Instrumented pre-exec barrier with gate step failure injection",
+      "input": "Action writes a sentinel on first instruction",
+      "behavior": "Any missing setup step prevents sentinel",
+      "expected_result": "cgroup and policy ready precede exec for every accepted run",
+      "tolerance": "exact",
+      "test_level": "system",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/barrier.rs",
+      "negative_control": "release barrier before limits"
+    },
+    {
+      "id": "AC-005",
+      "parent_requirement": "SEC-003",
+      "precondition": "Owned host canary outside staged tree",
+      "input": "Probe reads host home, proc, socket and traversal targets",
+      "behavior": "Deny reads/opens; host canary remains unchanged",
+      "expected_result": "No content/FD leakage in result or streams",
+      "tolerance": "zero leaks in named suite",
+      "test_level": "security",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/filesystem.rs",
+      "negative_control": "bind host canary into root"
+    },
+    {
+      "id": "AC-006",
+      "parent_requirement": "SEC-003",
+      "precondition": "Local controlled TCP/UDP/Unix listeners outside guest",
+      "input": "Probe outbound socket, connect, DNS and inherited descriptors",
+      "behavior": "No outside connection succeeds",
+      "expected_result": "Controlled listeners observe zero accepted guest messages",
+      "tolerance": "exact",
+      "test_level": "security",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/network.rs",
+      "negative_control": "permit socket and share net namespace in isolated control"
+    },
+    {
+      "id": "AC-007",
+      "parent_requirement": "SEC-005",
+      "precondition": "Host environment carries synthetic SECRET_CANARY and control FD",
+      "input": "Guest lists env and enumerates open FDs",
+      "behavior": "Only fixed allowlisted environment and stdin/stdout/stderr remain",
+      "expected_result": "No secret or supervisor/control descriptor survives exec",
+      "tolerance": "exact",
+      "test_level": "security",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/authority.rs",
+      "negative_control": "retain synthetic control FD"
+    },
+    {
+      "id": "AC-008",
+      "parent_requirement": "SEC-002",
+      "precondition": "Supported x86-64 host, pinned syscall policy",
+      "input": "Static fixtures request ptrace, bpf, mount, keyctl, io_uring and x32 ABI",
+      "behavior": "Deny unsupported ABI and forbidden calls; approved fixture still works",
+      "expected_result": "Expected errno or controlled termination, no host side effect",
+      "tolerance": "exact",
+      "test_level": "security",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/seccomp.rs",
+      "negative_control": "omit architecture check"
+    },
+    {
+      "id": "AC-009",
+      "parent_requirement": "REL-005",
+      "precondition": "Per-job memory/pids/CPU limits configured",
+      "input": "Bounded fork, allocation, CPU and output-flood fixtures",
+      "behavior": "Enforce limits and keep supervisor responsive",
+      "expected_result": "Counters prove limits installed; no host instability or unlimited output",
+      "tolerance": "CPU 1-core quota +/-15% over >=10s when measurable",
+      "test_level": "system",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/resources.rs",
+      "negative_control": "omit pids.max"
+    },
+    {
+      "id": "AC-010",
+      "parent_requirement": "REL-002",
+      "precondition": "Running guest creates setsid and double-fork descendants",
+      "input": "Cancel job and separately expire wall deadline",
+      "behavior": "Kill whole cgroup, drain streams, reap init",
+      "expected_result": "No surviving job process; job reaches cancelled or explicit cleanup_pending",
+      "tolerance": "p95 cancellation target <=250ms, not guarantee",
+      "test_level": "fault injection",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/cancel.rs",
+      "negative_control": "kill only leader"
+    },
+    {
+      "id": "AC-011",
+      "parent_requirement": "REL-001",
+      "precondition": "Cancellation attempted while cleanup observation is delayed",
+      "input": "Query status repeatedly",
+      "behavior": "Do not report final cancelled/success while populated or unreaped",
+      "expected_result": "CLEANUP_PENDING retains slot and blocks unsafe export",
+      "tolerance": "exact",
+      "test_level": "contract/system",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/terminal.rs",
+      "negative_control": "terminal before cgroup empty"
+    },
+    {
+      "id": "AC-012",
+      "parent_requirement": "REL-003",
+      "precondition": "Guest active and job metadata fsynced",
+      "input": "SIGKILL supervisor at each barrier/run/export phase, restart",
+      "behavior": "Owned orphan jobs killed; interrupted result; no replay",
+      "expected_result": "No untrusted survivors after confirmed recovery; uncertain jobs not success",
+      "tolerance": "exact; cleanup may remain pending",
+      "test_level": "fault injection",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/recovery.rs",
+      "negative_control": "auto-requeue interrupted job"
+    },
+    {
+      "id": "AC-013",
+      "parent_requirement": "SEC-004",
+      "precondition": "Retained output directory FD and empty/reaped cgroup",
+      "input": "Symlink, hardlink, FIFO, socket, device, traversal, many files, oversize output",
+      "behavior": "Reject unsafe artifacts; publish only permitted regular files",
+      "expected_result": "No host traversal; output total <=32MiB and <=128 files",
+      "tolerance": "exact",
+      "test_level": "security",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/artifacts.rs",
+      "negative_control": "follow symlink"
+    },
+    {
+      "id": "AC-014",
+      "parent_requirement": "SEC-004",
+      "precondition": "Guest attempts late output replacement",
+      "input": "Race cancellation/completion with artifact writes",
+      "behavior": "Never export while writer lives; resolve from retained mount FD afterward",
+      "expected_result": "Immutable result digest matches bytes; no unchecked reopened host pathname",
+      "tolerance": "exact over >=1000 seeded schedules",
+      "test_level": "system/property",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/quiescence.rs",
+      "negative_control": "start export before populated=0"
+    },
+    {
+      "id": "AC-015",
+      "parent_requirement": "REL-005",
+      "precondition": "Guest floods stdout/stderr with hostile terminal/HTML bytes",
+      "input": "Run to configured stream cap",
+      "behavior": "Continue bounded draining/discarding then terminate per policy; escape rendering",
+      "expected_result": "Combined retained stream <=2MiB; event ring <=1024; truncation explicit",
+      "tolerance": "exact",
+      "test_level": "system",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/streams.rs",
+      "negative_control": "unbounded buffer growth"
+    },
+    {
+      "id": "AC-016",
+      "parent_requirement": "REL-004",
+      "precondition": "Filesystem fault adapter plus disposable nearly-full filesystem",
+      "input": "Fail writes/fsync/rename at all publication points",
+      "behavior": "No acknowledged success for uncommitted result; clean error/unknown record",
+      "expected_result": "Previously published results readable; partial files never exposed as final",
+      "tolerance": "exact",
+      "test_level": "fault injection",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/publication.rs",
+      "negative_control": "ignore fsync error"
+    },
+    {
+      "id": "AC-017",
+      "parent_requirement": "FR-005",
+      "precondition": "Request ledger persisted; response loss simulated",
+      "input": "Retry same ID/content, then changed content; restart and retry",
+      "behavior": "Return same job without rerun; changed content conflicts",
+      "expected_result": "At most one admitted job per request ID, no exactly-once external-effects claim",
+      "tolerance": "exact",
+      "test_level": "integration",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/idempotency.rs",
+      "negative_control": "ignore payload digest"
+    },
+    {
+      "id": "AC-018",
+      "parent_requirement": "FR-003",
+      "precondition": "Operator-installed approved profile with digest",
+      "input": "Mutate source path concurrently, request unauthorized profile/host mount",
+      "behavior": "Bind immutable staged verified bytes; deny unauthorized options",
+      "expected_result": "Executed bytes equal approved digest; no client-specified host bind path",
+      "tolerance": "exact",
+      "test_level": "security",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/profiles.rs",
+      "negative_control": "hash then reopen mutable executable"
+    },
+    {
+      "id": "AC-019",
+      "parent_requirement": "NFR-002",
+      "precondition": "Fresh isolated checkout without private handoff or caches",
+      "input": "Run documented bootstrap/build/check/demo/teardown",
+      "behavior": "Product works on compatible host; unsupported host states precise reason",
+      "expected_result": "Public repo includes tests and fixtures needed for reproduction",
+      "tolerance": "exact",
+      "test_level": "clean environment",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/reproduce.py",
+      "negative_control": "remove required fixture from export"
+    },
+    {
+      "id": "AC-020",
+      "parent_requirement": "NFR-003",
+      "precondition": "Correct implementation plus isolated deliberate mutants",
+      "input": "Run pass/fail/pass for six critical invariant mutants",
+      "behavior": "Tests fail for expected reason and worktree restored",
+      "expected_result": "Killed barrier, descendant, symlink, terminal, policy and publication mutants",
+      "tolerance": "all six required",
+      "test_level": "mutation",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "verification/mutation/protocol.md",
+      "negative_control": "test itself intentionally weakened"
+    },
+    {
+      "id": "AC-021",
+      "parent_requirement": "PERF-001",
+      "precondition": "Recorded hardware/kernel/config/toolchain and stable host",
+      "input": "30 warmups +1000 empty jobs, 5 seeds real transform, concurrency1/2/4",
+      "behavior": "Write raw samples and p50/p95/p99 with failures included",
+      "expected_result": "Valid JSONL; no fabricated percentile or selected fastest run",
+      "tolerance": "no hard speed gate before baseline; regressions investigated",
+      "test_level": "performance",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "benchmarks/protocol.md",
+      "negative_control": "drop failed/slow samples"
+    },
+    {
+      "id": "AC-022",
+      "parent_requirement": "SEC-006",
+      "precondition": "Candidate release in fresh public-only checkout",
+      "input": "Audit tracked files/history/dependencies/CI/docs/evidence",
+      "behavior": "No secrets/private career notes or prohibited unsafe workflow",
+      "expected_result": "Release checklist and dependency/license inventory with actual commands",
+      "tolerance": "exact",
+      "test_level": "release",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "scripts/public_audit.py",
+      "negative_control": "add synthetic forbidden private path"
+    },
+    {
+      "id": "AC-023",
+      "parent_requirement": "UX-001",
+      "precondition": "Real demo evidence and keyboard-only reader",
+      "input": "Run legitimate transformation, denied action, cancellation and report",
+      "behavior": "Show result/policy/cleanup distinctions without color-only meaning",
+      "expected_result": "Escaped HTML, valid links, no screenshot fabricated before execution",
+      "tolerance": "exact",
+      "test_level": "end-to-end",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "tests/acceptance_locked/demo.rs",
+      "negative_control": "render unescaped guest HTML"
+    },
+    {
+      "id": "AC-024",
+      "parent_requirement": "NFR-003",
+      "precondition": "Read-only independent verifier receives claims/spec/source/tests",
+      "input": "Attempt to invalidate all critical claims before fixes",
+      "behavior": "Findings recorded, fixes separately integrated, checks rerun",
+      "expected_result": "No self-authored report mislabelled independent execution",
+      "tolerance": "exact",
+      "test_level": "review",
+      "evidence_type": "machine-captured command output and structured assertions",
+      "test_path": "verification/independent-review.md",
+      "negative_control": "omit initial findings stage"
+    }
+  ]
+}

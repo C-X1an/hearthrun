@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "listen": "unix:control.sock",
+  "max_running": 4,
+  "max_queued": 16,
+  "job_memory_bytes": 268435456,
+  "job_pids": 32,
+  "job_cpu_quota_us": 100000,
+  "job_cpu_period_us": 100000,
+  "job_wall_ms": 10000,
+  "max_wall_ms": 60000,
+  "max_input_bytes": 16777216,
+  "max_output_bytes": 33554432,
+  "max_retained_jobs": 100,
+  "max_retained_result_bytes": 1073741824,
+  "network_enabled": false,
+  "require_landlock_abi_at_least": 3
+}

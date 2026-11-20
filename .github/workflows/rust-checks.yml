@@ -1,0 +1,30 @@
+name: Rust domain checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: rust-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  rust:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CARGO_INCREMENTAL: '0'
+      CARGO_BUILD_JOBS: '1'
+      CARGO_HOME: ${{ runner.temp }}/hearthrun-cargo
+      CARGO_TARGET_DIR: ${{ runner.temp }}/hearthrun-target
+      RUSTUP_HOME: ${{ runner.temp }}/hearthrun-rustup
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Install explicit toolchain using runner rustup
+        run: |
+          command -v rustup
+          rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
+      - name: Verify Rust source and tests
+        run: make fmt lint typecheck unit

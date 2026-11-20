@@ -1,0 +1,9 @@
+{
+  "fixture": true,
+  "status": "NOT_RUN",
+  "scenario": "Approved native summarizer with bounded inputs and output",
+  "cleanup_confirmed": false,
+  "policy_digest": null,
+  "measurements": null,
+  "reason": "Illustrative report schema only. No native execution results have been invented."
+}

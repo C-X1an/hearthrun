@@ -1,0 +1,22 @@
+name: Portable source checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: source-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  portable:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6; resolved 2026-11-08
+        with:
+          persist-credentials: false
+      - name: Portable tooling and locked contract integrity
+        run: make tooling-test
+      - name: Compile preliminary probe without executing untrusted code
+        run: cc -std=c11 -O2 -Wall -Wextra -Werror tools/doctor.c -o /tmp/hearthrun-probe

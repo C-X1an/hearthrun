@@ -1,0 +1,840 @@
+{
+  "runs": [
+    {
+      "category": "fmt",
+      "duration_seconds": 0.12762379300056637,
+      "end_utc": "2026-11-18T15:30:24.406881+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "5b19896ff21a11907d75914e8b1b74a51ad5af7f0df7a9c7da38015b5dadec91"
+      },
+      "run_id": "20261118T153024-d8a5ec829d04",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:30:24.279251+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "build",
+      "duration_seconds": 1.737817157999416,
+      "end_utc": "2026-11-18T15:30:26.149898+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "1ace408fe5132f07797e88024bbfd0527bc40b7e342182d7ef22aeb83448d5dd",
+        "stdout": "a41c482cc69875cff1bccda15c88177bcca3b6076a71e002b41d7cc587073885"
+      },
+      "run_id": "20261118T153024-3188ec59aec3",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:30:24.412082+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "lint",
+      "duration_seconds": 1.4631889229995068,
+      "end_utc": "2026-11-18T15:30:27.618438+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "63d68ebb587dfe7f70f5b85176b8f61a97d91082eba9b12f6b7626372830f81b",
+        "stdout": "21b9858e617bbf44d5e9d962f1c07f785c68f0646c8276b597aa432398f007f1"
+      },
+      "run_id": "20261118T153026-ad6f6d1857e7",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:30:26.155249+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "unit",
+      "duration_seconds": 1.3712270259993602,
+      "end_utc": "2026-11-18T15:30:28.995641+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "8ca467b05a28d0a40161a0e48e419adf91bc6fcfd06889fe55cc6f07704fa16a",
+        "stdout": "98beb1687215dc3360a451f877fd42f1c0e7a30cb971d5d866482360682db90f"
+      },
+      "run_id": "20261118T153027-332443ce54f7",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:30:27.624414+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "typecheck",
+      "duration_seconds": 1.2014967370005252,
+      "end_utc": "2026-11-18T15:30:30.203348+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e429fceef052b473c12276368f8eff3129c2f383b8a02c4453bb4d63ced552d7",
+        "stdout": "62a7bc7a2833ec2d13646d0c22b9577c86831333697b25129e5cf6a3735c2a85"
+      },
+      "run_id": "20261118T153028-357cf587898a",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:30:29.001869+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "tooling-test",
+      "duration_seconds": 0.42635203700046986,
+      "end_utc": "2026-11-18T15:30:30.635324+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "f4502673d049d632a972320b0f3804ec69ba57dcd76b59ec2cc09150742439b5",
+        "stdout": "c51ab6cb985f703df5e8a46867eff77c36c319d869989f269350be4dd74a3684"
+      },
+      "run_id": "20261118T153030-813c787c9b76",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:30:30.208971+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "property",
+      "duration_seconds": 0.15681526499975007,
+      "end_utc": "2026-11-18T15:30:30.797477+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "b1b1f970cd8f012558bc50b9d02bfe86dde4bf5fc236eb526f17861379dc4103",
+        "stdout": "e459ed85970b98318786fab8fb644893d72d610862f4589861a3df5b4197b2ff"
+      },
+      "run_id": "20261118T153030-06b65918e7b6",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:30:30.640663+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "fuzz",
+      "duration_seconds": 0.19941243100038264,
+      "end_utc": "2026-11-18T15:30:31.002192+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "a30cba64e44fc70b6f56c740d85c045af665d740d0726bd0ebb2907e00d6ec57",
+        "stdout": "bac97b41738c471d0c14a417a9287209107500aa46e7b2a53b646effe6d4e5c2"
+      },
+      "run_id": "20261118T153030-4e0c2f585afc",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:30:30.802779+00:00",
+      "status": "PASS"
+    },
+    {
+      "audit": {
+        "advisories": 0,
+        "db_commit": "472a4c9a785030434f15d7da84964d60fbe789ab",
+        "lock_entries": 38,
+        "tool": "cargo-audit 0.23.0",
+        "warnings": 0
+      },
+      "category": "rustsec-audit",
+      "duration_seconds": 0.0817402310003672,
+      "end_utc": "2026-11-18T15:35:59.032162+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "32d8c97c34e396223dfe82fca694a16a54611353cf57755b2a498d37f770a734"
+      },
+      "run_id": "20261118T153558-fef44753e916",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:35:58.950225+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "inventory",
+      "duration_seconds": 0.0835260210000115,
+      "end_utc": "2026-11-20T07:26:44.552315+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "bbc5b8ae902bec8e058ff4e92e11accddcaacf691f9de7147a93de75c422ca7a"
+      },
+      "run_id": "20261120T072644-1571ab99b1f3",
+      "source_sha256_after": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "source_sha256_before": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "start_utc": "2026-11-20T07:26:44.468791+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "license-audit",
+      "duration_seconds": 0.08433353499998475,
+      "end_utc": "2026-11-20T07:26:44.640993+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "b666a9e81a8610e1537bc7188038a9a78824c9b104d93734191f0ca43d91fd05"
+      },
+      "run_id": "20261120T072644-8d319910c1e9",
+      "source_sha256_after": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "source_sha256_before": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "start_utc": "2026-11-20T07:26:44.556665+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "sbom",
+      "duration_seconds": 0.08660436700000673,
+      "end_utc": "2026-11-20T07:26:44.732093+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "f876d5945ed394f0202682b9a6be0601a20fccefa80cb1c6acacaa8ef22a06f2"
+      },
+      "run_id": "20261120T072644-5b6f8490d439",
+      "source_sha256_after": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "source_sha256_before": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "start_utc": "2026-11-20T07:26:44.645484+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "dependency-audit",
+      "duration_seconds": 0.23877878999996938,
+      "end_utc": "2026-11-20T07:26:44.975341+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "22c27d1afbcdcd0ccab507a327e3a3431487f1f6d3e89491893a4b45f6aa05f1"
+      },
+      "run_id": "20261120T072644-ba556f5236ff",
+      "source_sha256_after": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "source_sha256_before": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "start_utc": "2026-11-20T07:26:44.736563+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "doctor-regression",
+      "duration_seconds": 4.620120337999651,
+      "end_utc": "2026-11-18T10:17:35.131949+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "433a4a2e964973fc5a31829a1c9646062f9933604ce311ba0c2a91d51b20c9c7"
+      },
+      "run_id": "20261118T101730-bc91ec5e4c44",
+      "source_sha256_after": "600440d5fdf761fabf759d4851bf4af53ed206111bd352514e63d72501967168",
+      "source_sha256_before": "600440d5fdf761fabf759d4851bf4af53ed206111bd352514e63d72501967168",
+      "start_utc": "2026-11-18T10:17:30.511628+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-launcher-watchdog",
+      "duration_seconds": 1.0221658929999649,
+      "end_utc": "2026-11-18T13:32:25.940417+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "73974a1ad4487229931ac16eaa9627f1703a01e56c70b1b41b5034ff7a533794"
+      },
+      "run_id": "20261118T133224-ab34fd645f7d",
+      "source_sha256_after": "b76f8ad356ddd827c70659a8f926723bf3ce4afef9822e06232ff06ce4425239",
+      "source_sha256_before": "b76f8ad356ddd827c70659a8f926723bf3ce4afef9822e06232ff06ce4425239",
+      "start_utc": "2026-11-18T13:32:24.918035+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-supervisor-export-smoke",
+      "duration_seconds": 1.211964537999961,
+      "end_utc": "2026-11-18T13:35:03.542562+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "ae1c85279f7b618f2e7efb60d7bc41574dffda7dd0bd94ad26d06947fcf205eb"
+      },
+      "run_id": "20261118T133502-d5844cba5499",
+      "source_sha256_after": "356111b5f78ee8c7226f311efb755326a632f495ac11c9daa9dc7fb2beadc51e",
+      "source_sha256_before": "356111b5f78ee8c7226f311efb755326a632f495ac11c9daa9dc7fb2beadc51e",
+      "start_utc": "2026-11-18T13:35:02.330410+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 19,
+          "status": "PASS"
+        },
+        {
+          "case": "summary_and_idempotency",
+          "count": 4,
+          "elapsed_ms": 158,
+          "status": "PASS",
+          "sum": 16
+        },
+        {
+          "case": "refusal_has_no_execution_side_effect",
+          "elapsed_ms": 52,
+          "status": "PASS"
+        },
+        {
+          "case": "detached_cancellation",
+          "cgroup_removed": true,
+          "elapsed_ms": 293,
+          "launcher_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "interrupted_restart_without_replay",
+          "elapsed_ms": 1151,
+          "state": "INTERRUPTED",
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "native_e2e",
+          "passed_cases": 6,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 12,
+          "status": "PASS"
+        },
+        {
+          "case": "four_running_sixteen_waiting_fifo",
+          "elapsed_ms": 3336,
+          "fifo_jobs": 16,
+          "rejection": "QUEUE_FULL",
+          "running": 4,
+          "status": "PASS",
+          "waiting": 16
+        },
+        {
+          "case": "whole_group_wall_expiry",
+          "cleanup_elapsed_ms": 3140,
+          "elapsed_ms": 3153,
+          "reason": "WALL_LIMIT",
+          "state": "TIMED_OUT",
+          "status": "PASS",
+          "wall_ms": 3000
+        },
+        {
+          "case": "retained_identity_after_restart",
+          "elapsed_ms": 347,
+          "status": "PASS"
+        },
+        {
+          "case": "scheduler_teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "scheduler_integration",
+          "passed_cases": 5,
+          "status": "PASS"
+        }
+      ],
+      "category": "integration-run",
+      "duration_seconds": 9.601530814000398,
+      "end_utc": "2026-11-18T15:16:28.563233+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "1703356ffa60377455119b6ae1fb01155d49896128ba675648be3282f50928b4"
+      },
+      "run_id": "20261118T151618-b1e6fe6614e1",
+      "source_sha256_after": "fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415",
+      "source_sha256_before": "fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415",
+      "start_utc": "2026-11-18T15:16:18.961502+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "demo-run",
+      "duration_seconds": 1.2047070920007172,
+      "end_utc": "2026-11-18T15:16:30.396265+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "ab9a7a54c033cad6bfb19e9070ebf18145899ffba75b99a760b6aca53c9167b9"
+      },
+      "run_id": "20261118T151629-f55294766041",
+      "source_sha256_after": "fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415",
+      "source_sha256_before": "fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415",
+      "start_utc": "2026-11-18T15:16:29.191377+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "benchmark-smoke",
+      "duration_seconds": 11.25939877699966,
+      "end_utc": "2026-11-18T15:22:28.265310+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "10ff10fe7d87b397119e77130db9ccfa072a092942846ecf162f81abc039e24b"
+      },
+      "run_id": "20261118T152217-53db175ec852",
+      "source_sha256_after": "b00d833b8197b7fb67f5f78a63b7b7d4db0b5efbd8eb1a9a9beb022038bf04aa",
+      "source_sha256_before": "b00d833b8197b7fb67f5f78a63b7b7d4db0b5efbd8eb1a9a9beb022038bf04aa",
+      "start_utc": "2026-11-18T15:22:17.005714+00:00",
+      "status": "PASS"
+    },
+    {
+      "benchmark": {
+        "attempts_sha256": "61ac23155e8fc5de40ed001ba7453a35f21a445fd63417960a9a4372f178871e",
+        "samples_failed": 0,
+        "samples_sha256": "defec4e58510d018b73cd9ae78aba0147700585b591c2928cff88bf852a4f510",
+        "samples_total": 90,
+        "scope": "smoke"
+      },
+      "category": "benchmark-analysis",
+      "duration_seconds": 0.052219027999854006,
+      "end_utc": "2026-11-18T15:24:29.352223+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "89be276590401ca3c56a89e673ebda9cabddc2a2c9d362919c7427b17bd4442c"
+      },
+      "run_id": "20261118T152429-96fd15cc49bb",
+      "source_sha256_after": "b00d833b8197b7fb67f5f78a63b7b7d4db0b5efbd8eb1a9a9beb022038bf04aa",
+      "source_sha256_before": "b00d833b8197b7fb67f5f78a63b7b7d4db0b5efbd8eb1a9a9beb022038bf04aa",
+      "start_utc": "2026-11-18T15:24:29.299828+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 12,
+          "status": "PASS"
+        },
+        {
+          "case": "standard_release_without_color",
+          "elapsed_ms": 134,
+          "state": "SUCCEEDED",
+          "status": "PASS",
+          "stderr_bytes": 39,
+          "stdout_bytes": 45
+        },
+        {
+          "case": "cpu_exact_controls_and_ten_second_quota",
+          "elapsed_ms": 17156,
+          "status": "PASS",
+          "steady_wall_seconds": 10.254527522999524,
+          "used_cores": 1.002636833041779
+        },
+        {
+          "case": "pids_kernel_limit",
+          "elapsed_ms": 5191,
+          "event_before_teardown": 1,
+          "kernel_counter": "pids.events:max",
+          "reason": "RESOURCE_LIMIT",
+          "state": "FAILED",
+          "status": "PASS"
+        },
+        {
+          "case": "resource_integration",
+          "reason": "Failure: memory job did not report RESOURCE_LIMIT",
+          "status": "FAIL"
+        },
+        {
+          "case": "resource_teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        }
+      ],
+      "category": "native-resources",
+      "duration_seconds": 26.978914608000196,
+      "end_utc": "2026-11-18T15:26:03.989603+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "cb596e88f6069f1955359d39b2cd78c3d93ff63bd36ff251e36f9b646e281012"
+      },
+      "run_id": "20261118T152537-0791180ddad2",
+      "source_sha256_after": "726b5d68e502e6b073e281a6fb269e27ad20b9287dd388694c852de262eedfd5",
+      "source_sha256_before": "726b5d68e502e6b073e281a6fb269e27ad20b9287dd388694c852de262eedfd5",
+      "start_utc": "2026-11-18T15:25:37.010402+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 13,
+          "status": "PASS"
+        },
+        {
+          "case": "standard_release_without_color",
+          "elapsed_ms": 135,
+          "state": "SUCCEEDED",
+          "status": "PASS",
+          "stderr_bytes": 39,
+          "stdout_bytes": 45
+        },
+        {
+          "case": "cpu_exact_controls_and_ten_second_quota",
+          "elapsed_ms": 17261,
+          "status": "PASS",
+          "steady_wall_seconds": 10.254211786999804,
+          "used_cores": 1.0003597753856492
+        },
+        {
+          "case": "pids_kernel_limit",
+          "elapsed_ms": 5209,
+          "event_before_teardown": 1,
+          "kernel_counter": "pids.events:max",
+          "reason": "RESOURCE_LIMIT",
+          "state": "FAILED",
+          "status": "PASS"
+        },
+        {
+          "case": "memory_kernel_limit",
+          "elapsed_ms": 4121,
+          "event_before_teardown": 1,
+          "kernel_counter": "memory.events:oom_kill",
+          "reason": "RESOURCE_LIMIT",
+          "state": "FAILED",
+          "status": "PASS"
+        },
+        {
+          "case": "bounded_stream_release",
+          "elapsed_ms": 1366,
+          "reason": "STREAM_LIMIT",
+          "status": "PASS",
+          "stderr_bytes": 1048576,
+          "stderr_truncated": true,
+          "stdout_bytes": 1048576,
+          "stdout_truncated": true
+        },
+        {
+          "case": "resource_teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "resource_integration",
+          "passed_cases": 7,
+          "status": "PASS"
+        }
+      ],
+      "category": "native-resources",
+      "duration_seconds": 28.60208893500021,
+      "end_utc": "2026-11-18T15:32:10.192708+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "5647530772a4a81dd216616bf020258909154be604517293dbefb26a5e6a43ab"
+      },
+      "run_id": "20261118T153141-678a2dadacc8",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:31:41.590409+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "benchmark-full",
+      "duration_seconds": 1170.2030479220011,
+      "end_utc": "2026-11-18T15:57:42.823048+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "25c64770ddc61719a30b5fc57c370611bcf831d496cfa87d3cd7abcfc959254b",
+        "stdout": "96a52f43ed936885617d71d64a6fa9e25df741b60fccdfe230431f6e83dbfb13"
+      },
+      "run_id": "20261118T153812-458cd4e53b50",
+      "source_sha256_after": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "source_sha256_before": "f58ea82922423c56cf2348986b7e5661b30cb37823b93e32de28c6b49bdb0d8a",
+      "start_utc": "2026-11-18T15:38:12.619806+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 13,
+          "status": "PASS"
+        },
+        {
+          "case": "policy_security",
+          "status": "FAIL"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        }
+      ],
+      "category": "native-policy-denial",
+      "duration_seconds": 0.5954273620000095,
+      "end_utc": "2026-11-20T07:27:53.434112+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "b709b043a6c3d82ca1fd52d27e88637bbde6966b6c02d29eadb3405847ef0ed5"
+      },
+      "run_id": "20261120T072752-0d00d58020c7",
+      "source_sha256_after": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "source_sha256_before": "729951109dced96f40d92e386f881101d3752643790003947a9cd59d680edfb2",
+      "start_utc": "2026-11-20T07:27:52.838523+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 12,
+          "status": "PASS"
+        },
+        {
+          "case": "filesystem_environment_descriptors_and_approved_io",
+          "elapsed_ms": 216,
+          "status": "PASS"
+        },
+        {
+          "case": "socket_creation_default_deny",
+          "elapsed_ms": 118,
+          "status": "PASS"
+        },
+        {
+          "case": "invalid_operation_default_deny",
+          "elapsed_ms": 111,
+          "status": "PASS"
+        },
+        {
+          "case": "x32_benign_identity_query_terminated",
+          "elapsed_ms": 113,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "policy_security",
+          "passed_cases": 6,
+          "status": "PASS"
+        }
+      ],
+      "category": "native-policy-denial",
+      "duration_seconds": 1.0089000929999656,
+      "end_utc": "2026-11-20T07:28:37.076340+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "6a4f5d2b138605e48794a25397c780192bf1671dc1b037dea0f83674bdc0bb4a"
+      },
+      "run_id": "20261120T072836-33fe6a62d3eb",
+      "source_sha256_after": "6c651510925e642e73c204f3e2e3adffce9353e6ecda93a353c7324c55ad332a",
+      "source_sha256_before": "6c651510925e642e73c204f3e2e3adffce9353e6ecda93a353c7324c55ad332a",
+      "start_utc": "2026-11-20T07:28:36.067291+00:00",
+      "status": "PASS"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "selected captured observations; raw command paths omitted"
+}

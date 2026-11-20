@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Command evidence record",
+  "type":"object",
+  "required":["schema_version","run_id","command","start_utc","end_utc","duration_seconds","exit_code","status","category","requirements","environment","logs","source_sha256_before","source_sha256_after"],
+  "properties":{
+    "schema_version":{"const":1},
+    "run_id":{"type":"string","minLength":1},
+    "command":{"type":"array","minItems":1,"items":{"type":"string"}},
+    "status":{"enum":["PASS","FAIL","BLOCKED"]},
+    "exit_code":{"type":"integer"},
+    "duration_seconds":{"type":"number","minimum":0},
+    "source_sha256_before":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "source_sha256_after":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "category":{"type":"string"},
+    "requirements":{"type":"array","items":{"type":"string"}},
+    "environment":{"type":"object"},
+    "logs":{"type":"object"}
+  }
+}

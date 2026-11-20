@@ -1,0 +1,49 @@
+name: Native acceptance (manual, requires compatible host)
+on:
+  workflow_dispatch:
+    inputs:
+      reviewed_commit:
+        description: Full SHA of a reviewed commit already on main
+        type: string
+        required: true
+      confirm_reviewed:
+        description: I reviewed this commit and authorize its disposable native tests
+        type: boolean
+        required: true
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: native-acceptance
+  cancel-in-progress: false
+jobs:
+  native:
+    if: inputs.confirm_reviewed
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+      CARGO_INCREMENTAL: '0'
+      CARGO_BUILD_JOBS: '1'
+      CARGO_HOME: ${{ runner.temp }}/hearthrun-cargo
+      CARGO_TARGET_DIR: ${{ runner.temp }}/hearthrun-target
+      RUSTUP_HOME: ${{ runner.temp }}/hearthrun-rustup
+    steps:
+      - name: Validate commit syntax
+        shell: bash
+        run: '[[ "$REVIEWED_COMMIT" =~ ^[0-9a-f]{40}$ ]]'
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ inputs.reviewed_commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Refuse commits outside reviewed main history
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEWED_COMMIT"
+          git merge-base --is-ancestor HEAD origin/main
+      - name: Install minimal pinned toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
+      - name: Require actual host capability
+        run: make doctor
+      - name: Full applicable product checks
+        run: make verify demo

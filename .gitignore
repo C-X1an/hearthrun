@@ -1,0 +1,10 @@
+/target/
+/.work/
+.env
+.env.*
+!.env.example
+*.token
+*.pem
+__pycache__/
+*.pyc
+/verification/local-private/

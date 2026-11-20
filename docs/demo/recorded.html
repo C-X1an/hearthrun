@@ -1,0 +1,217 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'"><title>HearthRun recorded local demo</title><style>body{font:16px system-ui;max-width:70rem;margin:3rem auto;padding:1rem;line-height:1.6}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:1rem;border:1px solid}strong{display:block;border:2px solid;padding:1rem}:root{color-scheme:light dark}body{background:Canvas;color:CanvasText}:focus-visible{outline:3px solid;outline-offset:3px}nav a{display:inline-block;padding:.3rem}table{border-collapse:collapse;width:100%}th,td{border:1px solid;padding:.5rem;text-align:left;overflow-wrap:anywhere;max-width:24rem}.table-scroll{overflow-x:auto}section{scroll-margin-top:1rem}</style><main><h1>HearthRun recorded local demo</h1><strong>RECORDED EXECUTION - selected evidence from an actual local run</strong><p>This report is data, not a claim that containment acceptance passed.</p><nav aria-label="Demo sections"><p><a href="#demo-summary">Summary</a> · <a href="#policy">Policy and results</a> · <a href="#cleanup">Cleanup</a> · <a href="#evidence">Evidence</a> · <a href="#record">Sanitized record</a></p></nav><section aria-labelledby="demo-summary"><h2 id="demo-summary" tabindex="-1">Recorded local demo</h2><p>Actual captured run: <strong>PASS</strong></p><p>Observed summary bytes: <code>{&quot;count&quot;: 4, &quot;sum&quot;: 16}</code>.</p><p>Typed profile admission refusal: <code>PROFILE_NOT_FOUND</code>; admitted: False. This refusal did not execute a guest.</p><p>Approved guest check: synthetic host canary unchanged: True; staged input unchanged: True.</p><ol><li>doctor_and_socket: PASS; observed elapsed 12 ms</li><li>approved_transformation: PASS; observed elapsed 173 ms</li><li>typed_admission_refusal: PASS; observed elapsed 13 ms</li><li>guest_canary_and_input_denial: PASS; observed elapsed 138 ms</li><li>detached_cancellation: PASS; observed elapsed 299 ms</li></ol></section><section aria-labelledby="policy"><h2 id="policy" tabindex="-1">Policy, cleanup and result are separate</h2><p>Admission authorizes a bounded request. A successful fixture exit does not replace cleanup proof. The committed result digest binds the retained bytes only after publication.</p><div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable policy and result table"><table><caption>Actual journal and committed-result observations</caption><thead><tr><th scope="col">Case</th><th scope="col">Journal state</th><th scope="col">Policy SHA-256</th><th scope="col">Cleanup confirmed</th><th scope="col">Result digest</th></tr></thead><tbody><tr><td>Approved transformation</td><td>SUCCEEDED</td><td>a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929</td><td>True</td><td>09192b3139d297e6eaacbf8d3c5388e8e4107f1a32c5ec3416c756b345e65adc</td></tr><tr><td>Guest denial checks</td><td>SUCCEEDED</td><td>a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929</td><td>True</td><td>e4a5a3792e3d3f95f233fe149bbe18b40ea18235fd8c3da5ec7bbc5bdb080e0d</td></tr><tr><td>Detached cancellation</td><td>CANCELLED</td><td>a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929</td><td>True</td><td>3661112b510973da55b3f6ce1da23c391fcb67e9558b6d2ce844302287281bc6</td></tr></tbody></table></div></section><section aria-labelledby="cleanup"><h2 id="cleanup" tabindex="-1">Observed cleanup</h2><p>Cancellation observed cgroup members: 4; launcher reaped: True; owned cgroup removed: True.</p><p>Final harness teardown: PASS.</p><p>Outer ownership check: PASS; cleanup diagnostics: 0.</p><p>Cgroup removal is recorded as removal; the report does not invent a populated=0 sample after removal.</p></section><section aria-labelledby="evidence"><h2 id="evidence" tabindex="-1">Selected evidence</h2><ul><li><a href="recorded-demo.json">Recorded observations</a></li><li><a href="../../verification/observed-runs.json">Captured run identities and digests</a></li></ul><p>Use Tab/Shift+Tab for links and Enter to follow them. No script, external font, analytics, browser capture, or screenshot is required.</p><p>This finite demo does not establish full containment acceptance. It does not run a network-denial case, mutation campaign, benchmarks, clean-host reproduction, or independent review. Raw local records may contain operator paths and remain private until audited for sharing.</p></section><h2 id="record" tabindex="-1">Sanitized machine record</h2><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;evidence_run_id&quot;: &quot;20261118T151629-5536f2efe2fe&quot;,
+  &quot;status&quot;: &quot;PASS&quot;,
+  &quot;captured_command_status&quot;: &quot;PASS&quot;,
+  &quot;captured_exit_code&quot;: 0,
+  &quot;observed_start_utc&quot;: &quot;2026-11-18T15:16:29.260094+00:00&quot;,
+  &quot;observed_end_utc&quot;: &quot;2026-11-18T15:16:30.383443+00:00&quot;,
+  &quot;source_commit&quot;: null,
+  &quot;source_dirty&quot;: false,
+  &quot;source_sha256_before&quot;: &quot;fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415&quot;,
+  &quot;source_sha256_after&quot;: &quot;fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415&quot;,
+  &quot;source_changed_during_run&quot;: false,
+  &quot;environment&quot;: {
+    &quot;system&quot;: &quot;Linux&quot;,
+    &quot;machine&quot;: &quot;x86_64&quot;,
+    &quot;kernel&quot;: &quot;6.18.58.1-microsoft-standard-WSL2&quot;,
+    &quot;python&quot;: &quot;3.14.4&quot;
+  },
+  &quot;actual_duration_seconds&quot;: 1.1231452149995675,
+  &quot;observations&quot;: {
+    &quot;captured_bytes&quot;: 19798,
+    &quot;commands&quot;: 35,
+    &quot;facts&quot;: {
+      &quot;admission_refusal&quot;: {
+        &quot;admitted&quot;: false,
+        &quot;boundary&quot;: &quot;operator profile admission; this rejection did not execute a guest&quot;,
+        &quot;cgroup_inventory_unchanged&quot;: true,
+        &quot;code&quot;: &quot;PROFILE_NOT_FOUND&quot;,
+        &quot;host_canary_sha256_after&quot;: &quot;a9d463fb830bceb63cadcc1f609ff7d8343ce6278560cf3fd82865583645f3cb&quot;,
+        &quot;host_canary_sha256_before&quot;: &quot;a9d463fb830bceb63cadcc1f609ff7d8343ce6278560cf3fd82865583645f3cb&quot;,
+        &quot;record_count_unchanged&quot;: true
+      },
+      &quot;cancellation&quot;: {
+        &quot;cgroup_removed&quot;: true,
+        &quot;cleanup_confirmed&quot;: true,
+        &quot;executable_sha256&quot;: &quot;42dd9f38576274a97735346ff4f3439459db3aca540fc41d86e564f4a231adff&quot;,
+        &quot;job_id&quot;: &quot;b999975a91d54cc98782b21c26305bbf&quot;,
+        &quot;launcher_reaped&quot;: true,
+        &quot;metadata&quot;: {
+          &quot;artifacts&quot;: [],
+          &quot;cleanup_confirmed&quot;: true,
+          &quot;environment_id&quot;: &quot;linux-x86_64-309504bfab961330b67e5d42e7d9394858a87f7ab228a82c2277de0a770c70cd&quot;,
+          &quot;exit_code&quot;: null,
+          &quot;job_id&quot;: &quot;b999975a91d54cc98782b21c26305bbf&quot;,
+          &quot;policy_sha256&quot;: &quot;a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929&quot;,
+          &quot;signal&quot;: null,
+          &quot;status&quot;: &quot;CANCELLED&quot;,
+          &quot;stderr_truncated&quot;: false,
+          &quot;stdout_truncated&quot;: false,
+          &quot;v&quot;: 1
+        },
+        &quot;observed_cgroup_processes&quot;: 4,
+        &quot;observed_exit&quot;: null,
+        &quot;policy_sha256&quot;: &quot;a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929&quot;,
+        &quot;profile_digest&quot;: &quot;ab621d0bf7e0e0985937fe6359e76dfa60a9511c8af7b3add54a2282cd834a5c&quot;,
+        &quot;result_digest&quot;: &quot;3661112b510973da55b3f6ce1da23c391fcb67e9558b6d2ce844302287281bc6&quot;,
+        &quot;state&quot;: &quot;CANCELLED&quot;
+      },
+      &quot;guest_denial&quot;: {
+        &quot;cleanup_confirmed&quot;: true,
+        &quot;executable_sha256&quot;: &quot;42dd9f38576274a97735346ff4f3439459db3aca540fc41d86e564f4a231adff&quot;,
+        &quot;guest_check_exit_zero&quot;: true,
+        &quot;host_canary_sha256&quot;: &quot;a9d463fb830bceb63cadcc1f609ff7d8343ce6278560cf3fd82865583645f3cb&quot;,
+        &quot;host_canary_unchanged&quot;: true,
+        &quot;job_id&quot;: &quot;dcbc3f6b93f58a89d19fbf8f2c631f27&quot;,
+        &quot;metadata&quot;: {
+          &quot;artifacts&quot;: [],
+          &quot;cleanup_confirmed&quot;: true,
+          &quot;environment_id&quot;: &quot;linux-x86_64-309504bfab961330b67e5d42e7d9394858a87f7ab228a82c2277de0a770c70cd&quot;,
+          &quot;exit_code&quot;: 0,
+          &quot;job_id&quot;: &quot;dcbc3f6b93f58a89d19fbf8f2c631f27&quot;,
+          &quot;policy_sha256&quot;: &quot;a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929&quot;,
+          &quot;signal&quot;: null,
+          &quot;status&quot;: &quot;SUCCEEDED&quot;,
+          &quot;stderr_truncated&quot;: false,
+          &quot;stdout_truncated&quot;: false,
+          &quot;v&quot;: 1
+        },
+        &quot;observed_exit&quot;: {
+          &quot;exit_code&quot;: 0,
+          &quot;signal&quot;: null
+        },
+        &quot;policy_sha256&quot;: &quot;a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929&quot;,
+        &quot;profile_digest&quot;: &quot;ab621d0bf7e0e0985937fe6359e76dfa60a9511c8af7b3add54a2282cd834a5c&quot;,
+        &quot;result_digest&quot;: &quot;e4a5a3792e3d3f95f233fe149bbe18b40ea18235fd8c3da5ec7bbc5bdb080e0d&quot;,
+        &quot;scope&quot;: &quot;one synthetic host canary and the staged input; approved check fixture also checked its fixed environment and descriptors&quot;,
+        &quot;staged_input_sha256&quot;: &quot;a27e53fa6cb709af40792c52aeb7dd44cfcf387758aa603506d992e22678a82e&quot;,
+        &quot;staged_input_unchanged&quot;: true,
+        &quot;state&quot;: &quot;SUCCEEDED&quot;,
+        &quot;stdout_sha256&quot;: &quot;cc398d3464f680149b52c3565820eea1f6a28f75e15cd91d68d1f987b686c897&quot;
+      },
+      &quot;host&quot;: {
+        &quot;compatible&quot;: true,
+        &quot;landlock_abi&quot;: 7
+      },
+      &quot;input&quot;: {
+        &quot;logical_path&quot;: &quot;data.ndjson&quot;,
+        &quot;sha256&quot;: &quot;a27e53fa6cb709af40792c52aeb7dd44cfcf387758aa603506d992e22678a82e&quot;,
+        &quot;size_bytes&quot;: 50,
+        &quot;stage_manifest_digest&quot;: &quot;d67d2cb33358895bdda4c70ba761184808b8020285f4400510088c7f4ca76366&quot;,
+        &quot;synthetic&quot;: true
+      },
+      &quot;transformation&quot;: {
+        &quot;cgroup_removed&quot;: true,
+        &quot;cleanup_confirmed&quot;: true,
+        &quot;executable_sha256&quot;: &quot;42dd9f38576274a97735346ff4f3439459db3aca540fc41d86e564f4a231adff&quot;,
+        &quot;job_id&quot;: &quot;c03d56b82e9b5044febe80058ee42a61&quot;,
+        &quot;metadata&quot;: {
+          &quot;artifacts&quot;: [
+            {
+              &quot;path&quot;: &quot;summary.json&quot;,
+              &quot;sha256&quot;: &quot;cb33efd2d82a5de619eab6f4d8c960fb467ff47e044a429d2981f605a79cfed2&quot;,
+              &quot;size_bytes&quot;: 21
+            }
+          ],
+          &quot;cleanup_confirmed&quot;: true,
+          &quot;environment_id&quot;: &quot;linux-x86_64-309504bfab961330b67e5d42e7d9394858a87f7ab228a82c2277de0a770c70cd&quot;,
+          &quot;exit_code&quot;: 0,
+          &quot;job_id&quot;: &quot;c03d56b82e9b5044febe80058ee42a61&quot;,
+          &quot;policy_sha256&quot;: &quot;a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929&quot;,
+          &quot;signal&quot;: null,
+          &quot;status&quot;: &quot;SUCCEEDED&quot;,
+          &quot;stderr_truncated&quot;: false,
+          &quot;stdout_truncated&quot;: false,
+          &quot;v&quot;: 1
+        },
+        &quot;observed_exit&quot;: {
+          &quot;exit_code&quot;: 0,
+          &quot;signal&quot;: null
+        },
+        &quot;policy_sha256&quot;: &quot;a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929&quot;,
+        &quot;profile_digest&quot;: &quot;ab621d0bf7e0e0985937fe6359e76dfa60a9511c8af7b3add54a2282cd834a5c&quot;,
+        &quot;result_digest&quot;: &quot;09192b3139d297e6eaacbf8d3c5388e8e4107f1a32c5ec3416c756b345e65adc&quot;,
+        &quot;state&quot;: &quot;SUCCEEDED&quot;,
+        &quot;summary&quot;: {
+          &quot;count&quot;: 4,
+          &quot;sum&quot;: 16
+        }
+      }
+    },
+    &quot;reason&quot;: null,
+    &quot;schema_version&quot;: 1,
+    &quot;status&quot;: &quot;PASS&quot;,
+    &quot;teardown&quot;: {
+      &quot;owned_cgroups_remaining&quot;: 0,
+      &quot;owned_children_reaped&quot;: true,
+      &quot;status&quot;: &quot;PASS&quot;
+    },
+    &quot;timeline&quot;: [
+      {
+        &quot;case&quot;: &quot;doctor_and_socket&quot;,
+        &quot;details&quot;: {
+          &quot;compatible&quot;: true,
+          &quot;socket_mode&quot;: &quot;0600&quot;
+        },
+        &quot;elapsed_ms&quot;: 12,
+        &quot;started_ms&quot;: 400,
+        &quot;status&quot;: &quot;PASS&quot;
+      },
+      {
+        &quot;case&quot;: &quot;approved_transformation&quot;,
+        &quot;details&quot;: {
+          &quot;cleanup_confirmed&quot;: true,
+          &quot;count&quot;: 4,
+          &quot;job_id&quot;: &quot;c03d56b82e9b5044febe80058ee42a61&quot;,
+          &quot;result_digest&quot;: &quot;09192b3139d297e6eaacbf8d3c5388e8e4107f1a32c5ec3416c756b345e65adc&quot;,
+          &quot;sum&quot;: 16
+        },
+        &quot;elapsed_ms&quot;: 173,
+        &quot;started_ms&quot;: 426,
+        &quot;status&quot;: &quot;PASS&quot;
+      },
+      {
+        &quot;case&quot;: &quot;typed_admission_refusal&quot;,
+        &quot;details&quot;: {
+          &quot;admitted&quot;: false,
+          &quot;code&quot;: &quot;PROFILE_NOT_FOUND&quot;,
+          &quot;host_canary_unchanged&quot;: true
+        },
+        &quot;elapsed_ms&quot;: 13,
+        &quot;started_ms&quot;: 599,
+        &quot;status&quot;: &quot;PASS&quot;
+      },
+      {
+        &quot;case&quot;: &quot;guest_canary_and_input_denial&quot;,
+        &quot;details&quot;: {
+          &quot;cleanup_confirmed&quot;: true,
+          &quot;host_canary_unchanged&quot;: true,
+          &quot;job_id&quot;: &quot;dcbc3f6b93f58a89d19fbf8f2c631f27&quot;,
+          &quot;staged_input_unchanged&quot;: true
+        },
+        &quot;elapsed_ms&quot;: 138,
+        &quot;started_ms&quot;: 612,
+        &quot;status&quot;: &quot;PASS&quot;
+      },
+      {
+        &quot;case&quot;: &quot;detached_cancellation&quot;,
+        &quot;details&quot;: {
+          &quot;cgroup_removed&quot;: true,
+          &quot;job_id&quot;: &quot;b999975a91d54cc98782b21c26305bbf&quot;,
+          &quot;launcher_reaped&quot;: true,
+          &quot;observed_cgroup_processes&quot;: 4
+        },
+        &quot;elapsed_ms&quot;: 299,
+        &quot;started_ms&quot;: 750,
+        &quot;status&quot;: &quot;PASS&quot;
+      }
+    ]
+  },
+  &quot;outer_teardown&quot;: {
+    &quot;status&quot;: &quot;PASS&quot;,
+    &quot;error_count&quot;: 0,
+    &quot;diagnostics&quot;: &quot;inspect private captured diagnostics if errors occurred&quot;
+  },
+  &quot;scope&quot;: &quot;finite local native demo; not full acceptance or a publication approval&quot;
+}</pre></main></html>
