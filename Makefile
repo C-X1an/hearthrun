@@ -7,6 +7,7 @@ NATIVE_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/
 POLICY_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/hearthrun-policy-probe)
 RESOURCE_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/hearthrun-resources)
 NATIVE_DOCTOR = $(abspath .work/hearthrun-probe)
+BENCH_BIN_DIR = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/release)
 .PHONY: native-prerequisites integration-run demo-run policy-fixture resource-fixture security-smoke resource-run
 .PHONY: help bootstrap build fmt lint typecheck unit tooling-test doctor integration acceptance security property fuzz mutation clean-verify dependency-audit sbom license-audit public-audit benchmark-smoke bench demo demo-offline verify teardown
 help:
@@ -67,7 +68,14 @@ license-audit:
 	$(PYTHON) scripts/dependency_inventory.py --mode licenses
 public-audit:
 	$(PYTHON) scripts/public_audit.py
-acceptance security mutation clean-verify benchmark-smoke bench:
+clean-verify:
+	$(PYTHON) tests/acceptance_locked/reproduce.py --source '$(CURDIR)' --jobs "$${HEARTHRUN_JOBS:?set HEARTHRUN_JOBS}" --toolchain-bin "$${HEARTHRUN_RUST_TOOLCHAIN_BIN:?set HEARTHRUN_RUST_TOOLCHAIN_BIN}" --host-cc '$(CC)' --native-cc '$(NATIVE_CC)' --work "$${HEARTHRUN_DEV_ROOT:?set HEARTHRUN_DEV_ROOT}/r-$$$$"
+benchmark-smoke: BENCH_MODE=smoke
+bench: BENCH_MODE=full
+benchmark-smoke bench:
+	$(PYTHON) -B benchmarks/campaign.py --mode $(BENCH_MODE) --bin-dir '$(BENCH_BIN_DIR)' --doctor '$(NATIVE_DOCTOR)' --fixture '$(NATIVE_FIXTURE)' --cgroup-root "$${HEARTHRUN_JOBS:?set HEARTHRUN_JOBS}" --build-record "$${HEARTHRUN_BENCH_BUILD:?set HEARTHRUN_BENCH_BUILD}" --host-record "$${HEARTHRUN_BENCH_HOST:?set HEARTHRUN_BENCH_HOST}" --work "$${HEARTHRUN_BENCH_WORK:?set a new HEARTHRUN_BENCH_WORK}"
+	$(PYTHON) -B benchmarks/analyze.py --work "$${HEARTHRUN_BENCH_WORK:?set HEARTHRUN_BENCH_WORK}"
+acceptance security mutation:
 	$(PYTHON) scripts/not_implemented.py $@
 demo-offline:
 	mkdir -p .work

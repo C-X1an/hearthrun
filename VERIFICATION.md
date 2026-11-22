@@ -27,11 +27,11 @@ The six portable handoff-tool mutations are useful but cannot substitute for nat
 
 Before edits, a separately executed read-only verifier receives the public specs, claims, source and exact test commands. It must record findings first. Ask: what could pass these tests while still being broken? Can guest code run before limits? Can a leaked descriptor bypass a pathname policy? Can a late writer race export? Can a supervisor crash leave children alive? Does the benchmark include failures and equivalent policies? Is clean setup missing a private file?
 
-Classify CRITICAL/HIGH/MEDIUM/LOW/INFO. The integrator separately fixes validated material findings, adds regression tests and reruns affected and full checks. An orchestrator's self-review is not an independent review. Initial review is NOT RUN in this handoff.
+Classify CRITICAL/HIGH/MEDIUM/LOW/INFO. The integrator separately fixes validated material findings, adds regression tests and reruns affected and full checks. An orchestrator's self-review is not an independent review. Scoped independent work has run. The full release review remains open.
 
 ## Clean reproduction and CI
 
-A fresh public-only checkout without private research must run bootstrap, format, lint, type analysis, unit, contract, integration, acceptance, bounded fuzz/property/security, actual demo and teardown. Dependency/advisory network outages remain BLOCKED. Public CI currently covers only portable source tooling and C probe compilation. Do not label this as Rust product checks or containment acceptance.
+A fresh public-only checkout without private research must run bootstrap, format, lint, type analysis, unit, contract, integration, acceptance, bounded fuzz/property/security, actual demo and teardown. Dependency/advisory network outages remain BLOCKED. The portable and Rust source workflows passed on the corrected first preview. [Release readiness](RELEASE_READINESS.md)
 
 Future native CI runs on an approved commit in a disposable compatible Linux environment. Never run hostile-code fixtures with powerful credentials or privileged persistent self-hosted runners triggered by untrusted PRs. Review workflow changes before promotion. Read-only token permissions, SHA-pinned actions, no persisted checkout credentials and bounded runtime are required. Hosted-runner capability is probed, not assumed.
 
@@ -45,4 +45,4 @@ Dependency failure: inspect platform/version/network, choose supported compatibl
 
 ## Explicit extended commands
 
-`make property` and `make fuzz` run deterministic domain and parser checks. `make public-audit` checks tracked paths, history and workflow policy. `make dependency-audit` needs the real audit tool and an existing current advisory snapshot. `make sbom` and `make license-audit` use the resolved locked graph. The full mutation, acceptance and clean-verification gates remain open. [Benchmark protocol](benchmarks/protocol.md)
+`make property` and `make fuzz` run deterministic domain and parser checks. `make public-audit` checks tracked paths, history and workflow policy. `make dependency-audit` needs the real audit tool and an existing current advisory snapshot. `make sbom` and `make license-audit` use the resolved locked graph. `make clean-verify` exercises the implemented profile in a fresh clone. The full mutation, acceptance and clean-verification gates remain open. [Operations](OPERATIONS.md) · [Benchmark protocol](benchmarks/protocol.md)

@@ -294,6 +294,116 @@
       "status": "PASS"
     },
     {
+      "category": "build",
+      "duration_seconds": 17.385087357999993,
+      "end_utc": "2026-11-22T15:52:37.490568+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e027991464faa59d18ced10a6b7b9e0c4b756db91d5e601403d0a8ef23c17462",
+        "stdout": "a41c482cc69875cff1bccda15c88177bcca3b6076a71e002b41d7cc587073885"
+      },
+      "run_id": "20261122T155220-c2afedf16a1a",
+      "source_sha256_after": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "source_sha256_before": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "start_utc": "2026-11-22T15:52:20.105486+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "lint",
+      "duration_seconds": 7.777804746999976,
+      "end_utc": "2026-11-22T15:52:45.274306+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "28474ed976880b4eff2043f2559fddc425ebdc37e62b751908e013cee976e748",
+        "stdout": "e8d11f6057f55739d9130aec298dc670d17b28f4c42f6da473268f048114e83a"
+      },
+      "run_id": "20261122T155237-06d6e05a028c",
+      "source_sha256_after": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "source_sha256_before": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "start_utc": "2026-11-22T15:52:37.496493+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "unit",
+      "duration_seconds": 1.9299645749999854,
+      "end_utc": "2026-11-22T15:52:47.209430+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "c2be8ee2db3c3a750d4978c841929bf4a39b316c552b1d394012faed00d4d3ad",
+        "stdout": "a29822cf536fa5020162edcb3d9a43a6640137bcf7f91c55e6b1fbe1ae610e26"
+      },
+      "run_id": "20261122T155245-d58b4adc08f7",
+      "source_sha256_after": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "source_sha256_before": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "start_utc": "2026-11-22T15:52:45.279456+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "typecheck",
+      "duration_seconds": 1.7326528540000083,
+      "end_utc": "2026-11-22T15:52:48.946808+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "018d193e11ef1954a38a01dc566050b49127d4f08fc13dc1847304f8303efb53",
+        "stdout": "62a7bc7a2833ec2d13646d0c22b9577c86831333697b25129e5cf6a3735c2a85"
+      },
+      "run_id": "20261122T155247-bfb4df689693",
+      "source_sha256_after": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "source_sha256_before": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "start_utc": "2026-11-22T15:52:47.214154+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "tooling-test",
+      "duration_seconds": 0.3807610069999896,
+      "end_utc": "2026-11-22T15:52:49.332297+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "be48843bec9f6a5bab77c4ee7c70a1ee144a706ac3be8dd72a22fd16fedb0efa",
+        "stdout": "dde5f52a16e2b364f40e9c95a34d5a17eaebe33643696001f25dd414a9e690d3"
+      },
+      "run_id": "20261122T155248-a93e83ed167a",
+      "source_sha256_after": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "source_sha256_before": "ed62860262d459a41251b6555758322fae3db2bcd5838b817712649c12dd67e9",
+      "start_utc": "2026-11-22T15:52:48.951535+00:00",
+      "status": "PASS"
+    },
+    {
       "category": "doctor-regression",
       "duration_seconds": 4.620120337999651,
       "end_utc": "2026-11-18T10:17:35.131949+00:00",
@@ -832,6 +942,231 @@
       "source_sha256_after": "6c651510925e642e73c204f3e2e3adffce9353e6ecda93a353c7324c55ad332a",
       "source_sha256_before": "6c651510925e642e73c204f3e2e3adffce9353e6ecda93a353c7324c55ad332a",
       "start_utc": "2026-11-20T07:28:36.067291+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-quiescence-smoke",
+      "duration_seconds": 2.763981543,
+      "end_utc": "2026-11-21T20:58:40.449495+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "dd9dc9c702936b8cbc2d332ddea7ed07060ffabcbae3665c8a22641a032d2eb2"
+      },
+      "run_id": "20261121T205837-e4d25e138e2c",
+      "source_sha256_after": "03a8bf0e9767485a14ce08e8185f38d37ecaad0689175d31187800da652af1e7",
+      "source_sha256_before": "03a8bf0e9767485a14ce08e8185f38d37ecaad0689175d31187800da652af1e7",
+      "start_utc": "2026-11-21T20:58:37.685360+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "native-quiescence-smoke",
+      "duration_seconds": 3.358887933999995,
+      "end_utc": "2026-11-21T21:05:08.061136+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "a9c91451c48573e62237e2143bc8e0d460a22d47175113aaf04a72b531154ee3"
+      },
+      "run_id": "20261121T210504-477466879b56",
+      "schedule": {
+        "cancelled_jobs": 4,
+        "clean_shards": 1,
+        "master_seed": 14014,
+        "mode": "smoke",
+        "passed_schedules": 8,
+        "planned_schedules": 8,
+        "successful_jobs": 4
+      },
+      "source_sha256_after": "f97e9516b2c05eb9e946ba1399436f41010eb257e10c633936e8f4c2475197d1",
+      "source_sha256_before": "f97e9516b2c05eb9e946ba1399436f41010eb257e10c633936e8f4c2475197d1",
+      "start_utc": "2026-11-21T21:05:04.702106+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-quiescence-full",
+      "duration_seconds": 389.7970670469999,
+      "end_utc": "2026-11-21T21:11:38.267117+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "728bfdfab1f362fb2a409ce5ccc96fb81d90c8f8000f341d35bbc805a2c7865d"
+      },
+      "run_id": "20261121T210508-e8dba271c97a",
+      "schedule": {
+        "cancelled_jobs": 500,
+        "clean_shards": 10,
+        "master_seed": 14014,
+        "mode": "full",
+        "passed_schedules": 1000,
+        "planned_schedules": 1000,
+        "raw_sha256": "65a68a3a79b4c9886cac5e35fbbed94947e7612599bf270ff14c3c0045382515",
+        "successful_jobs": 500
+      },
+      "source_sha256_after": "f97e9516b2c05eb9e946ba1399436f41010eb257e10c633936e8f4c2475197d1",
+      "source_sha256_before": "f97e9516b2c05eb9e946ba1399436f41010eb257e10c633936e8f4c2475197d1",
+      "start_utc": "2026-11-21T21:05:08.469907+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-artifact-acceptance",
+      "duration_seconds": 0.07620178899998109,
+      "end_utc": "2026-11-22T15:54:36.462257+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "passed_tests": 12,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "b1e020b74344bd1def8e320be3b9c11d937c50d539d8f88405edfbf35e7862e9"
+      },
+      "run_id": "20261122T155436-d5cc604de0a6",
+      "source_sha256_after": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "source_sha256_before": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "start_utc": "2026-11-22T15:54:36.385879+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-publication-enospc",
+      "duration_seconds": 0.024994613999979265,
+      "end_utc": "2026-11-22T15:54:36.922656+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "pressure": {
+        "capacity_bytes": 100663296,
+        "errno": 28,
+        "free_bytes": 16384,
+        "prior_result_readable": true,
+        "publish_refused": true
+      },
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "94adb14df3ede29b8c707c8e151b044729cba5a4a3134b6b6f8d52ca62c4583b"
+      },
+      "run_id": "20261122T155436-59686f845ee5",
+      "source_sha256_after": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "source_sha256_before": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "start_utc": "2026-11-22T15:54:36.897488+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-publication-fsync-control",
+      "duration_seconds": 2.4908905979999645,
+      "end_utc": "2026-11-22T15:54:39.726665+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "8ed2d4486a06b46670df979eea0f82d5487f7d95d8a5b096a2771cb0a9d0b256"
+      },
+      "run_id": "20261122T155437-8b9a56afbbf3",
+      "source_sha256_after": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "source_sha256_before": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "start_utc": "2026-11-22T15:54:37.235542+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "fsync-control-baseline",
+      "duration_seconds": 0.010306133000028694,
+      "end_utc": "2026-11-22T15:54:37.647666+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "545474f03c56aa48d2f6fc60b18c023e8972ab3520b00f77160810727135c2ae"
+      },
+      "run_id": "20261122T155437-2009a8fc3775",
+      "source_sha256_after": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "source_sha256_before": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "start_utc": "2026-11-22T15:54:37.637355+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "fsync-control-expected-rejection",
+      "duration_seconds": 0.008270345999960682,
+      "end_utc": "2026-11-22T15:54:38.799245+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "068b2ee4a72530bdea9a7111842a056c9c8ed98e961adf2c7e8436aa4c8f627d",
+        "stdout": "0becf215c60a72b9b9dd31862038719741797f6a682d516a8ddf037016e974a9"
+      },
+      "run_id": "20261122T155438-c6231bb26dc4",
+      "source_sha256_after": "8d74f2355fc586fd9aa517dcac57cb338e5c93ffdd5f94ee9a061bb6e97245b7",
+      "source_sha256_before": "8d74f2355fc586fd9aa517dcac57cb338e5c93ffdd5f94ee9a061bb6e97245b7",
+      "start_utc": "2026-11-22T15:54:38.790967+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "fsync-control-restored",
+      "duration_seconds": 0.008240461000013966,
+      "end_utc": "2026-11-22T15:54:39.717956+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "545474f03c56aa48d2f6fc60b18c023e8972ab3520b00f77160810727135c2ae"
+      },
+      "run_id": "20261122T155439-f4f212a607fe",
+      "source_sha256_after": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "source_sha256_before": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
+      "start_utc": "2026-11-22T15:54:39.709712+00:00",
       "status": "PASS"
     }
   ],

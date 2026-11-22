@@ -19,6 +19,8 @@ FORBIDDEN = {
 REQUIRED = {
     'Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml', 'LICENSE', 'README.md', 'Makefile',
     'spec/acceptance.json', 'spec/acceptance.sha256', 'fixtures/native/task.c',
+    'fixtures/native/policy_probe.c', 'fixtures/native/resources.c', 'fixtures/native/late_output.c',
+    'tests/acceptance_locked/reproduce.py', 'tests/acceptance_locked/quiescence.rs',
     'tests/e2e/native.py', 'tests/e2e/demo.py', 'tools/doctor.c', 'scripts/capture.py',
 }
 SENSITIVE = [

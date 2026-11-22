@@ -16,6 +16,10 @@
 
 #![cfg(target_os = "linux")]
 
+#[cfg(all(test, feature = "native-verification"))]
+#[path = "../../../tests/fault/publisher.rs"]
+mod injected_faults;
+
 use hearthrun_domain::protocol;
 use hearthrun_domain::{validate_logical_path, JobId, MAX_HEADER_BYTES};
 use rustix::fd::{AsFd, BorrowedFd, OwnedFd};
@@ -41,6 +45,24 @@ const METADATA: &str = "result.json";
 const STDOUT: &str = "stdout.bin";
 const STDERR: &str = "stderr.bin";
 const TMPFS_MAGIC: u64 = 0x0102_1994;
+
+// Inject an error before the exact persistence operation in verification builds.
+// Release binaries have no fault-control field, command or environment switch.
+macro_rules! persist {
+    (io $publisher:expr, $point:expr, $syscall:expr, $message:expr $(,)?) => {{
+        operation(persist!($publisher, $point, $syscall), $message)
+    }};
+    ($publisher:expr, $point:expr, $syscall:expr $(,)?) => {{
+        #[cfg(all(test, feature = "native-verification"))]
+        let result = match $publisher.check_persistence($point) {
+            Ok(()) => ($syscall).map_err(io::Error::from),
+            Err(error) => Err(error),
+        };
+        #[cfg(not(all(test, feature = "native-verification")))]
+        let result = ($syscall).map_err(io::Error::from);
+        result
+    }};
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PreparationKind {
@@ -176,6 +198,8 @@ pub struct Publisher {
     results_identity: Identity,
     uid: u32,
     frozen: AtomicBool,
+    #[cfg(all(test, feature = "native-verification"))]
+    fail_at: Option<&'static str>,
 }
 
 impl Publisher {
@@ -199,7 +223,17 @@ impl Publisher {
             results_identity: Identity::of(&stat),
             uid,
             frozen: AtomicBool::new(false),
+            #[cfg(all(test, feature = "native-verification"))]
+            fail_at: None,
         })
+    }
+
+    #[cfg(all(test, feature = "native-verification"))]
+    fn check_persistence(&self, point: &'static str) -> io::Result<()> {
+        if self.fail_at == Some(point) {
+            return Err(io::Error::from_raw_os_error(libc::EIO));
+        }
+        Ok(())
     }
 
     pub fn is_frozen(&self) -> bool {
@@ -301,12 +335,16 @@ impl Publisher {
         stdout: &[u8],
         stderr: &[u8],
     ) -> Result<CommittedResult> {
-        operation(
+        persist!(
+            io self,
+            "stage directory",
             fs::mkdirat(&self.results, stage_name, Mode::RWXU),
             "cannot create exclusive result stage",
         )?;
         let stage = open_directory(&self.results, stage_name, self.uid)?;
-        operation(
+        persist!(
+            io self,
+            "artifact directory",
             fs::mkdirat(&stage, ARTIFACTS, Mode::RWXU),
             "cannot create result artifact directory",
         )?;
@@ -315,16 +353,24 @@ impl Publisher {
         let mut directories = BTreeSet::new();
         for source in tree.files {
             let logical_path = source.path.clone();
-            let (parent, leaf) = artifact_parent(
-                &artifacts_directory,
-                &logical_path,
-                self.uid,
-                &mut directories,
-            )?;
-            let fd = create_file(&parent, leaf, self.uid)?;
+            let (parent, leaf) =
+                artifact_parent(self, &artifacts_directory, &logical_path, &mut directories)?;
+            let fd = create_file(self, &parent, leaf, "artifact create")?;
             let mut destination = File::from(fd);
-            let hash = copy_checked(source, &mut destination, self.uid)?;
-            operation(destination.sync_all(), "cannot sync exported artifact")?;
+            let hash = transfer_checked(source, self.uid, |bytes| {
+                persist!(
+                    io self,
+                    "artifact copy",
+                    destination.write_all(bytes),
+                    "cannot copy exported artifact",
+                )
+            })?;
+            persist!(
+                io self,
+                "artifact fsync",
+                destination.sync_all(),
+                "cannot sync exported artifact",
+            )?;
             let stat = owned_file(&destination, self.uid, MAX_ARTIFACT_BYTES)?;
             match fs::statat(&parent, leaf, AtFlags::SYMLINK_NOFOLLOW) {
                 Ok(named) if Identity::of(&named) == Identity::of(&stat) => (),
@@ -344,33 +390,51 @@ impl Publisher {
         }
         // Filled below from exact checked descriptors; no guest path is ever
         // treated as a host absolute path or reopened without openat2 bounds.
-        let stdout_sha256 = write_stream(&stage, STDOUT, stdout, self.uid)?;
-        let stderr_sha256 = write_stream(&stage, STDERR, stderr, self.uid)?;
+        let stdout_sha256 = self.write_stream(&stage, STDOUT, stdout)?;
+        let stderr_sha256 = self.write_stream(&stage, STDERR, stderr)?;
         let object = meta
             .as_object_mut()
             .ok_or_else(|| corrupt("prepared metadata is no longer an object"))?;
         object.insert("artifacts".into(), artifact_values(&artifact_manifest));
         let encoded = encode_metadata(&meta)?;
-        let mut metadata_file = File::from(create_file(&stage, METADATA, self.uid)?);
-        operation(
+        let mut metadata_file = File::from(create_file(self, &stage, METADATA, "metadata create")?);
+        persist!(
+            io self,
+            "metadata write",
             metadata_file.write_all(&encoded),
             "cannot write result metadata",
         )?;
-        operation(metadata_file.sync_all(), "cannot sync result metadata")?;
+        persist!(
+            io self,
+            "metadata fsync",
+            metadata_file.sync_all(),
+            "cannot sync result metadata",
+        )?;
         for path in directories.iter().rev() {
             let directory = open_directory(&artifacts_directory, path, self.uid)?;
-            operation(
+            persist!(
+                io self,
+                "artifact parent fsync",
                 fs::fsync(&directory),
                 "cannot sync artifact parent directory",
             )?;
         }
-        operation(
+        persist!(
+            io self,
+            "artifact root fsync",
             fs::fsync(&artifacts_directory),
             "cannot sync artifact root directory",
         )?;
-        operation(fs::fsync(&stage), "cannot sync prepared result directory")?;
+        persist!(
+            io self,
+            "stage fsync",
+            fs::fsync(&stage),
+            "cannot sync prepared result directory",
+        )?;
         self.validate_root()?;
-        operation(
+        persist!(
+            io self,
+            "result rename",
             fs::renameat_with(
                 &self.results,
                 stage_name,
@@ -380,7 +444,9 @@ impl Publisher {
             ),
             "cannot atomically publish result without replacement",
         )?;
-        operation(
+        persist!(
+            io self,
+            "result parent fsync",
             fs::fsync(&self.results),
             "cannot sync committed result parent",
         )?;
@@ -401,6 +467,28 @@ impl Publisher {
             stderr_size: stderr.len() as u64,
             stderr_sha256,
         })
+    }
+
+    fn write_stream(&self, directory: &OwnedFd, name: &str, bytes: &[u8]) -> Result<String> {
+        let [create_site, _write_site, _sync_site] = if name == STDOUT {
+            ["stdout create", "stdout write", "stdout fsync"]
+        } else {
+            ["stderr create", "stderr write", "stderr fsync"]
+        };
+        let mut file = File::from(create_file(self, directory, name, create_site)?);
+        persist!(
+            io self,
+            _write_site,
+            file.write_all(bytes),
+            "cannot write retained stream",
+        )?;
+        persist!(
+            io self,
+            _sync_site,
+            file.sync_all(),
+            "cannot sync retained stream",
+        )?;
+        Ok(digest(bytes))
     }
 
     /// Verify metadata, stream hashes, the entire artifact inventory, and each
@@ -861,11 +949,12 @@ fn artifact_values(artifacts: &[Artifact]) -> Value {
 }
 
 fn artifact_parent<'a>(
+    publisher: &Publisher,
     root: &OwnedFd,
     logical_path: &'a str,
-    uid: u32,
     created: &mut BTreeSet<String>,
 ) -> Result<(OwnedFd, &'a str)> {
+    let uid = publisher.uid;
     let mut current = open_directory(root, ".", uid)?;
     let mut components = logical_path.split('/').peekable();
     let mut parent_path = String::new();
@@ -877,12 +966,16 @@ fn artifact_parent<'a>(
             parent_path.push('/');
         }
         parent_path.push_str(component);
-        match fs::mkdirat(&current, component, Mode::RWXU) {
+        match persist!(
+            publisher,
+            "artifact parent creation",
+            fs::mkdirat(&current, component, Mode::RWXU)
+        ) {
             Ok(()) => {
                 created.insert(parent_path.clone());
             }
-            Err(rustix::io::Errno::EXIST) => {}
-            Err(error) => return Err(io_error("cannot create artifact parent", error.into())),
+            Err(error) if error.raw_os_error() == Some(libc::EEXIST) => {}
+            Err(error) => return Err(io_error("cannot create artifact parent", error)),
         }
         if created.len() >= MAX_DIRECTORIES {
             return Err(corrupt("prepared artifact parent count changed"));
@@ -890,15 +983,6 @@ fn artifact_parent<'a>(
         current = open_directory(&current, component, uid)?;
     }
     Err(corrupt("prepared artifact path has no file component"))
-}
-
-fn copy_checked(source: CheckedFile, destination: &mut File, uid: u32) -> Result<String> {
-    transfer_checked(source, uid, |bytes| {
-        operation(
-            destination.write_all(bytes),
-            "cannot copy exported artifact",
-        )
-    })
 }
 
 fn hash_checked(source: CheckedFile, uid: u32) -> Result<String> {
@@ -944,13 +1028,6 @@ fn transfer_checked(
         ));
     }
     Ok(hearthrun_launcher::image::lower_hex(&hash.finalize()))
-}
-
-fn write_stream(directory: &OwnedFd, name: &str, bytes: &[u8], uid: u32) -> Result<String> {
-    let mut file = File::from(create_file(directory, name, uid)?);
-    operation(file.write_all(bytes), "cannot write retained stream")?;
-    operation(file.sync_all(), "cannot sync retained stream")?;
-    Ok(digest(bytes))
 }
 
 fn hash_owned_stream(directory: &OwnedFd, name: &str, uid: u32) -> Result<(u64, String)> {
@@ -1162,8 +1239,15 @@ fn validate_directory(fd: &OwnedFd, uid: u32) -> Result<()> {
     Ok(())
 }
 
-fn create_file(directory: &OwnedFd, name: &str, uid: u32) -> Result<OwnedFd> {
-    let fd = operation(
+fn create_file(
+    publisher: &Publisher,
+    directory: &OwnedFd,
+    name: &str,
+    _site: &'static str,
+) -> Result<OwnedFd> {
+    let fd = persist!(
+        io publisher,
+        _site,
         fs::openat2(
             directory,
             name,
@@ -1173,7 +1257,7 @@ fn create_file(directory: &OwnedFd, name: &str, uid: u32) -> Result<OwnedFd> {
         ),
         "cannot exclusively create result file",
     )?;
-    owned_file(&fd, uid, 0)?;
+    owned_file(&fd, publisher.uid, 0)?;
     Ok(fd)
 }
 

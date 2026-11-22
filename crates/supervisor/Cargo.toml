@@ -6,6 +6,24 @@ license.workspace = true
 rust-version.workspace = true
 publish = false
 
+[features]
+native-verification = []
+
+[[test]]
+name = "publication_acceptance"
+path = "../../tests/acceptance_locked/publication.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "artifact_acceptance"
+path = "../../tests/acceptance_locked/artifacts.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "quiescence_acceptance"
+path = "../../tests/acceptance_locked/quiescence.rs"
+required-features = ["native-verification"]
+
 [dependencies]
 hearthrun-domain.workspace = true
 hearthrun-launcher.workspace = true

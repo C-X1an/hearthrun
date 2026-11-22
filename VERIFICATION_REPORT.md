@@ -11,15 +11,18 @@ The scoped native observations were captured on Linux x86-64 WSL2, kernel `6.18.
 | Unix socket and durable recovery | Real CLI transformation, checked export, typed refusals, repeated request identity and crash restart without replay passed. |
 | Admission and deadlines | One finite run observed 4 active, 16 waiting and `QUEUE_FULL` for the next job. Durable start observations confirmed FIFO. A 3,000 ms configured whole-group deadline reached confirmed cleanup 3,140 ms from submission in the recorded Make integration run. |
 | CPU, memory, PIDs and streams | An observed 10.254-second CPU window used about 1.00036 cores under a one-core quota. Kernel memory and PID events advanced. The flood case retained 1 MiB per stream, with both truncations explicit. |
+| Artifact and publication layer | 12 direct artifact tests passed, including descriptor retention after a rename and refusal of an inert device on a dedicated nodev mount. Actual `ENOSPC` left a prior result readable and refused a new commit. Twenty persistence errors surfaced without a receipt. The ignored-fsync control failed at the intended assertion and passed after restoration. |
+| Native cleanup schedules | All 1,000 seeded schedules passed with 500 success and 500 cancellation outcomes. The harness bracketed live cgroup and launcher observations around result queries, checked final artifact bytes and removed all ten owned test batches. The independent premature-publication control remains open. |
 | Demo | Actual approved transformation, refusal, synthetic host-canary denial and detached cancellation passed. The static report's 11 links were verified. Browser and keyboard-only visual review remain pending. |
 | Dependency advisories | `cargo-audit` 0.23.0 checked 38 lock entries against the recorded RustSec snapshot, yielding zero advisories and warnings in that run. |
-| Benchmark smoke | 90 scheduled rows completed with zero failed samples. This run exercised only the scoped benchmark driver. |
+| Benchmarks | The smoke and 36,750-row campaign passed analysis with zero failed samples. The measured campaign includes B-01 and the C count/sum portion of B-02. Full AC-021 remains open. |
 
 ## Failures retained
 
 - The first native memory fixture triggered a kernel OOM kill but the supervisor recorded a policy error. After repairing outcome classification, the same suite passed with the observed memory counter and `RESOURCE_LIMIT` outcome.
-- The first full benchmark campaign exhausted bounded filesystem resources before writing its summary. No full percentile claim follows from that run.
+- The first full benchmark campaign exhausted bounded filesystem resources before writing its summary. The revised bounded collector completed its scheduled rows and passed further analysis. [Measured campaign](BENCHMARKS.md)
+- The first cleanup smoke stopped when a journal read held the old inode across an atomic replacement. Restricting the reader's retry to that owned, retired journal inode preserved strict artifact reads. The revised smoke and full campaign passed.
 
 ## Remaining release evidence
 
-The locked acceptance inventory, complete native pass/fail/pass mutation campaign, full storage fault and quiescence schedules, benchmark matrix and final independent acceptance review remain open. The release status records clean-candidate and GitHub results separately. [Release readiness](RELEASE_READINESS.md)
+The locked acceptance inventory, remaining native mutations, daemon recovery after uncertain publication, delayed cleanup schedules, benchmark matrix and final independent acceptance review remain open. The release status records clean-candidate and GitHub results separately. [Release readiness](RELEASE_READINESS.md)

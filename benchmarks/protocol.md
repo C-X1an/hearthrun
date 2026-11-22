@@ -1,10 +1,9 @@
 # Bounded local benchmark protocol
 
-Status: this storage-compaction revision has **NOT RUN** against native
-workloads. No latency, throughput or acceptance result is established here.
-Locked AC-021 remains unchanged. This driver covers scoped B-01 and B-02 work;
-its current instrumentation/fixture shortfalls prevent claiming the entire
-`EVALUATION.md` matrix is complete.
+The revised driver completed the native smoke and the full schedule described
+below. The measured campaign and its limits are recorded in [Benchmarks](../BENCHMARKS.md).
+Locked AC-021 remains unchanged. The instrumented B-01 and C transformation work
+does not cover the entire `EVALUATION.md` matrix.
 
 Use `campaign.py` only on the prepared, local compatible Linux host used by
 `tests/e2e/native.py`. It performs no provisioning, compilation, downloads,

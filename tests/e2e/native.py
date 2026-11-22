@@ -55,6 +55,10 @@ class Blocked(Failure):
     pass
 
 
+class RetiredOwnedFile(Failure):
+    """An owned descriptor still refers to a record generation just replaced."""
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise Failure(message)
@@ -97,10 +101,13 @@ def read_file(path: Path, maximum: int, *, owner: bool = False, mode: int | None
     try:
         before = os.fstat(fd)
         require(stat.S_ISREG(before.st_mode) and before.st_size <= maximum, "expected a bounded regular file")
-        if owner:
-            require(before.st_uid == os.geteuid() and before.st_nlink == 1, "untrusted protected file ownership/link count")
         if mode is not None:
             require(stat.S_IMODE(before.st_mode) == mode, "unexpected protected file permissions")
+        if owner:
+            require(before.st_uid == os.geteuid(), "untrusted protected file ownership")
+            if before.st_nlink == 0:
+                raise RetiredOwnedFile("owned file generation was already replaced")
+            require(before.st_nlink == 1, "untrusted protected file link count")
         data = read_fd(fd, maximum)
         after = os.fstat(fd)
         require((before.st_dev, before.st_ino) == (after.st_dev, after.st_ino), "file identity changed during verification")
@@ -343,7 +350,17 @@ class Harness:
 
     def record(self, job: str) -> dict[str, Any]:
         require(ID.fullmatch(job) is not None, "invalid observed job ID")
-        value = strict_json(read_file(self.state / "records" / f"{job}.json", MAX_HEADER, owner=True, mode=0o600))
+        path = self.state / "records" / f"{job}.json"
+        for _ in range(12):
+            try:
+                value = strict_json(read_file(path, MAX_HEADER, owner=True, mode=0o600))
+                break
+            except RetiredOwnedFile:
+                # The journal intentionally publishes via atomic rename. Do
+                # not trust an unlinked generation, and retry only this race.
+                time.sleep(0.002)
+        else:
+            raise Failure("could not observe a linked durable journal generation")
         require(value.get("v") == 1 and value.get("instance_id") == self.read_instance() and value.get("job_id") == job,
                 "journal record is not owned by this test instance/job")
         require(isinstance(value.get("request_id"), str) and ID.fullmatch(value["request_id"]) is not None,

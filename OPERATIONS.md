@@ -28,6 +28,12 @@ make demo-run
 
 An operator can create a disposable delegated systemd user service with `Delegate=cpu memory pids` or equivalent host-approved delegation. Place that service's own process in a separate host leaf before enabling the controllers on its parent. Enable the same controllers on a dedicated, empty `jobs` child and pass its absolute path to the doctor. The supervisor creates only its own verified job leaves there. Host setup changes require authorization for the specific delegation. Keep platform protections enabled and leave surrounding cgroups under their existing ownership.
 
+## Clean-checkout reproduction
+
+On the same compatible host and with an empty delegation, use `make clean-verify` from the root of a clean, audited public Git checkout. Set `HEARTHRUN_RUST_TOOLCHAIN_BIN` to the installed Rust 1.99.1 compiler directory containing `rustc` and `cargo`. The runner creates a shallow local clone inside `HEARTHRUN_DEV_ROOT` and fetches the lockfile's dependencies into a new Cargo home. The build and source checks then use that cache offline. Use a short work root to allow room for the native Unix socket path. To override the host and static compilers, pass `CC` and `NATIVE_CC` as Make assignments.
+
+This target runs the implemented source checks, native integration, finite policy and resource probes, demo, and teardown. It retains a command record and raw log hashes in the fresh work directory. Full locked acceptance and the mutation campaign have separate requirements.
+
 ## CI/CD
 On pull requests and pushes to main, the portable workflow validates the acceptance hash, parses source and configuration, runs Python tooling tests and compiles the C doctor. The Rust workflow runs formatting, strict Clippy, type checking and workspace tests with the pinned toolchain. Tracked-content, history and secret-pattern checks run separately with `make public-audit`. Native acceptance uses a separately triggered reviewed-commit workflow, with an operational doctor first. The workflows use read-only contents permission, SHA-pinned actions and bounded job timeouts.
 
