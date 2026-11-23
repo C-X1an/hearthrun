@@ -24,3 +24,18 @@ The Rust aggregation core with a fixed C framing and I/O entry point completed 3
 | 8 MiB | 4 | 500 | 155.86 ms | 245.57 ms | 269.64 ms |
 
 The first full C run hit the bounded filesystem limit. The rerun compacted each successful shard after teardown and kept every raw attempt in its analysis population. Both standalone Rust binaries exited with signal 11 during native warmup. The completed Rust measurements use the linked architecture described above. Comparable execution-only clocks, per-job CPU and memory measurements, and the remaining workload matrix are open. Full AC-021 remains open. [Benchmark protocol](benchmarks/protocol.md)
+
+## Native cancellation
+
+The completed B-03 campaign verified 3,000 cancellations across five seeds, with 500 observations per workload and concurrency setting. The harness waited for real fixture readiness, then checked launcher reaping, cgroup emptiness, and the terminal record. Output rows also verified bytes written after readiness. [Captured B-03 evidence](verification/benchmark-cancellation-observed.json)
+
+| Workload | Concurrency | Cancellations | Client-to-cleanup p95 | Observed cleanup-pending jobs |
+|---|---:|---:|---:|---:|
+| CPU spin | 1 | 500 | 12.04 ms | 258 |
+| CPU spin | 4 | 500 | 47.53 ms | 59 |
+| Detached descendants | 1 | 500 | 12.19 ms | 258 |
+| Detached descendants | 4 | 500 | 46.54 ms | 69 |
+| Output | 1 | 500 | 11.80 ms | 111 |
+| Output | 4 | 500 | 46.48 ms | 58 |
+
+These are client-observed intervals on the measured host. Exact server receipt and kill-issuance times remain open. The earlier full attempt stopped on a denied descriptor observation. Its failed and unrun rows remain in the private archive. The verified rerun counted denied observations and required a positive readiness witness within the same deadline.

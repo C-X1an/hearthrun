@@ -1,0 +1,118 @@
+{
+  "analysis_run_id": "20261123T155035-424eb08c5e4a",
+  "analysis_source_sha256": "3f25b46cf4a351f257f6956849e43fafe0c8041b07bc1ea7d20fad41124457f1",
+  "attempts_sha256": "27df190b5daeb0b73d207d2e11c74d052d569edfc60d01bc9236354a0143951d",
+  "campaign_run_id": "20261123T154521-9dc76806efd2",
+  "counts": {
+    "PASS": 3000
+  },
+  "elapsed_seconds": 287.32176551099974,
+  "environment": {
+    "kernel": "6.18.58.1-microsoft-standard-WSL2",
+    "machine": "x86_64",
+    "python": "3.14.4",
+    "system": "Linux"
+  },
+  "exact_server_receipt_and_kill_issuance": null,
+  "fixture_build": {
+    "capture_manifest_sha256": "12c42c63ec48cf17e82ea11ccc9a72a774e39879534b376b7152ccaff1e0d87e",
+    "fixture_sha256": "0ff66aa40df8e7344a412ff362f84618ee3afb81210acd20499f7a8050336d10",
+    "source_sha256": "766384b2efcc54f18890045676080d8d1688e5b8575bab26c73c2ac2f26a6c36"
+  },
+  "groups": [
+    {
+      "cleanup_pending_jobs": 258,
+      "client_cancel_to_observed_cleanup": {
+        "max_ns": 25293879,
+        "min_ns": 7441012,
+        "p50_ns": 10260391,
+        "p95_ns": 12035415,
+        "p99_ns": 12872319
+      },
+      "concurrency": 1,
+      "counts": {
+        "PASS": 500
+      },
+      "workload": "spin"
+    },
+    {
+      "cleanup_pending_jobs": 59,
+      "client_cancel_to_observed_cleanup": {
+        "max_ns": 68795345,
+        "min_ns": 9299179,
+        "p50_ns": 23827969,
+        "p95_ns": 47532988,
+        "p99_ns": 61542973
+      },
+      "concurrency": 4,
+      "counts": {
+        "PASS": 500
+      },
+      "workload": "spin"
+    },
+    {
+      "cleanup_pending_jobs": 258,
+      "client_cancel_to_observed_cleanup": {
+        "max_ns": 13774989,
+        "min_ns": 7643403,
+        "p50_ns": 10331499,
+        "p95_ns": 12186032,
+        "p99_ns": 12826611
+      },
+      "concurrency": 1,
+      "counts": {
+        "PASS": 500
+      },
+      "workload": "detached"
+    },
+    {
+      "cleanup_pending_jobs": 69,
+      "client_cancel_to_observed_cleanup": {
+        "max_ns": 70598595,
+        "min_ns": 8805910,
+        "p50_ns": 23920607,
+        "p95_ns": 46539025,
+        "p99_ns": 66086723
+      },
+      "concurrency": 4,
+      "counts": {
+        "PASS": 500
+      },
+      "workload": "detached"
+    },
+    {
+      "cleanup_pending_jobs": 111,
+      "client_cancel_to_observed_cleanup": {
+        "max_ns": 13860692,
+        "min_ns": 7040982,
+        "p50_ns": 9933100,
+        "p95_ns": 11803412,
+        "p99_ns": 12251241
+      },
+      "concurrency": 1,
+      "counts": {
+        "PASS": 500
+      },
+      "workload": "output"
+    },
+    {
+      "cleanup_pending_jobs": 58,
+      "client_cancel_to_observed_cleanup": {
+        "max_ns": 86330343,
+        "min_ns": 9226777,
+        "p50_ns": 22158576,
+        "p95_ns": 46479831,
+        "p99_ns": 60891976
+      },
+      "concurrency": 4,
+      "counts": {
+        "PASS": 500
+      },
+      "workload": "output"
+    }
+  ],
+  "samples_sha256": "706233f6c4dfc8b026333962fdb3151c28a94767cd1c047b90808fa9f5f14f58",
+  "schema_version": 1,
+  "source_sha256": "54dbb5ec4f943d2661046f49c8d0318e7e2ab91fa1f6b87c96824e6ad9675f23",
+  "timing_scope": "client cancel request to observed reap and cgroup emptiness"
+}

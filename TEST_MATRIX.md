@@ -20,11 +20,11 @@ Research date: 2026-11-08. This table specifies required native evidence. None o
 | SEC-004 | AC-014 | `tests/acceptance_locked/quiescence.rs` | system/property | start export before populated=0 | PARTIAL. All 1,000 native schedules passed. Independent negative control remains open. |
 | REL-005 | AC-015 | `tests/acceptance_locked/streams.rs` | system | unbounded buffer growth | NOT RUN |
 | REL-004 | AC-016 | `tests/acceptance_locked/publication.rs` | fault injection | ignore fsync error | PARTIAL. Direct faults, daemon ENOSPC recovery, result and terminal-journal rename uncertainty, and both ignored-fsync controls passed. |
-| FR-005 | AC-017 | `tests/acceptance_locked/idempotency.rs` | integration | ignore payload digest | NOT RUN |
+| FR-005 | AC-017 | `tests/acceptance_locked/idempotency.rs` | integration | ignore payload digest | PASS. Lost replies, changed requests and both restart paths verified. The isolated payload-comparison control failed at the changed-argument conflict assertion, then passed after restoration. |
 | FR-003 | AC-018 | `tests/acceptance_locked/profiles.rs` | security | hash then reopen mutable executable | NOT RUN |
 | NFR-002 | AC-019 | `tests/acceptance_locked/reproduce.py` | clean environment | remove required fixture from export | PARTIAL. Fresh-clone scoped profile and missing-fixture control passed. Full native verification remains open. |
 | NFR-003 | AC-020 | `verification/mutation/protocol.md` | mutation | test itself intentionally weakened | PARTIAL. Publisher ignored-fsync control passed. |
-| PERF-001 | AC-021 | `benchmarks/protocol.md` | performance | drop failed/slow samples | PARTIAL. B-01, C count/sum and Rust B-02 measured. The omitted-slow-row control passed. Execution telemetry and remaining workloads are open. |
+| PERF-001 | AC-021 | `benchmarks/protocol.md` | performance | drop failed/slow samples | PARTIAL. B-01, C count/sum, Rust B-02 and client-observed cancellation measured. The omitted-slow-row control passed. Server clocks and remaining workloads are open. |
 | SEC-006 | AC-022 | `scripts/public_audit.py` | release | add synthetic forbidden private path | NOT RUN |
 | UX-001 | AC-023 | `tests/acceptance_locked/demo.rs` | end-to-end | render unescaped guest HTML | NOT RUN |
 | NFR-003 | AC-024 | `verification/independent-review.md` | review | omit initial findings stage | NOT RUN |

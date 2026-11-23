@@ -104,6 +104,17 @@ For the Rust B-02 workload, install the matching pinned `x86_64-unknown-linux-mu
 
 Select `--workload B-02 --aggregate-fixture ABS_APPROVED_STATIC_AGGREGATE` to measure the Rust workload alone. Keep `--fixture` set to the approved C task for the required cancellation control. In the Make targets, set `HEARTHRUN_BENCH_WORKLOAD=B-02` and `HEARTHRUN_BENCH_AGGREGATE` to the approved executable path. The independent Python oracle compares all four fields. Rust B-02 uses five seeds, three sizes, concurrency 1 and 4, and 30 warm-ups plus 100 measured jobs per combination. The earlier C campaign has its own documented scope.
 
+## Cancellation workload
+
+Capture `make cancellation-fixture` with the same approved musl C compiler. The benchmark build record includes a `cancellation` object with the actual fixture source digest (`source_sha256`), executable digest (`fixture_sha256`), compile command (`build_command`), and capture manifest digest (`capture_manifest_sha256`). The campaign validates those values alongside the release binaries.
+
+```sh
+python3 -B benchmarks/cancellation.py --mode smoke --bin-dir ABS_RELEASE_BIN --doctor ABS_DOCTOR --fixture ABS_STATIC_CANCELLATION --cgroup-root ABS_JOBS --build-record ABS_BUILD_RECORD --host-record ABS_HOST_RECORD --work ABS_NEW_WORK
+python3 -B benchmarks/analyze_cancellation.py --work ABS_NEW_WORK
+```
+
+Full mode runs three fixed workloads at concurrency 1 and 4 over five seeds with 100 cancellations per combination. The output workload continues writing during the cancellation window. The oracle checks bytes written after readiness and the exact retained prefixes. The resource suite separately exercises automatic stream-limit termination. The driver measures the client cancel request to observed reap and cgroup emptiness. The server-receipt and exact kill-issuance clocks remain null in this measurement.
+
 Supply a separate small host record JSON, containing actual observations:
 
 ```json
@@ -282,14 +293,30 @@ summarizer for finite-duration, single-environment/policy rows. It cannot alone
 validate this campaign's schedule or preserve null untimed attempts. Use the
 campaign analyzer for the complete evidence, including failure denominators.
 
-## Remaining gates and truthful scope
+## Native cancellation campaign
 
-The current fixture is C, not the planned Rust aggregation implementation, and
-returns count/sum, not min/max. The reference records all four; only count/sum
-are certified by observed native output. Execution-end, CPU and peak-memory
-telemetry are unavailable. Fresh shards reset supervisor caches and introduce
-cold-state effects. Record those differences with any numbers reported.
-B-03/B-04/B-05/B-06/B-07, the failed/slow-sample-dropping negative control,
-independent findings-before-repair review, stable-host confirmation and
-public-only reproduction remain separate gates. No native results or AC-021
-PASS have been claimed by this implementation task.
+`cancellation.py --help` lists the required release binaries, static cancellation
+fixture, real doctor and machine-captured build and host records. Build the fixed
+guest with `make cancellation-fixture` using the same native compiler settings as
+the finite integration fixtures. Use a new work directory on a bounded local
+volume and an empty dedicated jobs delegation. `analyze_cancellation.py --work`
+checks the resulting archive and recalculates the group and batch statistics.
+
+The full schedule runs five seeds with 100 attempts for each combination of
+spin, detached descendants and output at concurrency one and four. It brackets
+cleanup with owned process and cgroup observations and verifies terminal bundles.
+The clock starts before the client issues cancel and ends when the client has
+observed launcher reaping and cgroup emptiness. Captured samples distinguish
+directly observed emptiness from verified cgroup removal. Exact server receipt
+and kill issuance remain unmeasured. [Native cancellation measurements](../BENCHMARKS.md#native-cancellation)
+
+## Remaining measurements
+
+The original C fixture certifies count and sum. The separate Rust B-02 campaign
+certifies count, sum, min and max with its fixed linked fixture. Comparable
+execution-end, CPU and peak-memory clocks remain open. Fresh shards reset
+supervisor caches and introduce cold-state effects.
+
+The archived Rust B-02 analysis refused the omitted-slow-row control between
+passing runs. Exact B-03 server clocks, B-04 through B-06, stable-host confirmation
+and full AC-021 remain open. B-07 is optional. [Measured campaigns](../BENCHMARKS.md)

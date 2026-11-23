@@ -9,6 +9,7 @@ The scoped native observations were captured on Linux x86-64 WSL2, kernel `6.18.
 | Operational host and launcher | 15 doctor cases passed. In seven additional cases the live supervisor refused an approved submit with a named capability absent, leaving the journal, result directory and cgroup inventory empty. The launcher integration observed the fixed environment, immutable staged input, withheld execution and detached-process cleanup. The wall deadline worker emptied a job while the lifecycle caller was paused. |
 | Finite policy smoke | The approved fixture copied its declared input, checked the synthetic host canary, enumerated descriptors through its observed limit, and confirmed socket and selected syscall denials. The x32 identity query terminated with `SIGSYS`. Full locked policy coverage remains open. |
 | Unix socket and durable recovery | Real CLI transformation, checked export, typed refusals, repeated request identity and crash restart without replay passed. |
+| Lost replies | Two complete requests lost their replies. Across graceful and crash restarts, four exact retries kept the same job IDs, five changed requests conflicted and the prior verified result persisted. Removing the isolated test build's comparison triggered the intended failure. The restored source passed. |
 | Admission and deadlines | One finite run observed 4 active, 16 waiting and `QUEUE_FULL` for the next job. Durable start observations confirmed FIFO. A 3,000 ms configured whole-group deadline reached confirmed cleanup 3,140 ms from submission in the recorded Make integration run. |
 | CPU, memory, PIDs and streams | An observed 10.254-second CPU window used about 1.00036 cores under a one-core quota. Kernel memory and PID events advanced. The flood case retained 1 MiB per stream, with both truncations explicit. |
 | Artifact and publication layer | 12 direct artifact tests passed, including descriptor retention after a rename and refusal of an inert device on a dedicated nodev mount. Twenty persistence errors surfaced without a receipt. The ignored-fsync control failed at the intended assertion and passed after restoration. |
@@ -17,7 +18,7 @@ The scoped native observations were captured on Linux x86-64 WSL2, kernel `6.18.
 | Native cleanup schedules | All 1,000 seeded schedules passed with 500 success and 500 cancellation outcomes. The harness bracketed live cgroup and launcher observations around result queries, checked final artifact bytes and removed all ten owned test batches. The independent premature-publication control remains open. |
 | Demo | Actual approved transformation, refusal, synthetic host-canary denial and detached cancellation passed. The static report's 11 links were verified. Browser and keyboard-only visual review remain pending. |
 | Dependency advisories | `cargo-audit` 0.23.0 checked 38 lock entries against the recorded RustSec snapshot, yielding zero advisories and warnings in that run. |
-| Benchmarks | B-01 and C transformation ran 36,750 rows with zero failures. A separate full Rust B-02 run passed 3,900 rows with all four summary fields verified. Full AC-021 remains open. |
+| Benchmarks | B-01 and C transformation ran 36,750 rows with zero failures. A separate Rust B-02 run passed 3,900 rows with all four summary fields verified. The repaired B-03 run passed 3,000 cancellations with independently verified result bytes, reaping and cgroup observations. Full AC-021 remains open. |
 
 ## Failures retained
 
@@ -25,6 +26,7 @@ The scoped native observations were captured on Linux x86-64 WSL2, kernel `6.18.
 - The first full benchmark campaign exhausted bounded filesystem resources before writing its summary. The revised bounded collector completed its scheduled rows and passed further analysis. [Measured campaign](BENCHMARKS.md)
 - The first cleanup smoke stopped when a journal read held the old inode across an atomic replacement. Restricting the reader's retry to that owned, retired journal inode preserved strict artifact reads. The revised smoke and full campaign passed.
 - Replaying the completed Rust benchmark archive over the Windows mount timed out. The analyzer passed on a checksum-verified copy of the same archive on the bounded Linux volume.
+- The first cancellation smoke triggered the output cap before caller cancellation. The first full schedule later stopped on a denied descriptor observation during exec. The repaired smoke and full rerun passed from separate new work directories. [Cancellation measurements](BENCHMARKS.md#native-cancellation)
 
 ## Remaining release evidence
 

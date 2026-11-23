@@ -692,6 +692,9 @@ class Harness:
     def restart_case(self, stage: str) -> dict[str, Any]:
         request = secrets.token_hex(16)
         job = self.submit(request, stage, "hold")
+        return self.restart_interrupted(job, request, stage)
+
+    def restart_interrupted(self, job: str, request: str, stage: str) -> dict[str, Any]:
         members, launchers = self.detached_ready(job)
         self.cli("result", job, ok=False, error="NOT_READY")
         require(not (self.state / "results" / job).exists(), "active interrupted job already had a result")

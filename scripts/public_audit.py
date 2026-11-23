@@ -23,7 +23,8 @@ REQUIRED = {
     'fixtures/native/aggregate_core.rs', 'fixtures/native/aggregate_entry.c',
     'tests/acceptance_locked/reproduce.py', 'tests/acceptance_locked/quiescence.rs',
     'tests/acceptance_locked/doctor.rs', 'tests/integration/unsupported.py',
-    'tests/integration/publication_pressure.py',
+    'tests/integration/publication_pressure.py', 'tests/integration/idempotency.py',
+    'tests/acceptance_locked/idempotency.rs', 'tests/acceptance_locked/native_check.rs',
     'tests/e2e/native.py', 'tests/e2e/demo.py', 'tools/doctor.c', 'scripts/capture.py',
 }
 SENSITIVE = [

@@ -8,9 +8,10 @@ POLICY_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/
 RESOURCE_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/hearthrun-resources)
 AGGREGATE_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/hearthrun-aggregate)
 AGGREGATE_ARCHIVE = $(dir $(AGGREGATE_FIXTURE))libhearthrun_aggregate.a
+CANCELLATION_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/hearthrun-cancellation)
 NATIVE_DOCTOR = $(abspath .work/hearthrun-probe)
 BENCH_BIN_DIR = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/release)
-.PHONY: native-prerequisites integration-run demo-run policy-fixture resource-fixture aggregate-fixture security-smoke resource-run
+.PHONY: native-prerequisites integration-run demo-run policy-fixture resource-fixture aggregate-fixture cancellation-fixture security-smoke resource-run
 .PHONY: help bootstrap build fmt lint typecheck unit tooling-test doctor integration acceptance security property fuzz mutation clean-verify dependency-audit sbom license-audit public-audit benchmark-smoke bench demo demo-offline verify teardown
 help:
 	@printf '%s\n' 'Portable: make tooling-test; make demo-offline' 'Rust: make build fmt lint typecheck unit' 'Native: make doctor; make integration with HEARTHRUN_JOBS and HEARTHRUN_DEV_ROOT set. See OPERATIONS.md.'
@@ -49,6 +50,9 @@ aggregate-fixture:
 	mkdir -p '$(dir $(AGGREGATE_FIXTURE))'
 	$(PYTHON) scripts/require_tool.py rustc --edition=2021 -Dwarnings --target=x86_64-unknown-linux-musl --crate-type=staticlib -C opt-level=3 -C panic=abort fixtures/native/aggregate_core.rs -o '$(AGGREGATE_ARCHIVE)'
 	$(NATIVE_CC) -std=c11 -static -O2 -Wall -Wextra -Werror fixtures/native/aggregate_entry.c '$(AGGREGATE_ARCHIVE)' -o '$(AGGREGATE_FIXTURE)'
+cancellation-fixture:
+	mkdir -p '$(dir $(CANCELLATION_FIXTURE))'
+	$(NATIVE_CC) -std=c11 -static -O2 -Wall -Wextra -Werror fixtures/native/cancellation.c -o '$(CANCELLATION_FIXTURE)'
 integration: build .work/hearthrun-probe native-prerequisites
 	$(MAKE) integration-run
 integration-run:
