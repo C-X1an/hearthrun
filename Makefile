@@ -6,9 +6,11 @@ NATIVE_BIN_DIR = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/
 NATIVE_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/hearthrun-native-task)
 POLICY_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/hearthrun-policy-probe)
 RESOURCE_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/hearthrun-resources)
+AGGREGATE_FIXTURE = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/hearthrun-aggregate)
+AGGREGATE_ARCHIVE = $(dir $(AGGREGATE_FIXTURE))libhearthrun_aggregate.a
 NATIVE_DOCTOR = $(abspath .work/hearthrun-probe)
 BENCH_BIN_DIR = $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),target)/release)
-.PHONY: native-prerequisites integration-run demo-run policy-fixture resource-fixture security-smoke resource-run
+.PHONY: native-prerequisites integration-run demo-run policy-fixture resource-fixture aggregate-fixture security-smoke resource-run
 .PHONY: help bootstrap build fmt lint typecheck unit tooling-test doctor integration acceptance security property fuzz mutation clean-verify dependency-audit sbom license-audit public-audit benchmark-smoke bench demo demo-offline verify teardown
 help:
 	@printf '%s\n' 'Portable: make tooling-test; make demo-offline' 'Rust: make build fmt lint typecheck unit' 'Native: make doctor; make integration with HEARTHRUN_JOBS and HEARTHRUN_DEV_ROOT set. See OPERATIONS.md.'
@@ -43,6 +45,10 @@ policy-fixture:
 resource-fixture:
 	mkdir -p '$(dir $(RESOURCE_FIXTURE))'
 	$(NATIVE_CC) -std=c11 -static -O2 -Wall -Wextra -Werror fixtures/native/resources.c -o '$(RESOURCE_FIXTURE)'
+aggregate-fixture:
+	mkdir -p '$(dir $(AGGREGATE_FIXTURE))'
+	$(PYTHON) scripts/require_tool.py rustc --edition=2021 -Dwarnings --target=x86_64-unknown-linux-musl --crate-type=staticlib -C opt-level=3 -C panic=abort fixtures/native/aggregate_core.rs -o '$(AGGREGATE_ARCHIVE)'
+	$(NATIVE_CC) -std=c11 -static -O2 -Wall -Wextra -Werror fixtures/native/aggregate_entry.c '$(AGGREGATE_ARCHIVE)' -o '$(AGGREGATE_FIXTURE)'
 integration: build .work/hearthrun-probe native-prerequisites
 	$(MAKE) integration-run
 integration-run:
@@ -73,7 +79,7 @@ clean-verify:
 benchmark-smoke: BENCH_MODE=smoke
 bench: BENCH_MODE=full
 benchmark-smoke bench:
-	$(PYTHON) -B benchmarks/campaign.py --mode $(BENCH_MODE) --bin-dir '$(BENCH_BIN_DIR)' --doctor '$(NATIVE_DOCTOR)' --fixture '$(NATIVE_FIXTURE)' --cgroup-root "$${HEARTHRUN_JOBS:?set HEARTHRUN_JOBS}" --build-record "$${HEARTHRUN_BENCH_BUILD:?set HEARTHRUN_BENCH_BUILD}" --host-record "$${HEARTHRUN_BENCH_HOST:?set HEARTHRUN_BENCH_HOST}" --work "$${HEARTHRUN_BENCH_WORK:?set a new HEARTHRUN_BENCH_WORK}"
+	$(PYTHON) -B benchmarks/campaign.py --mode $(BENCH_MODE) --workload "$${HEARTHRUN_BENCH_WORKLOAD:-both}" $(if $(HEARTHRUN_BENCH_AGGREGATE),--aggregate-fixture '$(HEARTHRUN_BENCH_AGGREGATE)') --bin-dir '$(BENCH_BIN_DIR)' --doctor '$(NATIVE_DOCTOR)' --fixture '$(NATIVE_FIXTURE)' --cgroup-root "$${HEARTHRUN_JOBS:?set HEARTHRUN_JOBS}" --build-record "$${HEARTHRUN_BENCH_BUILD:?set HEARTHRUN_BENCH_BUILD}" --host-record "$${HEARTHRUN_BENCH_HOST:?set HEARTHRUN_BENCH_HOST}" --work "$${HEARTHRUN_BENCH_WORK:?set a new HEARTHRUN_BENCH_WORK}"
 	$(PYTHON) -B benchmarks/analyze.py --work "$${HEARTHRUN_BENCH_WORK:?set HEARTHRUN_BENCH_WORK}"
 acceptance security mutation:
 	$(PYTHON) scripts/not_implemented.py $@

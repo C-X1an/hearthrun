@@ -222,7 +222,15 @@ mod linux {
 fn main() {
     #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
     if let Err(error) = linux::run() {
-        eprintln!("hearthrun-supervisor: {error}");
+        let errno = error
+            .source()
+            .and_then(|cause| cause.downcast_ref::<std::io::Error>())
+            .and_then(std::io::Error::raw_os_error);
+        if let Some(errno) = errno {
+            eprintln!("hearthrun-supervisor: {error} (os error {errno})");
+        } else {
+            eprintln!("hearthrun-supervisor: {error}");
+        }
         std::process::exit(1);
     }
     #[cfg(not(all(target_os = "linux", target_arch = "x86_64")))]

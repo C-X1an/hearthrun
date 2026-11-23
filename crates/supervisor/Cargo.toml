@@ -24,6 +24,11 @@ name = "quiescence_acceptance"
 path = "../../tests/acceptance_locked/quiescence.rs"
 required-features = ["native-verification"]
 
+[[test]]
+name = "doctor_acceptance"
+path = "../../tests/acceptance_locked/doctor.rs"
+required-features = ["native-verification"]
+
 [dependencies]
 hearthrun-domain.workspace = true
 hearthrun-launcher.workspace = true

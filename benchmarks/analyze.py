@@ -20,7 +20,7 @@ DIGEST = re.compile(r"[0-9a-f]{64}\Z")
 KEYS = ("workload", "phase", "backend", "batch", "seed", "bytes", "concurrency", "sample_index")
 
 
-def compacted_shard(work: Path, rows: list[dict]) -> None:
+def compacted_shard(work: Path, rows: list[dict], transform_fields: tuple[str, ...]) -> None:
     """Check a lossless aggregate without extracting or trusting archive paths."""
     raw_index = read(work / "transients-index.json")
     index = parse(raw_index)
@@ -108,7 +108,7 @@ def compacted_shard(work: Path, rows: list[dict]) -> None:
             content = bytes.fromhex(artifacts[0]["content_hex"])
             artifact_digest = hashlib.sha256(content).hexdigest()
             require(len(content) <= 1024 and artifact_digest == artifacts[0]["sha256"] == row["artifact_sha256"]
-                    and parse(content) == row["verified_output"] == {key: reference[key] for key in ("count", "sum")}
+                    and parse(content) == row["verified_output"] == {key: reference[key] for key in transform_fields}
                     and metadata["artifacts"] == [{"path": "summary.json", "sha256": artifact_digest, "size_bytes": len(content)}],
                     "verified transform differs from observed output/oracle")
             retained_artifact = files.get(f"state/results/{row['job_id']}/artifacts/summary.json")
@@ -118,7 +118,8 @@ def compacted_shard(work: Path, rows: list[dict]) -> None:
             require(not artifacts and metadata["artifacts"] == [], "empty result contains artifacts")
 
 
-def storage_evidence(work: Path, schedule: dict, samples: list[dict], teardown_paths: list[Path]) -> None:
+def storage_evidence(work: Path, schedule: dict, samples: list[dict], teardown_paths: list[Path],
+                     transform_fields: tuple[str, ...]) -> None:
     policy = schedule["storage_policy"]
     require(policy["format"] == "hearthrun-shard-tar-gzip-v1" and policy["headroom_bytes"] == 256 * 1024 * 1024
             and policy["headroom_inodes"] == 16_384 and policy["retained_bytes_bound"] == 2_000_000_000,
@@ -143,7 +144,7 @@ def storage_evidence(work: Path, schedule: dict, samples: list[dict], teardown_p
                 and summary["rows_sha256"] == hashlib.sha256(encoded).hexdigest(), "shard summary differs from raw samples")
         if summary["status"] == "PASS":
             require(all(row["status"] == "PASS" for row in rows), "failed samples in compacted successful shard")
-            compacted_shard(path.parent, rows)
+            compacted_shard(path.parent, rows, transform_fields)
         else:
             require(summary["status"] == "FAIL" and not (path.parent / "compaction.json").exists(),
                     "failed shard diagnostics were compacted")
@@ -202,6 +203,19 @@ def analyze(work: Path) -> dict:
     encoded_environment = (json.dumps(fingerprinted, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode()
     require(hashlib.sha256(encoded_environment).hexdigest() == environment["environment_id"], "environment fingerprint differs")
     require(schedule["mode"] in {"full", "smoke"}, "invalid campaign mode")
+    workloads = tuple(schedule.get("workloads", ("B-01", "B-02")))
+    require(workloads in {("B-01", "B-02"), ("B-01",), ("B-02",)}, "invalid selected workloads")
+    aggregate = environment.get("rust_aggregate")
+    transform_fields = ("count", "sum", "min", "max") if aggregate is not None else ("count", "sum")
+    transform_concurrency = (1, 4) if aggregate is not None else (1, 2, 4)
+    require(tuple(schedule.get("transform_fields", ("count", "sum"))) == transform_fields
+            and tuple(schedule.get("transform_concurrency", (1, 2, 4))) == transform_concurrency,
+            "transform schedule differs from the validated fixture")
+    if aggregate is not None:
+        require("B-02" in workloads and aggregate == environment["build"].get("rust_aggregate")
+                and all(DIGEST.fullmatch(aggregate[field]) for field in ("fixture_sha256", "source_sha256", "entry_source_sha256",
+                    "capture_manifest_sha256", "core_capture_manifest_sha256", "archive_sha256")),
+                "Rust aggregate build identity differs")
     raw_samples, raw_attempts = read(work / "samples.jsonl"), read(work / "attempts.jsonl")
     samples, attempts = lines(raw_samples), lines(raw_attempts)
     identities = {row["run_id"] for row in samples}
@@ -234,7 +248,8 @@ def analyze(work: Path) -> dict:
                         and row["cleanup_confirmed"] is True and DIGEST.fullmatch(row["output_digest"]),
                         "successful native sample lacks policy/cleanup/result identity")
                 if row["workload"] == "B-02":
-                    require(set(row["verified_output"]) == {"count", "sum"}
+                    output = row["verified_output"]
+                    require(set(output) == set(transform_fields) and all(type(value) is int for value in output.values())
                             and DIGEST.fullmatch(row["artifact_sha256"]), "transform lacks checked output")
             else:
                 require(row["backend"] == "direct" and row["policy_digest"] == "DIRECT_NO_SANDBOX", "invalid direct baseline")
@@ -243,12 +258,12 @@ def analyze(work: Path) -> dict:
         groups[tuple(row[field] for field in ("workload", "phase", "backend", "bytes", "concurrency", "policy_digest"))].append(row)
     expected = set()
     warmups = 2 if schedule["mode"] == "smoke" else 30
-    for workload in ("B-01", "B-02"):
+    for workload in workloads:
         repetitions = 4 if schedule["mode"] == "smoke" else 1000 if workload == "B-01" else 100
         for batch in range(1 if schedule["mode"] == "smoke" else 5):
             seed = schedule["seed"] + batch if workload == "B-01" else batch
             for size in ((0,) if workload == "B-01" else (16384, 1048576, 8388608)):
-                for concurrency in (1, 2, 4):
+                for concurrency in ((1, 2, 4) if workload == "B-01" else transform_concurrency):
                     for backend in (("native", "direct") if workload == "B-01" else ("native",)):
                         for index in range(warmups + repetitions):
                             expected.add((workload, "warmup" if index < warmups else "measured", backend,
@@ -272,7 +287,7 @@ def analyze(work: Path) -> dict:
     require({row["shard"] for row in samples}.issubset({int(path.parent.name.split("-")[1]) for path in teardown_paths}),
             "timed shard lacks teardown evidence")
     if "storage_policy" in schedule:
-        storage_evidence(work, schedule, samples, teardown_paths)
+        storage_evidence(work, schedule, samples, teardown_paths, transform_fields)
     hold = parse(read(work / "shard-0001/hold-control.json"))
     require(hold["status"] == "PASS" and hold["launcher_reaped"] is True and hold["cgroup_removed"] is True,
             "separate held-job control is missing/failed")
@@ -280,6 +295,7 @@ def analyze(work: Path) -> dict:
     require(campaign_summary["completed_samples"] == len(samples) and campaign_summary["interrupted"] is None,
             "campaign incomplete/interrupted")
     return {"status": "FAIL" if failures else "PASS", "scope": schedule["mode"], "samples_total": len(samples),
+            "workloads": workloads, "transform_fields": transform_fields,
             "samples_failed": failures, "quantile_method": "nearest rank", "groups": results,
             "samples_sha256": hashlib.sha256(raw_samples).hexdigest(),
             "attempts_sha256": hashlib.sha256(raw_attempts).hexdigest(),

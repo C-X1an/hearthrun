@@ -1,6 +1,9 @@
 //! Error injection at persistence sites, compiled only in the verification test build.
 use super::*;
-use crate::store::Store;
+use crate::scheduler::{Config, Scheduler};
+use crate::server::Reply;
+use crate::store::{JobRecord, ObservedExit, Store};
+use hearthrun_domain::protocol::{Request, Submission};
 use serde_json::json;
 use std::fs::{DirBuilder, OpenOptions};
 use std::os::unix::fs::{DirBuilderExt, OpenOptionsExt};
@@ -124,4 +127,158 @@ fn every_result_persistence_error_surfaces_without_a_receipt() {
         // No receipt exists for a caller to journal against either outcome.
         println!("fault={site:?} receipt=false candidate_name_present={visible} prior_result_readable=true");
     }
+}
+
+#[test]
+fn restart_discards_the_renamed_bundle_without_a_durable_receipt() {
+    let env_path = |key: &str| {
+        let path = PathBuf::from(std::env::var_os(key).unwrap_or_else(|| panic!("set {key}")));
+        assert!(path.is_absolute() && path.canonicalize().unwrap() == path);
+        path
+    };
+    let root = env_path("HEARTHRUN_ARTIFACT_TEST_ROOT");
+    let uid = rustix::process::geteuid().as_raw();
+    let guarded = open_root(&root, uid).unwrap();
+    let space = fs::fstatvfs(&guarded).unwrap();
+    assert_ne!(uid, 0);
+    assert_eq!(fs::fstatfs(&guarded).unwrap().f_type as u64, TMPFS_MAGIC);
+    assert!((1..=128 * 1024 * 1024).contains(&(space.f_blocks * space.f_frsize)));
+    let state = root.join(format!("publisher-recovery-{}", random_id().unwrap()));
+    private_dir(&state);
+
+    let mut store = Store::open(&state).unwrap();
+    let mut publisher = Publisher::open(&state).unwrap();
+    let staged = |job: &str, request: &str, store: &mut Store| {
+        let submission = Submission {
+            request_id: request.into(),
+            profile_id: "example".into(),
+            stage_id: "33333333333333333333333333333333".into(),
+            argv: vec!["empty".into()],
+            wall_ms: 1000,
+        };
+        let mut record = JobRecord::intent(
+            store.instance_id().into(),
+            job.into(),
+            &submission,
+            "a".repeat(64),
+            "a".repeat(64),
+            "a".repeat(64),
+            "b".repeat(64),
+            "2026-01-01T00:00:00Z".into(),
+        )
+        .unwrap();
+        store.write(&record).unwrap();
+        for (state, launch) in [
+            ("STARTING", "CGROUP_CREATED"),
+            ("CLEANUP_PENDING", "EXEC_RELEASED"),
+            ("EXPORTING", "CLEANED"),
+        ] {
+            record.sequence += 1;
+            record.state = state.into();
+            record.launch_stage = launch.into();
+            record.cleanup_confirmed = state == "EXPORTING";
+            if record.cleanup_confirmed {
+                record.observed_exit = Some(ObservedExit {
+                    exit_code: Some(0),
+                    signal: None,
+                });
+            }
+            store.write(&record).unwrap();
+        }
+        record
+    };
+    let mut prior = staged(BASELINE, "11111111111111111111111111111111", &mut store);
+    let committed = publisher
+        .commit(BASELINE, test_metadata(BASELINE), None, b"prior", b"")
+        .unwrap();
+    prior.sequence += 1;
+    prior.state = "SUCCEEDED".into();
+    prior.result_digest = Some(committed.result_digest.clone());
+    store.write(&prior).unwrap();
+
+    let uncertain = staged(CANDIDATE, "22222222222222222222222222222222", &mut store);
+    publisher.fail_at = Some("result parent fsync");
+    let error = publisher
+        .commit(
+            CANDIDATE,
+            test_metadata(CANDIDATE),
+            None,
+            b"uncommitted",
+            b"",
+        )
+        .err()
+        .expect("missing post-rename error");
+    assert!(
+        matches!(error, Error::Publication(detail) if detail.kind == PublicationKind::IoUncertain
+        && detail.io_error().and_then(io::Error::raw_os_error) == Some(libc::EIO))
+    );
+    let renamed = state.join("results").join(CANDIDATE);
+    assert_eq!(
+        std::fs::read(renamed.join("stdout.bin")).unwrap(),
+        b"uncommitted"
+    );
+    assert!(store.records().unwrap().contains(&uncertain));
+    assert_eq!(uncertain.state, "EXPORTING");
+    assert!(uncertain.result_digest.is_none());
+    drop(publisher);
+    drop(store);
+
+    let jobs = env_path("HEARTHRUN_JOBS");
+    let empty_jobs = || {
+        !std::fs::read_dir(&jobs)
+            .unwrap()
+            .any(|entry| entry.unwrap().file_type().unwrap().is_dir())
+    };
+    assert!(
+        empty_jobs(),
+        "restart verification requires an empty delegation"
+    );
+    let mut scheduler = Scheduler::open(Config {
+        state: state.clone(),
+        root: Some(jobs.clone()),
+        launcher: env_path("HEARTHRUN_FAULT_LAUNCHER"),
+        doctor: env_path("HEARTHRUN_FAULT_DOCTOR"),
+    })
+    .unwrap();
+    assert_eq!(scheduler.doctor["compatible"], true);
+    let Reply::Success(interrupted) = scheduler
+        .request(Request::Result(CANDIDATE.into()))
+        .resolve()
+    else {
+        panic!("restart did not publish its own interrupted result");
+    };
+    assert_eq!(interrupted["metadata"]["status"], "INTERRUPTED");
+    assert!(interrupted["metadata"]["artifacts"]
+        .as_array()
+        .unwrap()
+        .is_empty());
+    assert!(std::fs::read(renamed.join("stdout.bin"))
+        .unwrap()
+        .is_empty());
+    let Reply::Success(original) = scheduler
+        .request(Request::Result(BASELINE.into()))
+        .resolve()
+    else {
+        panic!("restart lost the prior verified result");
+    };
+    assert_eq!(original["result_digest"], committed.result_digest);
+    assert!(empty_jobs());
+    drop(scheduler);
+    let store = Store::open(&state).unwrap();
+    let recovered = store
+        .records()
+        .unwrap()
+        .into_iter()
+        .find(|record| record.job_id == CANDIDATE)
+        .unwrap();
+    assert_eq!(recovered.state, "INTERRUPTED");
+    assert_eq!(
+        recovered.cancel_reason.as_deref(),
+        Some("SUPERVISOR_RESTART")
+    );
+    assert_eq!(
+        recovered.result_digest.as_deref(),
+        interrupted["result_digest"].as_str()
+    );
+    println!("synthetic_checkpoint=post_rename errno=EIO receipt_before_restart=false recovered=INTERRUPTED prior_result_readable=true owned_cgroups=0");
 }

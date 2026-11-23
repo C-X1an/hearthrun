@@ -899,11 +899,13 @@
         {
           "case": "socket_creation_default_deny",
           "elapsed_ms": 118,
+          "errno": 1,
           "status": "PASS"
         },
         {
           "case": "invalid_operation_default_deny",
           "elapsed_ms": 111,
+          "errno": 1,
           "status": "PASS"
         },
         {
@@ -1104,6 +1106,352 @@
       "status": "PASS"
     },
     {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "publication_pressure",
+          "reason": "Failure: failure did not come from the real result stream write",
+          "status": "FAIL"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        }
+      ],
+      "category": "native-daemon-publication-pressure",
+      "duration_seconds": 1.8560470360000636,
+      "end_utc": "2026-11-22T16:04:14.176506+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "edcd7a59c70b2fe7bb95cdc94bb14a1698bc42a66fa1837aba670329280fa18d"
+      },
+      "run_id": "20261122T160412-b23347a7ddbf",
+      "source_sha256_after": "80d1ab17f389812f50fb8198fe49524f010b9ea29815597aba3811359c2ae9d1",
+      "source_sha256_before": "80d1ab17f389812f50fb8198fe49524f010b9ea29815597aba3811359c2ae9d1",
+      "start_utc": "2026-11-22T16:04:12.320296+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "publication_pressure",
+          "errno": 28,
+          "failed_state": "EXPORTING",
+          "free_bytes": 131072,
+          "partial_result_visible": false,
+          "prior_result_readable": true,
+          "recovered_state": "INTERRUPTED",
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        }
+      ],
+      "category": "native-daemon-publication-pressure",
+      "duration_seconds": 2.306280198999957,
+      "end_utc": "2026-11-22T16:08:09.197751+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "fa9cb456507e01bbb9645499582cce78c85b4876404ab7936b086351b3dea89d"
+      },
+      "run_id": "20261122T160806-0378f9349823",
+      "source_sha256_after": "fe72d8d41b126b6107f608219c2b7676868d96c9e47ff88116e2ecbf23f77c8c",
+      "source_sha256_before": "fe72d8d41b126b6107f608219c2b7676868d96c9e47ff88116e2ecbf23f77c8c",
+      "start_utc": "2026-11-22T16:08:06.891240+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-post-rename-recovery",
+      "duration_seconds": 0.009383154999966337,
+      "end_utc": "2026-11-22T18:37:31.479794+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e7212805fa637d7ae86baf12e09e8b6c80cc7d3afbb0006c71e4671a91c88a91",
+        "stdout": "a3f77f0d4a994b887eab02da5d185c5ec109716b1d18453e3e63108b57111207"
+      },
+      "run_id": "20261122T183731-2dff5f1b2892",
+      "source_sha256_after": "08b42162998bada9178f4141e63f9aa8809a830c312cefa6ac789da3945ff4b6",
+      "source_sha256_before": "08b42162998bada9178f4141e63f9aa8809a830c312cefa6ac789da3945ff4b6",
+      "start_utc": "2026-11-22T18:37:31.470180+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "no_delegation",
+          "committed_results": 0,
+          "error_code": "UNSUPPORTED_HOST",
+          "failed_feature": "delegated_cgroup_operations",
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "denied_272",
+          "committed_results": 0,
+          "error_code": "UNSUPPORTED_HOST",
+          "failed_feature": "namespaces_minimal_root",
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "denied_444",
+          "committed_results": 0,
+          "error_code": "UNSUPPORTED_HOST",
+          "failed_feature": "landlock_application_denial",
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "denied_317",
+          "committed_results": 0,
+          "error_code": "UNSUPPORTED_HOST",
+          "failed_feature": "seccomp_arch_x32_default_deny",
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "denied_434",
+          "committed_results": 0,
+          "error_code": "UNSUPPORTED_HOST",
+          "failed_feature": "pidfd_signal_reap",
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "denied_436",
+          "committed_results": 0,
+          "error_code": "UNSUPPORTED_HOST",
+          "failed_feature": "close_range",
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "denied_437",
+          "committed_results": 0,
+          "error_code": "UNSUPPORTED_HOST",
+          "failed_feature": "openat2_resolution",
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        }
+      ],
+      "category": "native-host-refusal",
+      "duration_seconds": 2.704960072999995,
+      "end_utc": "2026-11-22T18:37:34.979304+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "a767876aa99a950f689322bf8e7fc6c1c440fb21e01699abd17cac2ff8fe9804"
+      },
+      "run_id": "20261122T183732-6482c9dfd705",
+      "source_sha256_after": "08b42162998bada9178f4141e63f9aa8809a830c312cefa6ac789da3945ff4b6",
+      "source_sha256_before": "08b42162998bada9178f4141e63f9aa8809a830c312cefa6ac789da3945ff4b6",
+      "start_utc": "2026-11-22T18:37:32.274121+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-post-rename-recovery",
+      "duration_seconds": 0.2934096100000261,
+      "end_utc": "2026-11-22T18:39:06.847404+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "de1daa239ed151ec3a9d6de42edc02c4044a98576578b4f987eeb02c2eee51ea"
+      },
+      "run_id": "20261122T183906-82acc98ef671",
+      "source_sha256_after": "08b42162998bada9178f4141e63f9aa8809a830c312cefa6ac789da3945ff4b6",
+      "source_sha256_before": "08b42162998bada9178f4141e63f9aa8809a830c312cefa6ac789da3945ff4b6",
+      "start_utc": "2026-11-22T18:39:06.553830+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "rust-b02-full",
+      "duration_seconds": 296.9278778480001,
+      "end_utc": "2026-11-22T18:52:51.081870+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "e366c58157a13f72657098a1fb008a809ca715fcfb3cd908bca6924b049d2ef4"
+      },
+      "run_id": "20261122T184754-4f47496e76ee",
+      "source_sha256_after": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "source_sha256_before": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "start_utc": "2026-11-22T18:47:54.153861+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "rust-b02-full-analysis",
+      "duration_seconds": 2.8501454209999793,
+      "end_utc": "2026-11-22T18:52:54.283676+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "bc20a6babdd03e2a40690b884f467ad5facba4eaae429997257e6c1b195e1d93"
+      },
+      "run_id": "20261122T185251-90940d17fed1",
+      "source_sha256_after": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "source_sha256_before": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "start_utc": "2026-11-22T18:52:51.433369+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "rust-benchmark-sample-control",
+      "duration_seconds": 0.6607531459999336,
+      "end_utc": "2026-11-22T18:53:54.430634+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "004ef9a6213d09fcc02c27874535ffe4ae7c59671dd1bff028a9d8614f1c8e61"
+      },
+      "run_id": "20261122T185353-7b1e1411fc30",
+      "source_sha256_after": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "source_sha256_before": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "start_utc": "2026-11-22T18:53:53.769704+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "rust-benchmark-archive-analysis",
+      "duration_seconds": 210.03102005100004,
+      "end_utc": "2026-11-22T18:57:24.802860+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 124,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "run_id": "20261122T185354-23a7768e96e2",
+      "source_sha256_after": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "source_sha256_before": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "start_utc": "2026-11-22T18:53:54.771688+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "rust-benchmark-restored-analysis",
+      "duration_seconds": 2.9121293849998438,
+      "end_utc": "2026-11-22T18:59:35.036137+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "bc20a6babdd03e2a40690b884f467ad5facba4eaae429997257e6c1b195e1d93"
+      },
+      "run_id": "20261122T185932-42dad59863dd",
+      "source_sha256_after": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "source_sha256_before": "40937211b3101573bcd3e470266d2c3680f23a122268a6d693e1bb322f0259f2",
+      "start_utc": "2026-11-22T18:59:32.123850+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-journal-fsync-control",
+      "duration_seconds": 4.059348896999836,
+      "end_utc": "2026-11-22T19:00:02.493520+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "e6bcb82d4da2aff4612ae192d3cbd54bef3f2caf26bbb67fb6d1ae670c286271"
+      },
+      "run_id": "20261122T185958-c9850eab4f8e",
+      "source_sha256_after": "42de8fc8a4800224ab5f31f6a96f6fe0ad62eed24706a7a83c775858b7db743e",
+      "source_sha256_before": "42de8fc8a4800224ab5f31f6a96f6fe0ad62eed24706a7a83c775858b7db743e",
+      "start_utc": "2026-11-22T18:59:58.434030+00:00",
+      "status": "PASS"
+    },
+    {
       "category": "fsync-control-baseline",
       "duration_seconds": 0.010306133000028694,
       "end_utc": "2026-11-22T15:54:37.647666+00:00",
@@ -1167,6 +1515,72 @@
       "source_sha256_after": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
       "source_sha256_before": "fd12113fecd5901e46b352d4aa099b5a8999bd843f2b165ff8d0373d3c61e745",
       "start_utc": "2026-11-22T15:54:39.709712+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "fsync-control-baseline",
+      "duration_seconds": 0.008686792999924364,
+      "end_utc": "2026-11-22T18:59:58.958708+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "9be376caa7af47a5e7a93867a3fe8e4602feb5f9eda0efbeec5a9cbf491aa2cb"
+      },
+      "run_id": "20261122T185958-c8ddcea871ce",
+      "source_sha256_after": "42de8fc8a4800224ab5f31f6a96f6fe0ad62eed24706a7a83c775858b7db743e",
+      "source_sha256_before": "42de8fc8a4800224ab5f31f6a96f6fe0ad62eed24706a7a83c775858b7db743e",
+      "start_utc": "2026-11-22T18:59:58.950013+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "fsync-control-expected-rejection",
+      "duration_seconds": 0.005245249000154217,
+      "end_utc": "2026-11-22T19:00:00.610896+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "53111e40e00fa18b4b4e8e4e1a6366f16dad51b5cb47f3d5a79fa17e018193e3",
+        "stdout": "2f81a2900bdb89c35c17f34ac99a3b74c6e613a910eab7cac87bd7d338338ed2"
+      },
+      "run_id": "20261122T190000-b88f7be91dfe",
+      "source_sha256_after": "eede536b5b629cb8c5389a7c153f23df9116820a8d6899f6fa3c7785d5ab8ed1",
+      "source_sha256_before": "eede536b5b629cb8c5389a7c153f23df9116820a8d6899f6fa3c7785d5ab8ed1",
+      "start_utc": "2026-11-22T19:00:00.605649+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "fsync-control-restored",
+      "duration_seconds": 0.0058852180000030785,
+      "end_utc": "2026-11-22T19:00:02.485998+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "9be376caa7af47a5e7a93867a3fe8e4602feb5f9eda0efbeec5a9cbf491aa2cb"
+      },
+      "run_id": "20261122T190002-d4d4b5e43d39",
+      "source_sha256_after": "42de8fc8a4800224ab5f31f6a96f6fe0ad62eed24706a7a83c775858b7db743e",
+      "source_sha256_before": "42de8fc8a4800224ab5f31f6a96f6fe0ad62eed24706a7a83c775858b7db743e",
+      "start_utc": "2026-11-22T19:00:02.480108+00:00",
       "status": "PASS"
     }
   ],

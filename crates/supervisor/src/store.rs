@@ -15,6 +15,10 @@
 
 #![cfg(target_os = "linux")]
 
+#[cfg(all(test, feature = "native-verification"))]
+#[path = "../../../tests/fault/journal_reopen.rs"]
+mod journal_faults;
+
 use hearthrun_domain::protocol::{self, Request, Submission};
 use hearthrun_domain::JobId;
 use rustix::fd::OwnedFd;
@@ -423,6 +427,13 @@ pub struct Store {
 
 impl Store {
     pub fn open(root: &Path) -> Result<Self> {
+        Self::open_with_directory_sync(root, |dir| fs::fsync(dir))
+    }
+
+    fn open_with_directory_sync(
+        root: &Path,
+        mut sync: impl FnMut(&OwnedFd) -> rustix::io::Result<()>,
+    ) -> Result<Self> {
         let owner_uid = rustix::process::geteuid().as_raw();
         let directory = open_root(root, owner_uid)?;
         if !exists(&directory, LOCK_NAME)? {
@@ -498,6 +509,14 @@ impl Store {
             frozen: Cell::new(false),
         };
         store.inventory()?;
+        // A failed write may have left a validated rename visible in this OS
+        // instance. Establish a fresh durability boundary under the same lock
+        // before the scheduler treats any existing journal name as committed.
+        operation(
+            sync(&store.records_directory),
+            "cannot sync recovered records directory",
+        )?;
+        operation(sync(&store.directory), "cannot sync recovered state root")?;
         Ok(store)
     }
 
@@ -564,6 +583,14 @@ impl Store {
     /// fsync. A failure after mutation freezes the Store, preserves uncertainty,
     /// and must stop admission. It never retries an execution or claims success.
     pub fn write(&mut self, record: &JobRecord) -> Result<()> {
+        self.write_with_directory_sync(record, |dir| fs::fsync(dir))
+    }
+
+    fn write_with_directory_sync(
+        &mut self,
+        record: &JobRecord,
+        mut sync: impl FnMut(&OwnedFd) -> rustix::io::Result<()>,
+    ) -> Result<()> {
         if self.frozen.get() {
             return Err(StoreError::new(
                 ErrorKind::IoUncertain,
@@ -637,22 +664,24 @@ impl Store {
         }
         let name = format!("{}.json", record.job_id);
         let outcome = (|| {
-            atomic_write(
+            atomic_write_with_directory_sync(
                 &self.records_directory,
                 &name,
                 &bytes,
                 prior_identity,
                 self.owner_uid,
+                &mut sync,
             )?;
             if let Some(catalog) = new_catalog {
                 // New record first, then durable catalog. A crash between them
                 // leaves a detectable unindexed intent and refuses replay.
-                atomic_write(
+                atomic_write_with_directory_sync(
                     &self.records_directory,
                     CATALOG_NAME,
                     &catalog,
                     Some(inventory.catalog_identity),
                     self.owner_uid,
+                    &mut sync,
                 )?;
             }
             Ok(())
@@ -1258,6 +1287,19 @@ fn atomic_write(
     previous: Option<Identity>,
     uid: u32,
 ) -> Result<()> {
+    atomic_write_with_directory_sync(directory, final_name, bytes, previous, uid, |dir| {
+        fs::fsync(dir)
+    })
+}
+
+fn atomic_write_with_directory_sync(
+    directory: &OwnedFd,
+    final_name: &str,
+    bytes: &[u8],
+    previous: Option<Identity>,
+    uid: u32,
+    sync: impl FnOnce(&OwnedFd) -> rustix::io::Result<()>,
+) -> Result<()> {
     if bytes.len() > MAX_RECORD_BYTES {
         return Err(invalid_record("metadata write exceeds byte bound"));
     }
@@ -1303,10 +1345,7 @@ fn atomic_write(
             "cannot publish new metadata without replacement",
         )?;
     }
-    operation(
-        fs::fsync(directory),
-        "cannot sync published metadata directory",
-    )?;
+    operation(sync(directory), "cannot sync published metadata directory")?;
     Ok(())
 }
 

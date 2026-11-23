@@ -51,6 +51,8 @@ RESERVE_FILES = 64
 RESERVE_FILE_BYTES = 64 * 1024
 COMPACT_ROOTS = ("state", "logs", "tmp", "data.ndjson")
 SIZES = (16 * 1024, 1024 * 1024, 8 * 1024 * 1024)
+AGGREGATE_CORE = ROOT / "fixtures/native/aggregate_core.rs"
+AGGREGATE_ENTRY = ROOT / "fixtures/native/aggregate_entry.c"
 
 
 def encode(value: Any) -> bytes:
@@ -271,6 +273,12 @@ class Campaign:
         self.active: Shard | None = None
         self.environment_id = ""
         self.run_id = n.secrets.token_hex(16)
+        self.workloads = ("B-01", "B-02") if args.workload == "both" else (args.workload,)
+        self.transform_fields = ("count", "sum", "min", "max") if args.aggregate_fixture else ("count", "sum")
+        self.transform_concurrency = (1, 4) if args.aggregate_fixture else (1, 2, 4)
+        self.shortfalls = [*SHORTFALLS]
+        if "B-02" in self.workloads and not args.aggregate_fixture:
+            self.shortfalls.append("The C fixture measures count and sum. B-02 also requires the Rust fixture and extrema.")
 
     def preflight(self) -> None:
         # Use the same mandatory host/storage/owner/descriptor checks as native E2E.
@@ -314,6 +322,21 @@ class Campaign:
             "clock": time.get_clock_info("monotonic").implementation,
             "mode": self.args.mode, "campaign_seed": self.args.seed,
         }
+        if self.args.aggregate_fixture:
+            aggregate_path = n.absolute(self.args.aggregate_fixture)
+            n.require(aggregate_path.resolve(strict=True) == aggregate_path and aggregate_path.is_file()
+                      and os.access(aggregate_path, os.X_OK), "aggregate fixture must be an exact executable file")
+            aggregate = build.get("rust_aggregate")
+            n.require(isinstance(aggregate, dict) and aggregate.get("fixture_sha256") == digest(aggregate_path)
+                      and aggregate.get("source_sha256") == digest(AGGREGATE_CORE)
+                      and aggregate.get("entry_source_sha256") == digest(AGGREGATE_ENTRY)
+                      and n.DIGEST.fullmatch(aggregate.get("capture_manifest_sha256", ""))
+                      and n.DIGEST.fullmatch(aggregate.get("core_capture_manifest_sha256", ""))
+                      and n.DIGEST.fullmatch(aggregate.get("archive_sha256", ""))
+                      and isinstance(aggregate.get("build_command"), list) and aggregate["build_command"]
+                      and isinstance(aggregate.get("core_build_command"), list) and aggregate["core_build_command"],
+                      "Rust aggregate executable or build provenance differs")
+            environment["rust_aggregate"] = aggregate
         for field, path, bound in (("cpuinfo", "/proc/cpuinfo", 1024 * 1024),
                                    ("meminfo", "/proc/meminfo", 64 * 1024),
                                    ("boot_id", "/proc/sys/kernel/random/boot_id", 128),
@@ -331,13 +354,15 @@ class Campaign:
         json_file(self.work / "environment.json", environment)
         json_file(self.work / "schedule.json", {"run_id": self.run_id, "mode": self.args.mode,
             "seed": self.args.seed, "shard_native_request_limit": SHARD_JOBS,
+            "workloads": self.workloads, "transform_fields": self.transform_fields,
+            "transform_concurrency": self.transform_concurrency,
             "storage_policy": {"format": "hearthrun-shard-tar-gzip-v1", "headroom_bytes": SHARD_HEADROOM_BYTES,
                 "headroom_inodes": SHARD_HEADROOM_INODES, "retained_bytes_bound": MAX_EVIDENCE_BYTES,
                 "finalization_reserved_bytes": RESERVE_FILES * RESERVE_FILE_BYTES,
                 "finalization_reserved_inodes": RESERVE_FILES + 1},
             "full_counts": {"B-01": "5 batches x concurrency 1/2/4 x (30 warmup +1000 measured) x 2 backends",
-                            "B-02": "5 seeds x 3 sizes x concurrency 1/2/4 x (30 warmup +100 measured)"},
-            "scope_shortfalls": SHORTFALLS})
+                            "B-02": f"5 seeds x 3 sizes x concurrency {self.transform_concurrency} x (30 warmup +100 measured)"},
+            "scope_shortfalls": self.shortfalls})
 
     def release_reserve(self) -> None:
         if self.reserve_directory is None:
@@ -472,7 +497,8 @@ class Campaign:
                 else:
                     raw = n.read_file(h.state / "results" / job / "artifacts/summary.json", 1024, owner=True, mode=0o600)
                     result = n.strict_json(raw)
-                    n.require(result == {key: expected[key] for key in ("count", "sum")}, "independent aggregation oracle differs")
+                    n.require(result == expected and all(type(value) is int for value in result.values()),
+                              "independent aggregation oracle differs")
                     n.require(len(metadata["artifacts"]) == 1 and metadata["artifacts"][0]["path"] == "summary.json",
                               "transform artifact set differs")
                     row["verified_output"] = result
@@ -562,7 +588,7 @@ class Campaign:
     def run_group(self, workload: str, batch: int, seed: int, size: int, concurrency: int) -> None:
         warmups, repetitions = (2, 4) if self.args.mode == "smoke" else (30, 1000 if workload == "B-01" else 100)
         data, reference = fixture_bytes(size or 64, seed)
-        expected = reference if workload == "B-02" else None
+        expected = {key: reference[key] for key in self.transform_fields} if workload == "B-02" else None
         rng = random.Random(self.args.seed + batch * 10000 + seed * 100 + size + concurrency)
         planned = [("warmup" if index < warmups else "measured", index) for index in range(warmups + repetitions)]
         for offset in range(0, len(planned), SHARD_JOBS):
@@ -571,6 +597,8 @@ class Campaign:
             self.shard_serial += 1
             hargs = argparse.Namespace(**vars(self.args))
             hargs.work = str(self.work / f"shard-{self.shard_serial:04d}")
+            if workload == "B-02" and self.args.aggregate_fixture:
+                hargs.fixture = self.args.aggregate_fixture
             h = Shard(hargs)
             self.active = h
             succeeded = False
@@ -648,13 +676,12 @@ class Campaign:
             "scope": self.args.mode, "acceptance_status": "NOT ESTABLISHED; scoped campaign and independent review required",
             "interrupted": interrupted, "completed_samples": len(self.rows), "quantile_method": "nearest rank",
             "latency_population": "successful samples; all-attempt observed durations separately, failures retained in denominator",
-            "groups": results, "scope_shortfalls": SHORTFALLS, "retained_shard_accounted_bytes": self.allocated,
+            "groups": results, "scope_shortfalls": self.shortfalls, "retained_shard_accounted_bytes": self.allocated,
             "retained_accounted_inodes": self.retained_inodes,
             "background_load_end": os.getloadavg()})
 
 
 SHORTFALLS = [
-    "Current approved C fixture establishes count/sum only, not planned Rust count/sum/min/max workload.",
     "Direct baseline is same empty binary without sandbox; Python Popen-to-reap versus native submit-to-terminal observation includes different client/IPC costs; no subtraction/ranking as equivalent isolation.",
     "Native start_ns uses supervisor-relative Instant, not Python monotonic epoch. No submit-to-RUNNING duration is derived; short jobs may never be polled RUNNING.",
     "No trusted execution-end/CPU/peak-memory telemetry; execution_only_ms/cpu_usec/max_rss_bytes remain null.",
@@ -669,8 +696,12 @@ def main() -> int:
     for name in ("bin-dir", "doctor", "fixture", "cgroup-root", "work", "build-record", "host-record"):
         parser.add_argument(f"--{name}", required=True)
     parser.add_argument("--mode", choices=("smoke", "full"), required=True)
+    parser.add_argument("--workload", choices=("both", "B-01", "B-02"), default="both")
+    parser.add_argument("--aggregate-fixture", help="approved static Rust B-02 executable; keep --fixture for the held-job control")
     parser.add_argument("--seed", type=int, default=21080)
     args = parser.parse_args()
+    if args.aggregate_fixture and args.workload == "B-01":
+        parser.error("--aggregate-fixture requires B-02")
     campaign = Campaign(args)
     error = None
     code = 1
@@ -680,13 +711,16 @@ def main() -> int:
     try:
         campaign.preflight()
         campaign.hold_smoke()
-        for batch in range(1 if args.mode == "smoke" else 5):
-            for concurrency in (1, 2, 4):
-                campaign.run_group("B-01", batch, args.seed + batch, 0, concurrency)
-        for seed in range(1 if args.mode == "smoke" else 5):
-            for size in SIZES:
+        batches = range(1 if args.mode == "smoke" else 5)
+        if "B-01" in campaign.workloads:
+            for batch in batches:
                 for concurrency in (1, 2, 4):
-                    campaign.run_group("B-02", seed, seed, size, concurrency)
+                    campaign.run_group("B-01", batch, args.seed + batch, 0, concurrency)
+        if "B-02" in campaign.workloads:
+            for seed in batches:
+                for size in SIZES:
+                    for concurrency in campaign.transform_concurrency:
+                        campaign.run_group("B-02", seed, seed, size, concurrency)
         code = 1 if campaign.failed else 0
     except n.Blocked as exc:
         error, code = str(exc), 78

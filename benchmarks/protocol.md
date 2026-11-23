@@ -100,6 +100,10 @@ the actual referenced manifest and rustc output for independent review. Source
 changes after compilation invalidate this record. Capture source/commit/dirty
 state through the outer capture manifest; a missing Git commit remains null.
 
+For the Rust B-02 workload, install the matching pinned `x86_64-unknown-linux-musl` Rust target libraries inside the established development boundary. Capture `make aggregate-fixture` with a trusted musl C compiler. The fixture has a fixed C entry point for bounded I/O and a Rust core that parses each record and computes count, sum, min and max. The nested `rust_aggregate` build record must contain the compiler command and capture digest (`core_build_command`, `core_capture_manifest_sha256`), Rust source digest (`source_sha256`), static library digest (`archive_sha256`), C link command and capture digest (`build_command`, `capture_manifest_sha256`), C source digest (`entry_source_sha256`), and executable digest (`fixture_sha256`).
+
+Select `--workload B-02 --aggregate-fixture ABS_APPROVED_STATIC_AGGREGATE` to measure the Rust workload alone. Keep `--fixture` set to the approved C task for the required cancellation control. In the Make targets, set `HEARTHRUN_BENCH_WORKLOAD=B-02` and `HEARTHRUN_BENCH_AGGREGATE` to the approved executable path. The independent Python oracle compares all four fields. Rust B-02 uses five seeds, three sizes, concurrency 1 and 4, and 30 warm-ups plus 100 measured jobs per combination. The earlier C campaign has its own documented scope.
+
 Supply a separate small host record JSON, containing actual observations:
 
 ```json

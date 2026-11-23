@@ -48,19 +48,33 @@ fn nearly_full_mount_never_replaces_committed_result_or_publishes_partial() {
     assert!((8 * 1024 * 1024..=128 * 1024 * 1024).contains(&capacity));
     let mount_name = mount.to_str().expect("fixture path is Unicode");
     let mountinfo = std::fs::read_to_string("/proc/self/mountinfo").unwrap();
-    assert!(
-        mountinfo.lines().any(|line| {
-            let Some((left, right)) = line.split_once(" - ") else {
-                return false;
-            };
-            left.split_ascii_whitespace().nth(4) == Some(mount_name)
-                && right.split_ascii_whitespace().next() == Some("tmpfs")
-                && right
-                    .split_ascii_whitespace()
-                    .nth(2)
-                    .is_some_and(|options| options.split(',').any(|flag| flag == "noswap"))
-        }),
-        "expected a dedicated noswap tmpfs mount"
+    let mounts: Vec<_> = mountinfo
+        .lines()
+        .filter_map(|line| line.split_once(" - "))
+        .collect();
+    let matches: Vec<_> = mounts
+        .iter()
+        .filter(|(left, _)| left.split_ascii_whitespace().nth(4) == Some(mount_name))
+        .collect();
+    assert_eq!(matches.len(), 1, "expected an exact dedicated tmpfs mount");
+    let (left, right) = matches[0];
+    let fields: Vec<_> = left.split_ascii_whitespace().collect();
+    let superblock: Vec<_> = right.split_ascii_whitespace().collect();
+    assert_eq!(
+        fields[3], "/",
+        "a mounted subdirectory can share the allocation budget"
+    );
+    assert_eq!(superblock[0], "tmpfs");
+    assert!(superblock[2].split(',').any(|flag| flag == "noswap"));
+    assert!(fields[5].split(',').any(|flag| flag == "nodev"));
+    assert!(fields[5].split(',').any(|flag| flag == "noexec"));
+    assert_eq!(
+        mounts
+            .iter()
+            .filter(|(left, _)| left.split_ascii_whitespace().nth(2) == Some(fields[2]))
+            .count(),
+        1,
+        "expected a single mount of this filesystem in the test namespace"
     );
 
     let state = mount.join("publication-state");
