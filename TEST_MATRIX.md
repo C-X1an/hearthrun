@@ -1,31 +1,31 @@
 # Test matrix
 
-Research date: 2026-11-08. This table specifies required native evidence. None of the 24 full acceptance criteria has been established by the seed. Planned paths below are implementation destinations, not files claimed to exist. Portable tooling checks are tracked separately in VERIFICATION_REPORT.md.
+The locked acceptance specification defines the required paths and assertions. The evidence column records the scope actually verified. See the verification report for capture identities and portable tooling results.
 
 | Requirement | Acceptance | Required test | Level | Negative control | Native evidence/status |
 |---|---|---|---|---|---|
 | FR-001 | AC-001 | `tests/acceptance_locked/protocol.rs` | contract | remove size/unknown-field guard | NOT RUN |
-| FR-002 | AC-002 | `tests/acceptance_locked/admission.rs` | system | remove capacity increment | NOT RUN |
+| FR-002 | AC-002 | `tests/acceptance_locked/admission.rs` | system | remove capacity increment | PARTIAL. B-04 verified the exact 4+16 bounds, typed refusal and FIFO in all 30 native trials. The locked negative control remains open. |
 | SEC-001 | AC-003 | `tests/acceptance_locked/doctor.rs` | system | treat unavailable as supported | PARTIAL. Live admission refused seven missing-capability scenarios. A separate unsupported host and negative control remain open. |
 | SEC-002 | AC-004 | `tests/acceptance_locked/barrier.rs` | system | release barrier before limits | NOT RUN |
 | SEC-003 | AC-005 | `tests/acceptance_locked/filesystem.rs` | security | bind host canary into root | NOT RUN |
 | SEC-003 | AC-006 | `tests/acceptance_locked/network.rs` | security | permit socket and share net namespace in isolated control | NOT RUN |
 | SEC-005 | AC-007 | `tests/acceptance_locked/authority.rs` | security | retain synthetic control FD | NOT RUN |
 | SEC-002 | AC-008 | `tests/acceptance_locked/seccomp.rs` | security | omit architecture check | NOT RUN |
-| REL-005 | AC-009 | `tests/acceptance_locked/resources.rs` | system | omit pids.max | NOT RUN |
+| REL-005 | AC-009 | `tests/acceptance_locked/resources.rs` | system | omit pids.max | PARTIAL. B-04 measured actual memory, PID and CPU caps across 30 trials each. Native stream limits passed. The locked negative control remains open. |
 | REL-002 | AC-010 | `tests/acceptance_locked/cancel.rs` | fault injection | kill only leader | NOT RUN |
-| REL-001 | AC-011 | `tests/acceptance_locked/terminal.rs` | contract/system | terminal before cgroup empty | NOT RUN |
-| REL-003 | AC-012 | `tests/acceptance_locked/recovery.rs` | fault injection | auto-requeue interrupted job | NOT RUN |
+| REL-001 | AC-011 | `tests/acceptance_locked/terminal.rs` | contract/system | terminal before cgroup empty | PASS. Five populated and five unreaped observations retained the slot and refused results. The isolated early-terminal control failed while the kernel still reported a populated cgroup. |
+| REL-003 | AC-012 | `tests/acceptance_locked/recovery.rs` | fault injection | auto-requeue interrupted job | PASS for 12 deterministic cuts using the native test supervisor and production restart. The isolated replay control produced an unexpected durable execution, and restoration passed. |
 | SEC-004 | AC-013 | `tests/acceptance_locked/artifacts.rs` | security | follow symlink | PARTIAL. Twelve direct artifact checks passed. Native negative control remains open. |
 | SEC-004 | AC-014 | `tests/acceptance_locked/quiescence.rs` | system/property | start export before populated=0 | PARTIAL. All 1,000 native schedules passed. Independent negative control remains open. |
-| REL-005 | AC-015 | `tests/acceptance_locked/streams.rs` | system | unbounded buffer growth | NOT RUN |
+| REL-005 | AC-015 | `tests/acceptance_locked/streams.rs` | system | unbounded buffer growth | PASS. Live output retained exactly 1 MiB per stream with explicit truncation and escaped excerpts. Synthetic rollover through the real scheduler retained 1,024 events. The exact buffer control failed and passed after restoration. |
 | REL-004 | AC-016 | `tests/acceptance_locked/publication.rs` | fault injection | ignore fsync error | PARTIAL. Direct faults, daemon ENOSPC recovery, result and terminal-journal rename uncertainty, and both ignored-fsync controls passed. |
 | FR-005 | AC-017 | `tests/acceptance_locked/idempotency.rs` | integration | ignore payload digest | PASS. Lost replies, changed requests and both restart paths verified. The isolated payload-comparison control failed at the changed-argument conflict assertion, then passed after restoration. |
 | FR-003 | AC-018 | `tests/acceptance_locked/profiles.rs` | security | hash then reopen mutable executable | NOT RUN |
 | NFR-002 | AC-019 | `tests/acceptance_locked/reproduce.py` | clean environment | remove required fixture from export | PARTIAL. Fresh-clone scoped profile and missing-fixture control passed. Full native verification remains open. |
-| NFR-003 | AC-020 | `verification/mutation/protocol.md` | mutation | test itself intentionally weakened | PARTIAL. Publisher ignored-fsync control passed. |
-| PERF-001 | AC-021 | `benchmarks/protocol.md` | performance | drop failed/slow samples | PARTIAL. B-01, C count/sum, Rust B-02 and client-observed cancellation measured. The omitted-slow-row control passed. Server clocks and remaining workloads are open. |
-| SEC-006 | AC-022 | `scripts/public_audit.py` | release | add synthetic forbidden private path | NOT RUN |
+| NFR-003 | AC-020 | `verification/mutation/protocol.md` | mutation | test itself intentionally weakened | PARTIAL. The premature-terminal and ignored-fsync controls passed. |
+| PERF-001 | AC-021 | `benchmarks/protocol.md` | performance | drop failed/slow samples | PARTIAL. B-01, C count/sum, Rust B-02, client-observed cancellation and the four B-04 profiles measured. The omitted-slow-row control passed. Server clocks and remaining workloads are open. |
+| SEC-006 | AC-022 | `scripts/public_audit.py` | release | add synthetic forbidden private path | PASS for the audited source preview. The forbidden-path control refused the staged file, restoration passed, and 38 components had declared licenses. |
 | UX-001 | AC-023 | `tests/acceptance_locked/demo.rs` | end-to-end | render unescaped guest HTML | NOT RUN |
 | NFR-003 | AC-024 | `verification/independent-review.md` | review | omit initial findings stage | NOT RUN |
 

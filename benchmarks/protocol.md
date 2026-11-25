@@ -317,6 +317,11 @@ certifies count, sum, min and max with its fixed linked fixture. Comparable
 execution-end, CPU and peak-memory clocks remain open. Fresh shards reset
 supervisor caches and introduce cold-state effects.
 
+`capacity.py` captures four fixed resource and admission profiles. The full mode
+runs thirty repetitions per profile. `analyze_capacity.py` checks the complete
+population, build and host reserve, owned supervisor samples, and each retained
+shard archive. Use the observed per-profile measurements on the recorded host.
+
 The archived Rust B-02 analysis refused the omitted-slow-row control between
-passing runs. Exact B-03 server clocks, B-04 through B-06, stable-host confirmation
-and full AC-021 remain open. B-07 is optional. [Measured campaigns](../BENCHMARKS.md)
+passing runs. Exact B-03 server clocks, seeded B-05 and B-06, stable-host
+confirmation and full AC-021 remain open. B-07 is optional. [Measured campaigns](../BENCHMARKS.md)

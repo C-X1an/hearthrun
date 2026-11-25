@@ -773,6 +773,7 @@
         {
           "case": "bounded_stream_release",
           "elapsed_ms": 1366,
+          "event_page_count": 10,
           "reason": "STREAM_LIMIT",
           "status": "PASS",
           "stderr_bytes": 1048576,
@@ -1672,6 +1673,290 @@
       "status": "PASS"
     },
     {
+      "category": "native-terminal-control",
+      "control_patch_sha256": "5da1837966cea17f933a40b4fc296ec70133d6033299e4b8da9583fbc9d036a0",
+      "controls": [
+        {
+          "control": "baseline",
+          "exit": 0,
+          "source_sha256": "62f5648e277442efd53cef8630aa775e4b51583e97809d64cf8e0b5a1032001b",
+          "test": "20261123T172728-63bd0881c020"
+        },
+        {
+          "control": "negative",
+          "exit": 101,
+          "source_sha256": "a21cea39cebae619adf5368f942ef345085e998227cb858a6d0cc8aa03a21df6",
+          "test": "20261123T172730-f4e897eb3944"
+        },
+        {
+          "control": "restored",
+          "exit": 0,
+          "source_sha256": "62f5648e277442efd53cef8630aa775e4b51583e97809d64cf8e0b5a1032001b",
+          "test": "20261123T172732-6aaf31a18a40"
+        }
+      ],
+      "duration_seconds": 21.41730906400062,
+      "end_utc": "2026-11-23T17:27:33.997782+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "4addffbe3558633802480380d401988c560c7a8530c9822f6ae2f914d899c6a2"
+      },
+      "run_id": "20261123T172712-1f23e2076411",
+      "source_sha256_after": "409efcbc0a033d9f50b01979a17414f0f60f9ab18f21987c4d5fed10aa2c80fd",
+      "source_sha256_before": "409efcbc0a033d9f50b01979a17414f0f60f9ab18f21987c4d5fed10aa2c80fd",
+      "start_utc": "2026-11-23T17:27:12.580237+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "b04-full",
+      "duration_seconds": 67.42127936600082,
+      "end_utc": "2026-11-23T17:39:14.821510+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "db3f9939e7379ae9fc47f2418ffec5dbf8e45be298a825754dfe2877e57f059c"
+      },
+      "run_id": "20261123T173807-03cce4e019f7",
+      "source_sha256_after": "6cc3061a4ce402f4fbd01f5fff34fcd1afdb3fb3a5c3df32e9dc5d762c56c544",
+      "source_sha256_before": "6cc3061a4ce402f4fbd01f5fff34fcd1afdb3fb3a5c3df32e9dc5d762c56c544",
+      "start_utc": "2026-11-23T17:38:07.400075+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "native-launcher-removal",
+      "duration_seconds": 1.3729091229999995,
+      "end_utc": "2026-11-24T15:21:02.149006+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "73974a1ad4487229931ac16eaa9627f1703a01e56c70b1b41b5034ff7a533794"
+      },
+      "run_id": "20261124T152100-01b32e88330d",
+      "source_sha256_after": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "source_sha256_before": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "start_utc": "2026-11-24T15:21:00.775885+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-terminal-control",
+      "control_patch_sha256": "5347539847d0d701ad0018ffdb85cf4c5f7bd1233d8e1e3178b6a3d6566b93cf",
+      "controls": [
+        {
+          "control": "baseline",
+          "exit": 0,
+          "source_sha256": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+          "test": "20261124T152128-031b54841401"
+        },
+        {
+          "control": "negative",
+          "exit": 101,
+          "source_sha256": "b1b0a372ab2234c6ab1162bb4abf4c48b4e623fa1285a94d1e93581502d1c7fb",
+          "test": "20261124T152132-3633133e79f2"
+        },
+        {
+          "control": "restored",
+          "exit": 0,
+          "source_sha256": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+          "test": "20261124T152134-a8c9523ec345"
+        }
+      ],
+      "duration_seconds": 28.157833993999986,
+      "end_utc": "2026-11-24T15:21:35.560072+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "a50b9e6c405c4043f1722fa69e462c901b42c80b7ae04075e01d01fa02d87ccc"
+      },
+      "run_id": "20261124T152107-96a36961f3f4",
+      "source_sha256_after": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "source_sha256_before": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "start_utc": "2026-11-24T15:21:07.402035+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "b04-full",
+      "duration_seconds": 914.3381543140001,
+      "end_utc": "2026-11-24T15:39:29.475193+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "0742a30b6b5bff9521908146df9834bc023a1f9c4313c1e0efcbacdfca0b5b37"
+      },
+      "run_id": "20261124T152415-5588fd64153e",
+      "source_sha256_after": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "source_sha256_before": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "start_utc": "2026-11-24T15:24:15.136878+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "b04-full-analysis",
+      "duration_seconds": 3.6985475839999253,
+      "end_utc": "2026-11-24T15:39:33.842516+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "326b4b1428fe3ccdfa8f665f738203f0e2dcc9aee5a1370cc82d417786dd1a68"
+      },
+      "run_id": "20261124T153930-d0b3d4a8acc9",
+      "source_sha256_after": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "source_sha256_before": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "start_utc": "2026-11-24T15:39:30.143697+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-recovery-control",
+      "duration_seconds": 63.45309488899875,
+      "end_utc": "2026-11-24T17:45:52.371825+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e900faca3c10d05b45b6e106246593f6408b112d3cda5f874f7a10275a105d23",
+        "stdout": "acc769dccf045f75f46d6f396167854a010326ccbf2993a2a53f3acfba92d0dd"
+      },
+      "run_id": "20261124T174448-ce273caa8236",
+      "source_sha256_after": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "source_sha256_before": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "start_utc": "2026-11-24T17:44:48.918462+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-stream-control",
+      "duration_seconds": 23.565500584998517,
+      "end_utc": "2026-11-24T17:48:25.379657+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "180be6c1b9d11cbcc16484530a8185b89bfca7a56d88e6d15d6a7998f96061c9"
+      },
+      "run_id": "20261124T174801-4658927d28a8",
+      "source_sha256_after": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "source_sha256_before": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "start_utc": "2026-11-24T17:48:01.813949+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-recovery-control",
+      "duration_seconds": 22.08687056299823,
+      "end_utc": "2026-11-25T07:05:54.511052+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "07cc66a67cd37cf33166d5246bece6162ea16f3966424cc83aa60f30966d83f9",
+        "stdout": "caff00287c41793456417b80103976456971c0298f9d4d86d4a949dde1f8f95d"
+      },
+      "run_id": "20261125T070532-b30484f3bb4a",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T07:05:32.423996+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "native-recovery-control",
+      "duration_seconds": 41.76956688000064,
+      "end_utc": "2026-11-25T07:12:16.537455+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "cd727ecebd0e10b225f7cfd62138c8a2e3949f474f2314224d1c9f6305fedf59"
+      },
+      "run_id": "20261125T071134-09982548c051",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T07:11:34.767713+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "native-stream-control",
+      "duration_seconds": 26.41736532199866,
+      "end_utc": "2026-11-25T07:12:51.077479+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "786eeb2c1c3777d023a0021294364496be685f2988a0d801a4f0289abf828b2b"
+      },
+      "run_id": "20261125T071224-e6931889228a",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T07:12:24.659935+00:00",
+      "status": "PASS"
+    },
+    {
       "category": "fsync-control-baseline",
       "duration_seconds": 0.010306133000028694,
       "end_utc": "2026-11-22T15:54:37.647666+00:00",
@@ -1928,6 +2213,2066 @@
       "source_sha256_after": "2eebd380a97bd4e007f5408da67edb1408e79665244b462769a27b742f505434",
       "source_sha256_before": "2eebd380a97bd4e007f5408da67edb1408e79665244b462769a27b742f505434",
       "start_utc": "2026-11-23T15:52:40.532054+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "delayed_cleanup",
+          "populated_observations": 5,
+          "queue_released_after_confirmation": true,
+          "status": "PASS",
+          "unreaped_observations": 5
+        }
+      ],
+      "category": "terminal-baseline",
+      "duration_seconds": 0.7852320470001359,
+      "end_utc": "2026-11-23T17:27:29.093349+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "b20220bd446897343e5b826aa74cd2bd9354d113d69fa490d99ec22883b90587"
+      },
+      "run_id": "20261123T172728-63bd0881c020",
+      "source_sha256_after": "62f5648e277442efd53cef8630aa775e4b51583e97809d64cf8e0b5a1032001b",
+      "source_sha256_before": "62f5648e277442efd53cef8630aa775e4b51583e97809d64cf8e0b5a1032001b",
+      "start_utc": "2026-11-23T17:27:28.308118+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": true,
+          "journal_state": "CANCELLED",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 1,
+          "state": "CANCELLED"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        }
+      ],
+      "category": "terminal-negative",
+      "duration_seconds": 0.6524588120000772,
+      "end_utc": "2026-11-23T17:27:31.399218+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "cf86c0584ddcd6b4243440bbd5b909c800ba1a767f077e0f864dac45e6816bf2",
+        "stdout": "50c7883d2f0497b7007980fbaca50ce33a96632f29cdf1f0be3b4be8b21fd661"
+      },
+      "run_id": "20261123T172730-f4e897eb3944",
+      "source_sha256_after": "a21cea39cebae619adf5368f942ef345085e998227cb858a6d0cc8aa03a21df6",
+      "source_sha256_before": "a21cea39cebae619adf5368f942ef345085e998227cb858a6d0cc8aa03a21df6",
+      "start_utc": "2026-11-23T17:27:30.746760+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "delayed_cleanup",
+          "populated_observations": 5,
+          "queue_released_after_confirmation": true,
+          "status": "PASS",
+          "unreaped_observations": 5
+        }
+      ],
+      "category": "terminal-restored",
+      "duration_seconds": 1.0141012019994378,
+      "end_utc": "2026-11-23T17:27:33.989348+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "cda0c9412cd3306dc275598907823d03af6c1b17c52ba11416c4358d7bba3dc1"
+      },
+      "run_id": "20261123T172732-6aaf31a18a40",
+      "source_sha256_after": "62f5648e277442efd53cef8630aa775e4b51583e97809d64cf8e0b5a1032001b",
+      "source_sha256_before": "62f5648e277442efd53cef8630aa775e4b51583e97809d64cf8e0b5a1032001b",
+      "start_utc": "2026-11-23T17:27:32.975247+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "artifact_verified_after_removal": true,
+          "case": "pending_cgroup_removal",
+          "descriptor_identity_retained": true,
+          "pending_observations": 3,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "delayed_cleanup",
+          "populated_observations": 5,
+          "queue_released_after_confirmation": true,
+          "status": "PASS",
+          "unreaped_observations": 5
+        }
+      ],
+      "category": "terminal-baseline",
+      "duration_seconds": 1.0682220400000233,
+      "end_utc": "2026-11-24T15:21:30.038252+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "ee752be97f52160f558f15f18e9dbda944626696d363d63f78d2813551a34b57"
+      },
+      "run_id": "20261124T152128-031b54841401",
+      "source_sha256_after": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "source_sha256_before": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "start_utc": "2026-11-24T15:21:28.970029+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": true,
+          "journal_state": "CANCELLED",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 1,
+          "state": "CANCELLED"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        }
+      ],
+      "category": "terminal-negative",
+      "duration_seconds": 0.6164527079999971,
+      "end_utc": "2026-11-24T15:21:32.803644+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "51e1514e2e78d437f7a0d9343c1a8240b6cd6726c9e4307ec9b5811aa4e8d466",
+        "stdout": "29cbc155a0e8a153b278fb03995d7049b7ad35ba4fe9fd693bb7b9417356741f"
+      },
+      "run_id": "20261124T152132-3633133e79f2",
+      "source_sha256_after": "b1b0a372ab2234c6ab1162bb4abf4c48b4e623fa1285a94d1e93581502d1c7fb",
+      "source_sha256_before": "b1b0a372ab2234c6ab1162bb4abf4c48b4e623fa1285a94d1e93581502d1c7fb",
+      "start_utc": "2026-11-24T15:21:32.187190+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": true,
+          "launcher_state": "S",
+          "phase": "populated",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "active": 4,
+          "case": "delayed_cleanup_observation",
+          "cleanup_confirmed": false,
+          "journal_state": "CLEANUP_PENDING",
+          "kernel_populated": false,
+          "launcher_state": "Z",
+          "phase": "unreaped",
+          "queued": 1,
+          "result_directory_entries": 0,
+          "result_error": "NOT_READY",
+          "state": "CLEANUP_PENDING"
+        },
+        {
+          "artifact_verified_after_removal": true,
+          "case": "pending_cgroup_removal",
+          "descriptor_identity_retained": true,
+          "pending_observations": 3,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "delayed_cleanup",
+          "populated_observations": 5,
+          "queue_released_after_confirmation": true,
+          "status": "PASS",
+          "unreaped_observations": 5
+        }
+      ],
+      "category": "terminal-restored",
+      "duration_seconds": 1.1203749469999593,
+      "end_utc": "2026-11-24T15:21:35.549358+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "75d2c6ed53d4a179b25c46aa1208fc1bff251b9d2a0bdc8cb0b32c6d561bc7ca"
+      },
+      "run_id": "20261124T152134-a8c9523ec345",
+      "source_sha256_after": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "source_sha256_before": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+      "start_utc": "2026-11-24T15:21:34.428981+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "durable-create-intent",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "durable-create-intent",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 335549297,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "durable-create-intent",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "created-before-spawn",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "created-before-spawn",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 329094138,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "created-before-spawn",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "spawned-before-attach",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "spawned-before-attach",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 313360152,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "spawned-before-attach",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "attached-before-prepare",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "attached-before-prepare",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 371747939,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "attached-before-prepare",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "policy-ready-before-intent",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "policy-ready-before-intent",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 271723236,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "policy-ready-before-intent",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "durable-exec-intent",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "durable-exec-intent",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 351647192,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "durable-exec-intent",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "exec-sent-before-running",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "exec-sent-before-running",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 354807505,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "exec-sent-before-running",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "running-hold-ready",
+          "journal_state": "RUNNING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "running-hold-ready",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 357384129,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "running-hold-ready",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "quiescent-export",
+          "journal_state": "EXPORTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "quiescent-export",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 376240055,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "quiescent-export",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "bundle-before-receipt",
+          "journal_state": "EXPORTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "bundle-before-receipt",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 317614620,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "bundle-before-receipt",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": true,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "quiescent-export",
+          "journal_state": "EXPORTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": true,
+          "case": "deterministic_recovery",
+          "checkpoint": "quiescent-export",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 337177754,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "quiescent-export",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": true,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "bundle-before-receipt",
+          "journal_state": "EXPORTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": true,
+          "case": "deterministic_recovery",
+          "checkpoint": "bundle-before-receipt",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 292402625,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "bundle-before-receipt",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "deterministic_recovery_matrix",
+          "deterministic_cases": 12,
+          "status": "PASS"
+        }
+      ],
+      "category": "recovery-matrix",
+      "duration_seconds": 17.583209594000436,
+      "end_utc": "2026-11-24T17:45:29.819390+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "7ce6462c62730278726a3a72ebdeaaa8055740f9e1cefa68bfea79fac6a5db8f"
+      },
+      "run_id": "20261124T174512-1dfe222d194f",
+      "source_sha256_after": "f7595bf20a5542bd71f8141f8ca5571e433b1da89db90a0ea1ebf5b69d9fc988",
+      "source_sha256_before": "f7595bf20a5542bd71f8141f8ca5571e433b1da89db90a0ea1ebf5b69d9fc988",
+      "start_utc": "2026-11-24T17:45:12.236206+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "created-before-spawn",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "created-before-spawn",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 359938249,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "created-before-spawn",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        }
+      ],
+      "category": "recovery-positive",
+      "duration_seconds": 1.4477772949994687,
+      "end_utc": "2026-11-24T17:45:31.273765+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "26775634e64b4aa41a4bf6ca60a9d087b9126c81ea3a17211595f72615282f44"
+      },
+      "run_id": "20261124T174529-e1a81e21c07e",
+      "source_sha256_after": "f7595bf20a5542bd71f8141f8ca5571e433b1da89db90a0ea1ebf5b69d9fc988",
+      "source_sha256_before": "f7595bf20a5542bd71f8141f8ca5571e433b1da89db90a0ea1ebf5b69d9fc988",
+      "start_utc": "2026-11-24T17:45:29.825985+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "created-before-spawn",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "case": "deterministic_recovery",
+          "checkpoint": "created-before-spawn",
+          "status": "FAIL"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "created-before-spawn",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        }
+      ],
+      "category": "recovery-mutant",
+      "duration_seconds": 9.068524489999618,
+      "end_utc": "2026-11-24T17:45:45.565814+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "af153326401fa3ad2034d234a3af2e74465e82b194e2f8c388195ba3ea7652f8"
+      },
+      "run_id": "20261124T174536-c567c6f0dcf0",
+      "source_sha256_after": "c2009c9bdd5607936f608660a8b89a4fb09109dfa1afaabfbac6819963da880e",
+      "source_sha256_before": "c2009c9bdd5607936f608660a8b89a4fb09109dfa1afaabfbac6819963da880e",
+      "start_utc": "2026-11-24T17:45:36.497290+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "created-before-spawn",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "created-before-spawn",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 357339670,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "created-before-spawn",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        }
+      ],
+      "category": "recovery-restored",
+      "duration_seconds": 1.4661983780006267,
+      "end_utc": "2026-11-24T17:45:52.356737+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "aecd1eb9809405ec20798daf2bd33f81293b93fd1dde4dbb2951a73b524776cc"
+      },
+      "run_id": "20261124T174550-6b0fadda236e",
+      "source_sha256_after": "f7595bf20a5542bd71f8141f8ca5571e433b1da89db90a0ea1ebf5b69d9fc988",
+      "source_sha256_before": "f7595bf20a5542bd71f8141f8ca5571e433b1da89db90a0ea1ebf5b69d9fc988",
+      "start_utc": "2026-11-24T17:45:50.890568+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [],
+      "category": "recovery-matrix",
+      "duration_seconds": 0.06375734500034014,
+      "end_utc": "2026-11-25T07:05:54.297256+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "4509d9e317aa8750c59530e03eeb1f633433c80a9bb5adf396ec176686e9efbe",
+        "stdout": "0a9dc19c719c7812781a41b2d893dfdd6b6ee44ba9cd00e5535cf9bd26b5f35d"
+      },
+      "run_id": "20261125T070554-3e2500049efe",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T07:05:54.233495+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "durable-create-intent",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "durable-create-intent",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 294518515,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "durable-create-intent",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "created-before-spawn",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "created-before-spawn",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 359259547,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "created-before-spawn",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "spawned-before-attach",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "spawned-before-attach",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 355266667,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "spawned-before-attach",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "attached-before-prepare",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "attached-before-prepare",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 357900854,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "attached-before-prepare",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "policy-ready-before-intent",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "policy-ready-before-intent",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 357700201,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "policy-ready-before-intent",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "durable-exec-intent",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "durable-exec-intent",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 332265969,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "durable-exec-intent",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "exec-sent-before-running",
+          "journal_state": "STARTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "exec-sent-before-running",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 356581531,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "exec-sent-before-running",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "running-hold-ready",
+          "journal_state": "RUNNING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "running-hold-ready",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 333953100,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "running-hold-ready",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "quiescent-export",
+          "journal_state": "EXPORTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "quiescent-export",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 317634940,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "quiescent-export",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "bundle-before-receipt",
+          "journal_state": "EXPORTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": false,
+          "case": "deterministic_recovery",
+          "checkpoint": "bundle-before-receipt",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 403748072,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "bundle-before-receipt",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": true,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "quiescent-export",
+          "journal_state": "EXPORTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": true,
+          "case": "deterministic_recovery",
+          "checkpoint": "quiescent-export",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 317743375,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "quiescent-export",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "cancelled": true,
+          "case": "crash_checkpoint_observed",
+          "checkpoint": "bundle-before-receipt",
+          "journal_state": "EXPORTING",
+          "status": "PASS"
+        },
+        {
+          "cancelled": true,
+          "case": "deterministic_recovery",
+          "checkpoint": "bundle-before-receipt",
+          "conflict_cases": 2,
+          "prior_result_bytes_unchanged": true,
+          "recovery_ns": 301027737,
+          "replay_observations": 16,
+          "retry_identity_preserved": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "checkpoint": "bundle-before-receipt",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "deterministic_recovery_matrix",
+          "deterministic_cases": 12,
+          "status": "PASS"
+        }
+      ],
+      "category": "recovery-matrix",
+      "duration_seconds": 17.39677541599667,
+      "end_utc": "2026-11-25T07:12:16.523866+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "901703774e80e99987bc27ed48bea99f0f3de968a9fd57990b7f84abe1bc94a8"
+      },
+      "run_id": "20261125T071159-a8aac8fcb0bc",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T07:11:59.127107+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "stream_buffer_bound",
+          "discarded_bytes_per_stream": 73219,
+          "per_stream_bytes": 1048576,
+          "status": "PASS"
+        }
+      ],
+      "category": "stream-baseline",
+      "duration_seconds": 0.002821971998855588,
+      "end_utc": "2026-11-24T17:48:19.640619+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "4423c55e6bd58f402f5ad49408e08fc875052bf80f6587b41377999710119f6d"
+      },
+      "run_id": "20261124T174819-9f76adf8394a",
+      "source_sha256_after": "2b91cc5a12d7257480be339f47bfcff2a943b3ad52b785b32fc0e68fceb79fb2",
+      "source_sha256_before": "2b91cc5a12d7257480be339f47bfcff2a943b3ad52b785b32fc0e68fceb79fb2",
+      "start_utc": "2026-11-24T17:48:19.637788+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 11,
+          "status": "PASS"
+        },
+        {
+          "case": "bounded_stream_release",
+          "elapsed_ms": 1404,
+          "event_page_count": 10,
+          "reason": "STREAM_LIMIT",
+          "status": "PASS",
+          "stderr_bytes": 1048576,
+          "stderr_truncated": true,
+          "stdout_bytes": 1048576,
+          "stdout_truncated": true
+        },
+        {
+          "case": "resource_teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "resource_integration",
+          "passed_cases": 3,
+          "status": "PASS"
+        },
+        {
+          "case": "event_ring_rollover",
+          "retained_events": 1024,
+          "stale_cursor_truncated": true,
+          "status": "PASS",
+          "synthetic_events_emitted": 1027
+        }
+      ],
+      "category": "stream-native-flood",
+      "duration_seconds": 2.244727822999266,
+      "end_utc": "2026-11-24T17:48:21.891313+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "5410feb7679f59436002252649bbac659665ad877e3f190eb780221238133f05"
+      },
+      "run_id": "20261124T174819-36446b419d32",
+      "source_sha256_after": "2b91cc5a12d7257480be339f47bfcff2a943b3ad52b785b32fc0e68fceb79fb2",
+      "source_sha256_before": "2b91cc5a12d7257480be339f47bfcff2a943b3ad52b785b32fc0e68fceb79fb2",
+      "start_utc": "2026-11-24T17:48:19.646598+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "stream-negative",
+      "duration_seconds": 0.0024080429993773578,
+      "end_utc": "2026-11-24T17:48:23.667897+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "459ca7644018c5f581d8aacc05b72d0c83a856154d0a2cff99decd7485fa380c",
+        "stdout": "68842beb491546a6ab67a5efee18fef0254097de8ef592167599bdf11d4f788a"
+      },
+      "run_id": "20261124T174823-0285c63bab5a",
+      "source_sha256_after": "6e668f870a8e00fc69a4989808527222072a4accb36c32cc54bcf5b1b32ac1a4",
+      "source_sha256_before": "6e668f870a8e00fc69a4989808527222072a4accb36c32cc54bcf5b1b32ac1a4",
+      "start_utc": "2026-11-24T17:48:23.665483+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "case": "stream_buffer_bound",
+          "discarded_bytes_per_stream": 73219,
+          "per_stream_bytes": 1048576,
+          "status": "PASS"
+        }
+      ],
+      "category": "stream-restored",
+      "duration_seconds": 0.002774770999167231,
+      "end_utc": "2026-11-24T17:48:25.368946+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "4423c55e6bd58f402f5ad49408e08fc875052bf80f6587b41377999710119f6d"
+      },
+      "run_id": "20261124T174825-46fc23faf05f",
+      "source_sha256_after": "2b91cc5a12d7257480be339f47bfcff2a943b3ad52b785b32fc0e68fceb79fb2",
+      "source_sha256_before": "2b91cc5a12d7257480be339f47bfcff2a943b3ad52b785b32fc0e68fceb79fb2",
+      "start_utc": "2026-11-24T17:48:25.366164+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "stream_buffer_bound",
+          "discarded_bytes_per_stream": 73219,
+          "per_stream_bytes": 1048576,
+          "status": "PASS"
+        }
+      ],
+      "category": "stream-baseline",
+      "duration_seconds": 0.003359884998644702,
+      "end_utc": "2026-11-25T07:12:45.046397+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "5a6acc204865ba336ffa69329400085f96215cc38eaa51a82ed69c2ffd4d8138"
+      },
+      "run_id": "20261125T071245-12fcedfaabc6",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T07:12:45.043030+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 11,
+          "status": "PASS"
+        },
+        {
+          "case": "bounded_stream_release",
+          "elapsed_ms": 1375,
+          "event_page_count": 10,
+          "reason": "STREAM_LIMIT",
+          "status": "PASS",
+          "stderr_bytes": 1048576,
+          "stderr_truncated": true,
+          "stdout_bytes": 1048576,
+          "stdout_truncated": true
+        },
+        {
+          "case": "resource_teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "resource_integration",
+          "passed_cases": 3,
+          "status": "PASS"
+        },
+        {
+          "case": "event_ring_rollover",
+          "retained_events": 1024,
+          "stale_cursor_truncated": true,
+          "status": "PASS",
+          "synthetic_events_emitted": 1027
+        }
+      ],
+      "category": "stream-native-flood",
+      "duration_seconds": 2.152801289004856,
+      "end_utc": "2026-11-25T07:12:47.205072+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "b77cc48f4895806b9f4d9def7744d98cf8ddcade09b5fbca58cfcf95d0b09000"
+      },
+      "run_id": "20261125T071245-27ff16d45f3b",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T07:12:45.052270+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "stream-negative",
+      "duration_seconds": 0.0023479509982280433,
+      "end_utc": "2026-11-25T07:12:49.106317+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "7cb5d483867d81c5e92173508e6d20787317da6aa6b2efde2594348e7654186c",
+        "stdout": "e339c6a3c67f32c1874fa7a5e73f861005b78f602d8ab9154c4b830470cea64e"
+      },
+      "run_id": "20261125T071249-d9a0183e194e",
+      "source_sha256_after": "6a7f5224ccd8c3591a5dd16a71971d34ebb2dc4a5a8fd8f5dd386bbb1d4705e1",
+      "source_sha256_before": "6a7f5224ccd8c3591a5dd16a71971d34ebb2dc4a5a8fd8f5dd386bbb1d4705e1",
+      "start_utc": "2026-11-25T07:12:49.103963+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "case": "stream_buffer_bound",
+          "discarded_bytes_per_stream": 73219,
+          "per_stream_bytes": 1048576,
+          "status": "PASS"
+        }
+      ],
+      "category": "stream-restored",
+      "duration_seconds": 0.004432381996593904,
+      "end_utc": "2026-11-25T07:12:51.066870+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "5a6acc204865ba336ffa69329400085f96215cc38eaa51a82ed69c2ffd4d8138"
+      },
+      "run_id": "20261125T071251-69ae0a8eb84b",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T07:12:51.062433+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "control-baseline",
+      "duration_seconds": 0.4159742310002912,
+      "end_utc": "2026-11-23T17:31:58.440899+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": "c95f3020494c3d2be0ac8d8d406a428c1666371b",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "a91503e9fd43d9a2e9532c66772f85b230d434b32d9bc82c146628391584823a"
+      },
+      "run_id": "20261123T173158-5e5de6d85808",
+      "source_sha256_after": "52bb1a3d9ee0d9d27b55207cb8b8fa17f5a6508b9766866be9a0480e4417ffbc",
+      "source_sha256_before": "52bb1a3d9ee0d9d27b55207cb8b8fa17f5a6508b9766866be9a0480e4417ffbc",
+      "start_utc": "2026-11-23T17:31:58.024700+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "control-forbidden-path",
+      "duration_seconds": 0.03822327200032305,
+      "end_utc": "2026-11-23T17:31:58.493002+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": "c95f3020494c3d2be0ac8d8d406a428c1666371b",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "eec3517653037d8918e54f1840b3f101f2c04719522b6703b6585858fe8c98e0"
+      },
+      "run_id": "20261123T173158-89983016d639",
+      "source_sha256_after": "f19ce266a89c92352f3ba24ef579bc48deedee1ac9b4ca352c970f8fe10728e9",
+      "source_sha256_before": "f19ce266a89c92352f3ba24ef579bc48deedee1ac9b4ca352c970f8fe10728e9",
+      "start_utc": "2026-11-23T17:31:58.454773+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "control-missing-fixture",
+      "duration_seconds": 0.04272876300092321,
+      "end_utc": "2026-11-23T17:31:58.551729+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": "c95f3020494c3d2be0ac8d8d406a428c1666371b",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "14042f06e2ae6c2b84bae00683591b2ada1afe7063a1136e5211f8f48f5194de"
+      },
+      "run_id": "20261123T173158-1930052bb387",
+      "source_sha256_after": "58daac4347fb86a520f12e2386cfcd3a49b6ab595cfc4e40a5bca3333336c830",
+      "source_sha256_before": "58daac4347fb86a520f12e2386cfcd3a49b6ab595cfc4e40a5bca3333336c830",
+      "start_utc": "2026-11-23T17:31:58.509003+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "control-restored",
+      "duration_seconds": 0.44235565300004964,
+      "end_utc": "2026-11-23T17:31:59.014448+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": "c95f3020494c3d2be0ac8d8d406a428c1666371b",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "a91503e9fd43d9a2e9532c66772f85b230d434b32d9bc82c146628391584823a"
+      },
+      "run_id": "20261123T173158-6f1fa2c75f5c",
+      "source_sha256_after": "52bb1a3d9ee0d9d27b55207cb8b8fa17f5a6508b9766866be9a0480e4417ffbc",
+      "source_sha256_before": "52bb1a3d9ee0d9d27b55207cb8b8fa17f5a6508b9766866be9a0480e4417ffbc",
+      "start_utc": "2026-11-23T17:31:58.572094+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "release-license-inventory",
+      "duration_seconds": 0.14792845099873375,
+      "end_utc": "2026-11-23T17:31:59.692877+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": "c95f3020494c3d2be0ac8d8d406a428c1666371b",
+      "licenses": {
+        "cargo_lock_sha256": "3481e009a897a02a048644acfdb561358ac55ef7a9df269e639c367580383ba2",
+        "components": 38,
+        "missing_declarations": 0
+      },
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "b666a9e81a8610e1537bc7188038a9a78824c9b104d93734191f0ca43d91fd05"
+      },
+      "run_id": "20261123T173159-b784f50376d2",
+      "source_sha256_after": "52bb1a3d9ee0d9d27b55207cb8b8fa17f5a6508b9766866be9a0480e4417ffbc",
+      "source_sha256_before": "52bb1a3d9ee0d9d27b55207cb8b8fa17f5a6508b9766866be9a0480e4417ffbc",
+      "start_utc": "2026-11-23T17:31:59.544702+00:00",
       "status": "PASS"
     }
   ],

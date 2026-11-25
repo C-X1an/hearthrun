@@ -9,7 +9,8 @@
 
 /* Approved local synthetic B-03 workloads only. No caller-selected paths,
  * commands, sizes or network operations. Maximum lifetime is eight seconds,
- * maximum descendants two (one short-lived), and each stream stays <512 KiB.
+ * maximum descendants two (one short-lived). The output loop is paced for
+ * a cancellation observation before the runtime's per-stream cap.
  * The retained /out marker FD lets the host prove actual fixture readiness
  * through /proc/PID/fd without reading guest paths or changing the sandbox. */
 static int64_t now_ns(void) {

@@ -43,6 +43,20 @@ pub struct LaunchInputs<'a> {
     pub digest: &'a str,
     pub argv: &'a [String],
     pub abi: u32,
+    #[cfg(all(test, feature = "native-verification"))]
+    pub job_id: &'a str,
+    #[cfg(all(test, feature = "native-verification"))]
+    pub request_id: &'a str,
+}
+
+/// A bounded delay for one test-owned job. This code is absent from the supervisor binary.
+#[cfg(all(test, feature = "native-verification"))]
+#[derive(PartialEq, Eq)]
+pub(crate) enum CleanupPause {
+    None,
+    Stop,
+    Reap,
+    Remove,
 }
 
 pub struct Native {
@@ -62,6 +76,8 @@ pub struct Native {
     group_removed: bool,
     result: Option<ExitStatus>,
     launcher_result: Option<ExitStatus>,
+    #[cfg(all(test, feature = "native-verification"))]
+    cleanup_pause: CleanupPause,
     pub stdout: StreamOutput,
     pub stderr: StreamOutput,
 }
@@ -85,6 +101,8 @@ impl Native {
             group_removed: false,
             result: None,
             launcher_result: None,
+            #[cfg(all(test, feature = "native-verification"))]
+            cleanup_pause: CleanupPause::None,
             stdout: StreamOutput::default(),
             stderr: StreamOutput::default(),
         })
@@ -132,7 +150,21 @@ impl Native {
                 .ok_or_else(|| invalid("missing stderr pipe"))?,
         )?;
         self.streams_safe = true;
+        #[cfg(all(test, feature = "native-verification"))]
+        crate::crash_checkpoint::hit(
+            "spawned-before-attach",
+            inputs.job_id,
+            inputs.request_id,
+            serde_json::json!({"native":self.crash_witness()?}),
+        )?;
         self.group.place_launcher(child.id())?;
+        #[cfg(all(test, feature = "native-verification"))]
+        crate::crash_checkpoint::hit(
+            "attached-before-prepare",
+            inputs.job_id,
+            inputs.request_id,
+            serde_json::json!({"native":self.crash_witness()?}),
+        )?;
         wire::send(
             self.control.as_ref().expect("control retained"),
             &self.nonce,
@@ -143,6 +175,22 @@ impl Native {
                 inputs.tree.as_fd(),
                 inputs.scratch.as_fd(),
             ],
+        )
+    }
+
+    #[cfg(all(test, feature = "native-verification"))]
+    pub(crate) fn crash_witness(&self) -> io::Result<serde_json::Value> {
+        let populated = if self.group_removed {
+            None
+        } else {
+            Some(self.group.populated()?)
+        };
+        Ok(
+            serde_json::json!({"group_name":self.group.name(),"group_removed":self.group_removed,
+            "populated":populated,"launcher_pid":self.child.as_ref().map(Child::id),
+            "launcher_reaped":self.launcher_reaped(),"ready":self.ready_pid.is_some(),"released":self.released,
+            "output_retained":self.output.is_some(),"control_retained":self.control.is_some(),
+            "stdout_hold_ready":self.stdout.bytes == b"detached-ready\n"}),
         )
     }
 
@@ -263,6 +311,10 @@ impl Native {
     }
 
     pub fn stop(&mut self) -> io::Result<()> {
+        #[cfg(all(test, feature = "native-verification"))]
+        if self.cleanup_pause == CleanupPause::Stop {
+            return Ok(());
+        }
         self.control = None;
         let group = if self.group_removed {
             Ok(())
@@ -293,7 +345,10 @@ impl Native {
 
     pub fn observe(&mut self) -> io::Result<()> {
         if let Some(child) = self.child.as_mut() {
-            if self.launcher_result.is_none() {
+            let should_reap = self.launcher_result.is_none();
+            #[cfg(all(test, feature = "native-verification"))]
+            let should_reap = should_reap && self.cleanup_pause != CleanupPause::Reap;
+            if should_reap {
                 self.launcher_result = child.try_wait()?;
             }
             if !self.streams_safe {
@@ -315,6 +370,21 @@ impl Native {
         Ok(())
     }
 
+    #[cfg(all(test, feature = "native-verification"))]
+    pub(crate) fn pause_cleanup(&mut self, pause: CleanupPause) -> Option<u32> {
+        self.cleanup_pause = pause;
+        self.child.as_ref().map(Child::id)
+    }
+
+    #[cfg(all(test, feature = "native-verification"))]
+    pub(crate) fn output_identity(&self) -> io::Result<Option<(u64, u64)>> {
+        self.output
+            .as_ref()
+            .map(|output| rustix::fs::fstat(output).map(|stat| (stat.st_dev, stat.st_ino)))
+            .transpose()
+            .map_err(io::Error::from)
+    }
+
     pub fn launcher_reaped(&self) -> bool {
         self.child.is_none() || self.launcher_result.is_some()
     }
@@ -328,12 +398,12 @@ impl Native {
     pub fn quiescent(&self) -> io::Result<bool> {
         Ok(self.watchdog.is_none()
             && self.launcher_reaped()
-            && (self.group_removed || !self.group.populated()?)
-            && (self.child.is_none() || (self.stdout.eof && self.stderr.eof)))
+            && (self.child.is_none() || (self.stdout.eof && self.stderr.eof))
+            && (self.group_removed || self.group.empty_for_removal()?))
     }
 
     pub fn take_quiescent_output(&mut self) -> io::Result<Option<OwnedFd>> {
-        if !self.quiescent()? {
+        if !self.group_removed || !self.quiescent()? {
             return Err(io::Error::new(
                 io::ErrorKind::WouldBlock,
                 "cleanup is pending",
@@ -342,12 +412,15 @@ impl Native {
         Ok(self.output.take())
     }
 
-    pub fn remove_empty_group(&mut self) -> io::Result<()> {
-        if !self.group_removed {
-            self.group.remove_empty()?;
-            self.group_removed = true;
+    pub fn try_remove_empty_group(&mut self) -> io::Result<bool> {
+        #[cfg(all(test, feature = "native-verification"))]
+        if self.cleanup_pause == CleanupPause::Remove {
+            return Ok(false);
         }
-        Ok(())
+        if !self.group_removed {
+            self.group_removed = self.group.try_remove_empty()?;
+        }
+        Ok(self.group_removed)
     }
 }
 

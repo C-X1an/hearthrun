@@ -343,11 +343,16 @@ impl JobGroup {
         Ok(parse_pid_list(&read_control(&self.fd, "cgroup.procs")?)?.contains(&pid))
     }
 
+    /// The kernel exposes these cleanup observations separately. A transition
+    /// can leave one outstanding after `populated` first becomes zero.
+    pub fn empty_for_removal(&self) -> io::Result<bool> {
+        Ok(!self.populated()?
+            && read_decimal(&self.fd, "pids.current")? == 0
+            && read_control(&self.fd, "cgroup.procs")?.is_empty())
+    }
+
     fn require_empty(&self) -> io::Result<()> {
-        if self.populated()?
-            || read_decimal(&self.fd, "pids.current")? != 0
-            || !read_control(&self.fd, "cgroup.procs")?.is_empty()
-        {
+        if !self.empty_for_removal()? {
             return Err(io::Error::new(
                 io::ErrorKind::WouldBlock,
                 "job cgroup remains populated; cleanup pending",
@@ -372,14 +377,21 @@ impl JobGroup {
 
     /// Only remove the exact owned, actually empty leaf. The caller separately
     /// proves launcher reaping and publication before claiming terminal status.
-    /// Takes &mut self so an error retains this lease for retry/diagnosis.
-    pub fn remove_empty(&mut self) -> io::Result<()> {
+    /// Returns false while the leaf is nonempty or the kernel defers removal.
+    /// Ownership and observation errors remain failures.
+    pub fn try_remove_empty(&mut self) -> io::Result<bool> {
         self.validate_leaf()?;
-        self.require_empty()?;
-        fs::unlinkat(&self.root.fd, self.name.as_str(), AtFlags::REMOVEDIR)?;
+        if !self.empty_for_removal()? {
+            return Ok(false);
+        }
+        match fs::unlinkat(&self.root.fd, self.name.as_str(), AtFlags::REMOVEDIR) {
+            Ok(()) => {}
+            Err(rustix::io::Errno::BUSY) => return Ok(false),
+            Err(error) => return Err(error.into()),
+        }
         self.configured = false;
         self.fresh = false;
-        Ok(())
+        Ok(true)
     }
 
     pub fn counters(&self) -> io::Result<ResourceCounters> {

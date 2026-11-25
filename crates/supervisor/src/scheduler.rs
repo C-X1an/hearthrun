@@ -462,6 +462,8 @@ impl Scheduler {
             .root
             .as_ref()
             .ok_or_else(|| fail("native host not admitted"))?;
+        #[cfg(all(test, feature = "native-verification"))]
+        self.checkpoint("durable-create-intent", id, None)?;
         let group = root.create(self.store.instance_id(), id)?;
         let mut job = Active {
             id: id.to_owned(),
@@ -471,6 +473,8 @@ impl Scheduler {
             stop: None,
             publication: None,
         };
+        #[cfg(all(test, feature = "native-verification"))]
+        self.checkpoint("created-before-spawn", id, Some(&job.native))?;
         let started = job.native.spawn(LaunchInputs {
             binary: &self.cfg.launcher,
             executable: &profile.image,
@@ -479,6 +483,10 @@ impl Scheduler {
             digest: &record.executable_digest,
             argv: &submission.argv,
             abi: self.abi,
+            #[cfg(all(test, feature = "native-verification"))]
+            job_id: id,
+            #[cfg(all(test, feature = "native-verification"))]
+            request_id: &record.request_id,
         });
         let stage = if let Err(error) = started {
             eprintln!("native startup failed: {error}");
@@ -578,10 +586,9 @@ impl Scheduler {
             }
             let result: Result<_> = (|| {
                 job.native.observe()?;
-                if !job.native.quiescent()? {
+                if !job.native.quiescent()? || !job.native.try_remove_empty_group()? {
                     return Ok(false);
                 }
-                job.native.remove_empty_group()?;
                 self.remove_scratch(&job.id)?;
                 Ok(true)
             })();
@@ -673,11 +680,19 @@ impl Scheduler {
                 self.begin_publication(job, (state, Some(reason)), None)?;
                 return Ok(false);
             }
+            #[cfg(all(test, feature = "native-verification"))]
+            self.checkpoint("bundle-before-receipt", &job.id, Some(&job.native))?;
             self.record_result(published)?;
             return Ok(true);
         }
         let timed_out = job.native.check_deadline()?;
         job.native.observe()?;
+        #[cfg(all(test, feature = "native-verification"))]
+        if self.records[&job.id].state == "RUNNING"
+            && job.native.stdout.bytes == b"detached-ready\n"
+        {
+            self.checkpoint("running-hold-ready", &job.id, Some(&job.native))?;
+        }
         if job.stop.is_none() {
             if timed_out
                 || (job
@@ -700,7 +715,11 @@ impl Scheduler {
                         fail("execution gate closed while durable storage is uncertain").into(),
                     );
                 }
+                #[cfg(all(test, feature = "native-verification"))]
+                self.checkpoint("policy-ready-before-intent", &job.id, Some(&job.native))?;
                 self.transition(&job.id, |next| next.launch_stage = "EXEC_RELEASED".into())?;
+                #[cfg(all(test, feature = "native-verification"))]
+                self.checkpoint("durable-exec-intent", &job.id, Some(&job.native))?;
                 if !self.storage_certain() {
                     return Err(fail(
                         "execution intent committed while durable storage became uncertain",
@@ -708,6 +727,8 @@ impl Scheduler {
                     .into());
                 }
                 job.deadline = Some(job.native.release(job.wall)?);
+                #[cfg(all(test, feature = "native-verification"))]
+                self.checkpoint("exec-sent-before-running", &job.id, Some(&job.native))?;
                 let started = self.elapsed_origin.elapsed().as_nanos() as u64;
                 self.transition(&job.id, |next| {
                     next.state = "RUNNING".into();
@@ -749,6 +770,11 @@ impl Scheduler {
         } else {
             ("FAILED", Some("EXECUTION_FAILED"))
         };
+        // Keep the owned output descriptor and active slot over a transient
+        // removal refusal. The kernel must remove the exact leaf first.
+        if !job.native.try_remove_empty_group()? {
+            return Ok(false);
+        }
         let output = job.native.take_quiescent_output()?;
         let output =
             if state == "SUCCEEDED" {
@@ -759,9 +785,10 @@ impl Scheduler {
                 drop(output);
                 None
             };
-        job.native.remove_empty_group()?;
         self.remove_scratch(&job.id)?;
         self.exporting(&job.id, exit)?;
+        #[cfg(all(test, feature = "native-verification"))]
+        self.checkpoint("quiescent-export", &job.id, Some(&job.native))?;
         self.begin_publication(job, (state, reason), output)?;
         Ok(false)
     }
@@ -837,21 +864,20 @@ impl Scheduler {
             }
             let deadline = Instant::now() + Duration::from_secs(2);
             for (id, mut owned) in groups {
-                let result: Result<()> = (|| {
-                    while owned.populated()? {
-                        if Instant::now() >= deadline {
-                            if self.records[&id].state != "EXPORTING" {
-                                self.transition(&id, |next| next.state = "CLEANUP_PENDING".into())?;
-                            }
-                            return Err(fail(
-                                "CLEANUP_PENDING: owned recovery cgroup remains populated",
-                            )
-                            .into());
-                        }
-                        std::thread::sleep(Duration::from_millis(10));
+                let result: Result<()> = (|| loop {
+                    if owned.try_remove_empty()? {
+                        return Ok(());
                     }
-                    owned.remove_empty()?;
-                    Ok(())
+                    if Instant::now() >= deadline {
+                        if self.records[&id].state != "EXPORTING" {
+                            self.transition(&id, |next| next.state = "CLEANUP_PENDING".into())?;
+                        }
+                        return Err(fail(
+                            "CLEANUP_PENDING: owned recovery cgroup remains populated",
+                        )
+                        .into());
+                    }
+                    std::thread::sleep(Duration::from_millis(10));
                 })();
                 if let Err(error) = result {
                     first_error.get_or_insert(error);
@@ -886,6 +912,20 @@ impl Scheduler {
             )?;
             self.remove_scratch(&id)?;
         }
+        Ok(())
+    }
+
+    #[cfg(all(test, feature = "native-verification"))]
+    fn checkpoint(&self, point: &str, id: &str, native: Option<&Native>) -> Result<()> {
+        let record = &self.records[id];
+        crate::crash_checkpoint::hit(
+            point,
+            id,
+            &record.request_id,
+            json!({"journal_state":record.state,"launch_stage":record.launch_stage,
+                "cleanup_confirmed":record.cleanup_confirmed,
+                "native":native.map(Native::crash_witness).transpose()?}),
+        )?;
         Ok(())
     }
 
@@ -1085,3 +1125,15 @@ fn probe(cfg: &Config, scratch: &Path) -> Result<Value> {
     }
     Ok(report)
 }
+
+#[cfg(all(test, feature = "native-verification"))]
+#[path = "../../../tests/acceptance_locked/terminal.rs"]
+mod terminal;
+
+#[cfg(all(test, feature = "native-verification"))]
+#[path = "../../../tests/acceptance_locked/recovery_child.rs"]
+mod recovery_child;
+
+#[cfg(all(test, feature = "native-verification"))]
+#[path = "../../../tests/acceptance_locked/streams.rs"]
+mod streams;

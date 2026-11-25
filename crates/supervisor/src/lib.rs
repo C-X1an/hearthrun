@@ -10,3 +10,6 @@ pub mod scheduler;
 pub mod server;
 pub mod staging;
 pub mod store;
+
+#[cfg(all(test, feature = "native-verification"))]
+mod crash_checkpoint;

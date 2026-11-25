@@ -34,6 +34,11 @@ name = "idempotency_acceptance"
 path = "../../tests/acceptance_locked/idempotency.rs"
 required-features = ["native-verification"]
 
+[[test]]
+name = "recovery_acceptance"
+path = "../../tests/acceptance_locked/recovery.rs"
+required-features = ["native-verification"]
+
 [dependencies]
 hearthrun-domain.workspace = true
 hearthrun-launcher.workspace = true

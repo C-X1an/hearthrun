@@ -39,3 +39,9 @@ The completed B-03 campaign verified 3,000 cancellations across five seeds, with
 | Output | 4 | 500 | 46.48 ms | 58 |
 
 These are client-observed intervals on the measured host. Exact server receipt and kill-issuance times remain open. The earlier full attempt stopped on a denied descriptor observation. Its failed and unrun rows remain in the private archive. The verified rerun counted denied observations and required a positive readiness witness within the same deadline.
+
+## Native resource limits and admission
+
+The repaired B-04 campaign passed 30 trials each for memory, PIDs, CPU and admission. The CPU windows ranged from 10.251 to 10.270 seconds at 0.996 to 1.004 cores, with throttling counters advancing in every window. Kernel OOM-kill counts advanced in all 30 memory trials and PID-limit events advanced in all 30 PID trials. Every admission trial held four active jobs and sixteen queued jobs, refused the next request with `QUEUE_FULL`, and verified queued starts in order. [Captured B-04 evidence](verification/benchmark-capacity-observed.json)
+
+Across 3,468 supervisor samples, observed RSS ranged from 3,215,360 to 5,607,424 bytes and descriptor counts ranged from 11 to 44. These samples cover the named supervisor processes. The first full campaign preserved 14 passes, one cleanup failure and 105 unrun trials. The repaired campaign is a separate complete run.

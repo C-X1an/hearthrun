@@ -47,6 +47,21 @@ def counters(raw: bytes) -> dict[str, int]:
     return result
 
 
+def assert_stream_escapes_html(stdout: bytes, stderr: bytes) -> None:
+    renderer_path = Path(__file__).resolve().parents[2] / "scripts" / "report.py"
+    spec = importlib.util.spec_from_file_location("hearthrun_retained_stream_report", renderer_path)
+    native.require(spec is not None and spec.loader is not None, "static report renderer unavailable")
+    renderer = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(renderer)
+    for name, stream in (("stdout", stdout), ("stderr", stderr)):
+        excerpt = stream[:512].decode("ascii")
+        native.require("\x1b[31m" in excerpt, f"{name} lacks the retained terminal-control marker")
+        report = renderer.render({"retained_excerpt": excerpt}, illustrative=True)
+        native.require("&lt;script&gt;fixture&lt;/script&gt; &amp;" in report and "<script>" not in report.lower()
+                       and r"\u001b[31m" in report and "\x1b" not in report,
+                       f"{name} retained bytes were not escaped in the static report")
+
+
 class ResourceSuite(native.Harness):
     def __init__(self, args: argparse.Namespace):
         super().__init__(args)
@@ -59,7 +74,7 @@ class ResourceSuite(native.Harness):
         native.require(b"\x1b" not in result[1] + result[2], "NO_COLOR/TERM=dumb command emitted terminal escape bytes")
         return result
 
-    def exercise(self) -> None:
+    def prepare(self) -> None:
         code, stdout, _ = self.command([str(self.bin_dir / "hearthrun-supervisor"), "install-profile", str(self.state), "example", str(self.fixture)])
         native.require(code == 0 and native.strict_json(stdout).get("profile_id") == "example", "approved synthetic resource profile installation failed")
         self.start()
@@ -68,6 +83,8 @@ class ResourceSuite(native.Harness):
         native.write_synthetic(source, b'{"value":1}\n')
         self.stage = self.cli("stage", f"data.ndjson={source}").get("stage_id")
         native.require(isinstance(self.stage, str) and native.ID.fullmatch(self.stage) is not None, "stage lacks an actual identity")
+    def exercise(self) -> None:
+        self.prepare()
         self.case("standard_release_without_color", self.standard)
         self.case("cpu_exact_controls_and_ten_second_quota", self.cpu)
         self.case("pids_kernel_limit", lambda: self.kernel_limit("pids", "pids.events", "max"))
@@ -241,11 +258,12 @@ class ResourceSuite(native.Harness):
             native.require(b"synthetic <script>fixture</script> & " in data, f"{name} did not retain actual synthetic hostile stream prefix")
             if metadata[f"{name}_truncated"]:
                 native.require(len(data) == STREAM_LIMIT, f"{name} truncation does not correspond to its exact retained cap")
+        assert_stream_escapes_html(stdout, stderr)
         page = self.cli("events", job, "0", "100")
         native.require(isinstance(page.get("events"), list) and len(page["events"]) <= 100 and type(page.get("truncated")) is bool, "event page lacks bounded explicit truncation semantics")
         # This finite fixture does not generate 1025 events: bounded paging is
         # measured here; the full 1024-entry ring rollover gate remains separate.
-        observed = {"job_id": job, "controls": limits, "stdout_bytes": len(stdout), "stderr_bytes": len(stderr), "stdout_truncated": metadata["stdout_truncated"], "stderr_truncated": metadata["stderr_truncated"], "reason": "STREAM_LIMIT", "event_page_count": len(page["events"]), "ring_rollover": "NOT MEASURED by this finite fixture", "rendering": "CLI JSON escapes guest bytes; HTML report not exercised by this suite"}
+        observed = {"job_id": job, "controls": limits, "stdout_bytes": len(stdout), "stderr_bytes": len(stderr), "stdout_truncated": metadata["stdout_truncated"], "stderr_truncated": metadata["stderr_truncated"], "reason": "STREAM_LIMIT", "event_page_count": len(page["events"]), "ring_rollover": "NOT MEASURED by this finite fixture", "rendering": "CLI JSON; actual retained excerpts escaped in static report"}
         self.observations["cases"]["streams"] = observed
         return observed
 
@@ -260,6 +278,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     for flag in ("bin-dir", "doctor", "fixture", "cgroup-root", "work"):
         parser.add_argument(f"--{flag}", required=True)
+    parser.add_argument("--streams-only", action="store_true")
     args = parser.parse_args()
     def terminate(signum: int, _frame: Any) -> None:
         signal.signal(signum, signal.SIG_DFL)
@@ -270,7 +289,11 @@ def main() -> int:
     try:
         harness = ResourceSuite(args)
         harness.preflight()
-        harness.exercise()
+        if args.streams_only:
+            harness.prepare()
+            harness.case("bounded_stream_release", harness.streams)
+        else:
+            harness.exercise()
         code = 0
     except native.Blocked as error:
         native.emit("resource_integration", "BLOCKED", reason=str(error)[:1024])

@@ -1,0 +1,79 @@
+{
+  "admission": {
+    "active": 4,
+    "distinct_trials_rejected": 30,
+    "fifo_trials": 30,
+    "next_request_error": "QUEUE_FULL",
+    "queued": 16,
+    "single_slot_drain_ms": {
+      "max": 1659,
+      "min": 1249
+    },
+    "trials": 30
+  },
+  "analysis_run_id": "20261124T153930-d0b3d4a8acc9",
+  "archive": {
+    "bytes": 74733985,
+    "files": 368,
+    "manifest_sha256": "5f0ea57c5d67ae7bdd7479e1900f9a38392d222c13bb5fed8835c48f1982c5b2"
+  },
+  "attempts_sha256": "ac90a0863942254f3b742cc31163edf03f9d21560ff497451e4f2fd85cc6f0ed",
+  "benchmark": "B-04",
+  "cpu": {
+    "throttled_period_delta": {
+      "max": 103,
+      "min": 102
+    },
+    "throttled_usec_delta": {
+      "max": 10301381,
+      "min": 10194276
+    },
+    "used_cores": {
+      "max": 1.003906479154471,
+      "min": 0.9960215732551454
+    },
+    "wall_seconds": {
+      "max": 10.269718010000133,
+      "min": 10.250574344999904
+    }
+  },
+  "earlier_failed_campaign": "20261123T173807-03cce4e019f7",
+  "elapsed_seconds": 914.3381543140001,
+  "environment": {
+    "kernel": "6.18.58.1-microsoft-standard-WSL2",
+    "machine": "x86_64",
+    "python": "3.14.4",
+    "system": "Linux"
+  },
+  "memory_oom_kill_deltas": {
+    "1": 26,
+    "2": 2,
+    "3": 2
+  },
+  "pids_max_event_deltas": {
+    "1": 30
+  },
+  "run_id": "20261124T152415-5588fd64153e",
+  "samples_sha256": "b29c2189643b88cb197303dbd28f1918946161215ccd3388bd195c339afb953f",
+  "schema_version": 1,
+  "scope": "fixed native profiles on the recorded host; the RSS and FD bounds are sampled observations",
+  "source_sha256": "8ca79fc0297298f33e97ccfeb46ecb719c9be7b8578aff09b71cd839d27fe2e0",
+  "status": "PASS",
+  "supervisor": {
+    "fd_count": {
+      "max": 44,
+      "min": 11
+    },
+    "rss_bytes": {
+      "max": 5607424,
+      "min": 3215360
+    }
+  },
+  "supervisor_sample_count": 3468,
+  "trials_per_profile": {
+    "admission": 30,
+    "cpu": 30,
+    "memory": 30,
+    "pids": 30
+  }
+}

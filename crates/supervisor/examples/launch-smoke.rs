@@ -47,8 +47,7 @@ fn exercise(root: &JobsRoot, fixture: &Fixture<'_>, case: &str, args: &[String])
             argv: args,
             abi,
         })?;
-        run_case(&mut job, case)?;
-        check_output(&mut job, case)
+        run_case(&mut job, case)
     })();
     if result.is_err() {
         eprintln!(
@@ -58,13 +57,16 @@ fn exercise(root: &JobsRoot, fixture: &Fixture<'_>, case: &str, args: &[String])
         job.stop()?;
     }
     let deadline = Instant::now() + Duration::from_secs(5);
-    while !job.quiescent()? {
+    loop {
         job.check_deadline()?;
         job.observe()?;
+        if job.quiescent()? && job.try_remove_empty_group()? {
+            break;
+        }
         wait(deadline)?;
     }
-    job.group.remove_empty()?;
     result?;
+    check_output(&mut job, case)?;
     println!("case={case} reaped=true populated=0");
     Ok(())
 }

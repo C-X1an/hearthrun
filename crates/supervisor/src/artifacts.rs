@@ -2,9 +2,9 @@
 //!
 //! TRUSTED CALLER CONTRACT: hold the exclusive Store state lock throughout this
 //! Publisher's lifetime. An output descriptor passed to commit must come only
-//! from Native::take_quiescent_output(), after launcher reaping, cgroup populated=0
-//! and drained streams. An FD's type does not prove quiescence; this module never
-//! creates that proof from a boolean, a saved PID, or caller JSON. None means the
+//! from Native::take_quiescent_output(), after launcher reaping, drained streams
+//! and confirmed removal of the empty cgroup. An FD's type does not prove
+//! quiescence; this module never creates proof from a boolean, saved PID or caller JSON. None means the
 //! caller deliberately discards guest artifacts under the approved profile.
 //!
 //! Preparation validates the whole tree before writing publication state. Once
