@@ -3,8 +3,7 @@ use super::*;
 use crate::output::StreamOutput;
 use std::io::Cursor;
 
-#[path = "native_check.rs"]
-mod native_check;
+use crate::native_check;
 
 const RETAINED_PER_STREAM: usize = 1_048_576;
 const JOB: &str = "11111111111111111111111111111111";

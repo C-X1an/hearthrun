@@ -27,8 +27,8 @@ must already be established by the operator. This script's tmpfs check is not
 proof that source/toolchains/caches outside this mount satisfy that total.
 
 One supervisor shard runs at a time. Timed shards use at most 128 unique native
-request IDs, below Store's 256-entry limit. Each new shard gets a fresh private
-state directory, profile install and staged input. Successfully stopped shard
+request IDs. Each new shard gets a fresh private state directory, profile
+install and staged input. Successfully stopped shard
 transients are losslessly compacted after teardown. Shards are paced by
 complete wave verification, teardown and compaction before
 the next starts. A separate initial one-job shard exercises the approved
@@ -310,6 +310,35 @@ observed launcher reaping and cgroup emptiness. Captured samples distinguish
 directly observed emptiness from verified cgroup removal. Exact server receipt
 and kill issuance remain unmeasured. [Native cancellation measurements](../BENCHMARKS.md#native-cancellation)
 
+## Native retention campaign
+
+Use the pinned release binaries, empty owned cgroup delegation, recorded host
+metadata, and a new work directory on the existing bounded volume. Build the
+fixed five-output fixture with `make retention-fixture` and the approved static
+compiler. In the build record add `retention` with `fixture_sha256`,
+`source_sha256`, the captured fixture compiler `build_command`, and
+`capture_manifest_sha256`. Bind the source record to the exact built product.
+
+```sh
+python3 -B scripts/capture.py --cwd . --out ABS_BOUNDED_CAPTURE_DIR --category retention-smoke --requirement AC-021 --timeout 280 -- python3 -B benchmarks/retention.py --mode smoke --public-root ABS_PRODUCT --bin-dir ABS_RELEASE_BIN --doctor ABS_DOCTOR --fixture ABS_STATIC_RETENTION --fixture-source ABS_RETENTION_C --cgroup-root ABS_JOBS --build-record ABS_BUILD_RECORD --host-record ABS_HOST_RECORD --work ABS_NEW_WORK
+python3 -B benchmarks/analyze_retention.py --work ABS_NEW_WORK
+```
+
+Use `--mode full` with a fresh directory and an outer timeout of 11,050 seconds.
+Smoke has 16 jobs. Full has five seeds of 1,000 jobs, one uninterrupted
+supervisor per seed and four jobs per wave. Each job waits a fixed 1.5 seconds
+before writing its fixed payload. The observer verifies four durable RUNNING
+records and four populated group identities both before and after one common
+timestamp. It independently checks fixed output hashes and final cleanup.
+
+The native evidence contains both sample channels and the exact seed state.
+Respect the declared committed prefixes and authoritative sample channel in the
+summary. Use the analyzer on a completed tree or a checksum-verified restore of
+it. Result bundles, eviction markers and the journal have separate accounting.
+VmHWM is observed through the last idle sample. The FD count covers idle waves.
+The late slopes use the 126 observations after every four jobs from 500 to 1,000.
+The measurement found positive RSS slopes. [Native retention measurements](../BENCHMARKS.md#native-lifecycle-retention)
+
 ## Remaining measurements
 
 The original C fixture certifies count and sum. The separate Rust B-02 campaign
@@ -323,5 +352,5 @@ population, build and host reserve, owned supervisor samples, and each retained
 shard archive. Use the observed per-profile measurements on the recorded host.
 
 The archived Rust B-02 analysis refused the omitted-slow-row control between
-passing runs. Exact B-03 server clocks, seeded B-05 and B-06, stable-host
+passing runs. Exact B-03 server clocks, seeded B-05, stable-host
 confirmation and full AC-021 remain open. B-07 is optional. [Measured campaigns](../BENCHMARKS.md)

@@ -120,7 +120,17 @@ impl<'de> Visitor<'de> for Strict {
 }
 
 pub fn strict_json(bytes: &[u8]) -> Result<Value> {
-    if bytes.is_empty() || bytes.len() > MAX_HEADER_BYTES {
+    strict_json_with_limit(bytes, MAX_HEADER_BYTES)
+}
+
+/// Parse trusted-size input from a local persistence format using its byte cap.
+/// Socket callers use `strict_json`, which retains the independent frame limit.
+///
+/// # Errors
+/// Returns an error for empty or oversized input, invalid values, duplicate
+/// decoded object keys, excessive nesting or trailing data.
+pub fn strict_json_with_limit(bytes: &[u8], limit: usize) -> Result<Value> {
+    if bytes.is_empty() || bytes.len() > limit {
         return Err(error(
             Code::BadFrame,
             "JSON header length is outside bounds",

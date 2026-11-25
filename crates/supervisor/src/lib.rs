@@ -13,3 +13,7 @@ pub mod store;
 
 #[cfg(all(test, feature = "native-verification"))]
 mod crash_checkpoint;
+
+#[cfg(all(test, feature = "native-verification"))]
+#[path = "../../../tests/acceptance_locked/native_check.rs"]
+mod native_check;

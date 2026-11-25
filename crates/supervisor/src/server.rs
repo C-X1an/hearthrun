@@ -14,6 +14,10 @@
 
 #![cfg(target_os = "linux")]
 
+#[cfg(all(test, feature = "native-verification"))]
+#[path = "../../../tests/acceptance_locked/protocol.rs"]
+mod protocol_acceptance;
+
 use hearthrun_domain::protocol::{self, Request};
 use hearthrun_domain::MAX_HEADER_BYTES;
 use rustix::fd::{AsRawFd, OwnedFd};
@@ -257,10 +261,8 @@ impl Server {
         let accepted = Instant::now();
         let peer = sockopt::socket_peercred(&stream)?;
         if peer.uid.as_raw() != self.expected_uid {
-            return Err(io::Error::new(
-                io::ErrorKind::PermissionDenied,
-                "Unix peer UID is unauthorized",
-            ));
+            reject_unauthorized(&stream);
+            return Ok(None);
         }
         stream.set_nonblocking(false)?;
         Ok(Some(Connection {
@@ -608,6 +610,24 @@ impl Write for CappedBuffer {
     }
     fn flush(&mut self) -> io::Result<()> {
         Ok(())
+    }
+}
+
+// The peer has no authority to send a request or occupy a worker. A fixed,
+// nonblocking transport write keeps the admission loop independent of the peer.
+fn reject_unauthorized(stream: &UnixStream) {
+    const HEADER: &[u8] = br#"{"v":1,"ok":false,"error":{"code":"UNAUTHORIZED","message":"Unix peer UID is unauthorized","retryable":false}}"#;
+    let mut packet = [0; 4 + HEADER.len()];
+    packet[..4].copy_from_slice(&(HEADER.len() as u32).to_be_bytes());
+    packet[4..].copy_from_slice(HEADER);
+    match net::send(
+        stream,
+        &packet,
+        net::SendFlags::DONTWAIT | net::SendFlags::NOSIGNAL,
+    ) {
+        Ok(sent) if sent == packet.len() => {}
+        Ok(_) => eprintln!("Unix peer refusal could not send the complete bounded frame"),
+        Err(error) => eprintln!("Unix peer refusal could not send its bounded frame: {error}"),
     }
 }
 

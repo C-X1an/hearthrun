@@ -42,7 +42,11 @@ Release only public-safe source/tests/docs/sanitized evidence in a fresh public-
 ## Service lifecycle / runbooks
 Start: validate config/path permissions, acquire state lock, probe features, reconcile orphan cgroups, then accept clients. Graceful stop: close admission, cancel queued/running jobs, wait for cleanup; preserve explicit pending status for unresolved kernel tasks. Crash: restart reconciliation, no auto replay. Disk pressure: stop admission, finish/cancel safely, prune only already-expired unreferenced results; never delete a live mount or active staging. Corrupt state: refuse mutation, preserve evidence copy, reconstruct only with explicit offline reviewed tooling; no 'best effort' success. Unknown profile/kernel: refuse, run doctor, update compatibility review only after tests.
 
+The local retry catalog holds up to 1,024 identities and 256 KiB. The 16 MiB metadata budget includes space for temporary replacement files. Artifact eviction retains request identity. A full catalog or metadata budget returns `STORAGE_FULL` for a new job. Exact retries can still resolve records already in the catalog. The socket frame limit remains 65,536 bytes.
+
 Rollback: stop service and clean jobs; restore previously verified binary plus matching config/policy; data format must match. Do not downgrade across incompatible state versions. Backup when service stopped, preserve complete state/profile metadata; do not copy private data into public releases. Restoration is a separately tested operation; no live consistency or secure-erasure claim.
+
+The current reader opens existing v1 catalogs within the previous bounds. Before rolling back to a build limited to 256 identities and a 65,536-byte catalog, verify the saved state fits both limits. Preserve the complete current state separately.
 
 Observability is local JSON logs/metrics with bounded retention. Report active/queued/cleanup_pending, rejected submissions, policy refusals, retained/discarded output, cgroup limit counters and storage bytes. Health means local supervisor can answer; readiness requires successful recovery/probes and available storage; neither means every job succeeded. No external log collector needed.
 

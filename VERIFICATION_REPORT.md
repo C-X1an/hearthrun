@@ -9,6 +9,7 @@ The scoped native observations were captured on Linux x86-64 WSL2, kernel `6.18.
 | Operational host and launcher | 15 doctor cases passed. In seven additional cases the live supervisor refused an approved submit with a named capability absent, leaving the journal, result directory and cgroup inventory empty. The launcher integration observed the fixed environment, immutable staged input, withheld execution and detached-process cleanup. The wall deadline worker emptied a job while the lifecycle caller was paused. |
 | Finite policy smoke | The approved fixture copied its declared input, checked the synthetic host canary, enumerated descriptors through its observed limit, and confirmed socket and selected syscall denials. The x32 identity query terminated with `SIGSYS`. Full locked policy coverage remains open. |
 | Unix socket and durable recovery | Real CLI transformation, checked export, typed refusals, repeated request identity and crash restart without replay passed. |
+| Native IPC framing and UID | The real supervisor refused oversized, duplicate, unknown and wrong-version submissions, preserving the exact empty execution inventory after each. The owner-only receiver test selected a different expected policy UID, observed the real kernel credential and returned a bounded `UNAUTHORIZED` reply. The exact 65,536-byte frame passed. |
 | Lost replies | Two complete requests lost their replies. Across graceful and crash restarts, four exact retries kept the same job IDs, five changed requests conflicted and the prior verified result persisted. Removing the isolated test build's comparison triggered the intended failure. The restored source passed. |
 | Admission and deadlines | One finite run observed 4 active, 16 waiting and `QUEUE_FULL` for the next job. Durable start observations confirmed FIFO. A 3,000 ms configured whole-group deadline reached confirmed cleanup 3,140 ms from submission in the recorded Make integration run. |
 | CPU, memory, PIDs and streams | An observed 10.254-second CPU window used about 1.00036 cores under a one-core quota. Kernel memory and PID events advanced. The flood case retained 1 MiB per stream, with both truncations explicit. |
@@ -23,7 +24,7 @@ The scoped native observations were captured on Linux x86-64 WSL2, kernel `6.18.
 | Demo | Actual approved transformation, refusal, synthetic host-canary denial and detached cancellation passed. The static report's 11 links were verified. Browser and keyboard-only visual review remain pending. |
 | Dependency advisories | `cargo-audit` 0.23.0 checked 38 lock entries against the recorded RustSec snapshot, yielding zero advisories and warnings in that run. |
 | Public export | A fresh source-preview clone passed the path, history and workflow audit. A staged synthetic private path was refused, and the exact restored clone passed. The release license command found declarations for all 38 components. |
-| Benchmarks | B-01 and C transformation ran 36,750 rows with zero failures. Rust B-02 passed 3,900 rows. B-03 passed 3,000 client-observed cancellations. B-04 passed 120 resource and admission trials. Full AC-021 remains open. |
+| Benchmarks | B-01 and C transformation ran 36,750 rows with zero failures. Rust B-02 passed 3,900 rows. B-03 passed 3,000 client-observed cancellations. B-04 passed 120 resource and admission trials. B-06 passed 5,000 native retention jobs. Full AC-021 remains open. |
 
 ## Failures retained
 
@@ -34,6 +35,7 @@ The scoped native observations were captured on Linux x86-64 WSL2, kernel `6.18.
 - The first cancellation smoke triggered the output cap before caller cancellation. The first full schedule later stopped on a denied descriptor observation during exec. The repaired smoke and full rerun passed from separate new work directories. [Cancellation measurements](BENCHMARKS.md#native-cancellation)
 - The first full resource campaign stopped after the supervisor treated a pending cgroup removal as fatal. The repair held the slot and output descriptor until confirmed removal. A fresh campaign passed all four profiles. [Resource and admission measurements](BENCHMARKS.md#native-resource-limits-and-admission)
 - A combined recovery rerun stopped before its first checkpoint after the disposable cgroup service expired. After fresh delegation preflight, all 12 checkpoints and the separate stream checks passed on the combined source.
+- Two B-06 full attempts stopped at the four-live-job check. The first fixture pause was shorter than the observed spread between job starts. The second observer accepted an exec-release record before durable RUNNING. Both failed populations remain available. The paced fixture and repaired observer passed the fresh 5,000-job campaign. [Retention measurements](BENCHMARKS.md#native-lifecycle-retention)
 
 ## Remaining release evidence
 

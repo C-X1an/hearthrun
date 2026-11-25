@@ -19,6 +19,10 @@
 #[path = "../../../tests/fault/journal_reopen.rs"]
 mod journal_faults;
 
+#[cfg(all(test, feature = "native-verification"))]
+#[path = "../../../tests/fault/store_capacity.rs"]
+mod capacity_tests;
+
 use hearthrun_domain::protocol::{self, Request, Submission};
 use hearthrun_domain::JobId;
 use rustix::fd::OwnedFd;
@@ -28,17 +32,19 @@ use rustix::fs::{
 use rustix::rand::{self, GetRandomFlags};
 use serde::{Deserialize, Serialize};
 use std::cell::Cell;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 use std::fs::File;
 use std::io::{self, Read, Write};
 use std::path::{Component, Path, PathBuf};
 
-pub const MAX_RECORDS: usize = 256;
+pub const MAX_RECORDS: usize = 1024;
 pub const MAX_RECORD_BYTES: usize = 65_536;
+// The catalog indexes all retained records and has its own local limit.
+const MAX_CATALOG_BYTES: usize = 256 * 1024;
 pub const MAX_METADATA_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_INSTANCE_BYTES: usize = 256;
-// Leave space for one atomic replacement while its previous inode still exists.
+// Preserve the v1 read ceiling. Writes also check transient replacement bytes.
 const MAX_RETAINED_BYTES: u64 =
     MAX_METADATA_BYTES - MAX_RECORD_BYTES as u64 - MAX_INSTANCE_BYTES as u64;
 const LOCK_NAME: &str = "supervisor.lock";
@@ -458,7 +464,7 @@ impl Store {
                     instance_id: instance_id.clone(),
                     entries: Vec::new(),
                 };
-                let catalog_bytes = encode_bounded(&catalog)?;
+                let catalog_bytes = encode_bounded(&catalog, MAX_CATALOG_BYTES)?;
                 atomic_write(
                     &records_directory,
                     CATALOG_NAME,
@@ -639,7 +645,7 @@ impl Store {
                 .catalog
                 .entries
                 .sort_by(|left, right| left.job_id.cmp(&right.job_id));
-            Some(encode_bounded(&inventory.catalog)?)
+            Some(encode_bounded(&inventory.catalog, MAX_CATALOG_BYTES)?)
         } else {
             None
         };
@@ -656,7 +662,17 @@ impl Store {
                 }
             })
             .ok_or_else(|| corrupt("metadata accounting overflow"))?;
-        if retained > MAX_RETAINED_BYTES {
+        // Both old names remain visible while each replacement is staged.
+        // New admissions create the record before replacing the catalog.
+        let peak = inventory
+            .bytes
+            .checked_add(bytes.len() as u64)
+            .and_then(|size| {
+                size.checked_add(new_catalog.as_ref().map_or(0, |data| data.len() as u64))
+            })
+            .and_then(|size| size.checked_add(MAX_INSTANCE_BYTES as u64))
+            .ok_or_else(|| corrupt("metadata replacement accounting overflow"))?;
+        if retained > MAX_RETAINED_BYTES || peak > MAX_METADATA_BYTES {
             return Err(StoreError::new(
                 ErrorKind::StorageFull,
                 "retained metadata byte budget is full",
@@ -737,15 +753,21 @@ impl Store {
         let (catalog_bytes, catalog_stat) = read_owned_file(
             &self.records_directory,
             CATALOG_NAME,
-            MAX_RECORD_BYTES,
+            MAX_CATALOG_BYTES,
             self.owner_uid,
         )?;
-        let catalog_value = strict_value(&catalog_bytes)?;
+        let catalog_value = protocol::strict_json_with_limit(&catalog_bytes, MAX_CATALOG_BYTES)
+            .map_err(|_| corrupt("invalid, duplicate-key or unbounded retry catalog"))?;
         require_fields(&catalog_value, &["v", "instance_id", "entries"])?;
         check_version(&catalog_value)?;
         let catalog: Catalog = serde_json::from_value(catalog_value)
             .map_err(|_| corrupt("invalid typed retry catalog"))?;
         validate_catalog(&catalog, &self.instance_id)?;
+        let by_job: BTreeMap<_, _> = catalog
+            .entries
+            .iter()
+            .map(|entry| (entry.job_id.as_str(), entry))
+            .collect();
         let mut directory = operation(
             Dir::read_from(&self.records_directory),
             "cannot enumerate records directory",
@@ -802,11 +824,7 @@ impl Store {
                     "record ownership/name or retry identity is ambiguous",
                 ));
             }
-            let Some(expected) = catalog
-                .entries
-                .iter()
-                .find(|entry| entry.job_id == record.job_id)
-            else {
+            let Some(expected) = by_job.get(job_id) else {
                 return Err(StoreError::new(
                     ErrorKind::IoUncertain,
                     "unindexed durable intent requires offline reconciliation",
@@ -981,26 +999,32 @@ fn decode_record(bytes: &[u8]) -> Result<JobRecord> {
 }
 
 fn encode_record(record: &JobRecord) -> Result<Vec<u8>> {
-    encode_bounded(record)
+    encode_bounded(record, MAX_RECORD_BYTES)
 }
 
-fn encode_bounded(value: &impl Serialize) -> Result<Vec<u8>> {
-    let mut buffer = BoundedBuffer(Vec::with_capacity(MAX_RECORD_BYTES));
+fn encode_bounded(value: &impl Serialize, limit: usize) -> Result<Vec<u8>> {
+    let mut buffer = BoundedBuffer {
+        bytes: Vec::new(),
+        limit,
+    };
     serde_json::to_writer(&mut buffer, value)
         .map_err(|_| invalid_record("encoded metadata exceeds byte bound"))?;
-    Ok(buffer.0)
+    Ok(buffer.bytes)
 }
 
-struct BoundedBuffer(Vec<u8>);
+struct BoundedBuffer {
+    bytes: Vec<u8>,
+    limit: usize,
+}
 impl Write for BoundedBuffer {
     fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
-        if bytes.len() > MAX_RECORD_BYTES - self.0.len() {
+        if bytes.len() > self.limit - self.bytes.len() {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidData,
                 "metadata byte bound exceeded",
             ));
         }
-        self.0.extend_from_slice(bytes);
+        self.bytes.extend_from_slice(bytes);
         Ok(bytes.len())
     }
     fn flush(&mut self) -> io::Result<()> {
@@ -1300,7 +1324,12 @@ fn atomic_write_with_directory_sync(
     uid: u32,
     sync: impl FnOnce(&OwnedFd) -> rustix::io::Result<()>,
 ) -> Result<()> {
-    if bytes.len() > MAX_RECORD_BYTES {
+    let limit = match final_name {
+        CATALOG_NAME => MAX_CATALOG_BYTES,
+        INSTANCE_NAME => MAX_INSTANCE_BYTES,
+        _ => MAX_RECORD_BYTES,
+    };
+    if bytes.len() > limit {
         return Err(invalid_record("metadata write exceeds byte bound"));
     }
     let temporary = format!(".tmp-{}.json", random_id()?);
@@ -1318,7 +1347,7 @@ fn atomic_write_with_directory_sync(
     let mut file = File::from(fd);
     operation(file.write_all(bytes), "cannot write metadata temporary")?;
     operation(file.sync_all(), "cannot sync metadata temporary")?;
-    owned_regular(&file, uid, MAX_RECORD_BYTES)?;
+    owned_regular(&file, uid, limit)?;
     // No destructor removes failed writes. Preserve any partial temporary or
     // uncertain rename for offline recovery rather than hiding the failure.
     if let Some(identity) = previous {

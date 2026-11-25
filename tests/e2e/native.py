@@ -36,7 +36,8 @@ from typing import Any
 
 
 MAX_HEADER = 65_536
-MAX_RECORDS = 256
+MAX_RECORDS = 1024
+MAX_CATALOG = 256 * 1024
 MAX_CAPTURE = 256 * 1024
 MAX_ALL_CAPTURE = 8 * 1024 * 1024
 MAX_COMMANDS = 512
@@ -370,7 +371,7 @@ class Harness:
     def inventory(self) -> set[str]:
         names = list((self.state / "records").iterdir())
         require(len(names) <= MAX_RECORDS + 1, "journal inventory exceeds test bound")
-        catalog = strict_json(read_file(self.state / "records" / "catalog.json", MAX_HEADER, owner=True, mode=0o600))
+        catalog = strict_json(read_file(self.state / "records" / "catalog.json", MAX_CATALOG, owner=True, mode=0o600))
         require(catalog.get("v") == 1 and catalog.get("instance_id") == self.read_instance(), "invalid retry catalog identity")
         entries = catalog.get("entries")
         require(isinstance(entries, list) and len(entries) <= MAX_RECORDS, "invalid bounded retry catalog")

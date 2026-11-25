@@ -479,6 +479,7 @@
           "case": "doctor_and_socket",
           "compatible": true,
           "elapsed_ms": 19,
+          "socket_mode": "0600",
           "status": "PASS"
         },
         {
@@ -491,6 +492,7 @@
         {
           "case": "refusal_has_no_execution_side_effect",
           "elapsed_ms": 52,
+          "record_count_unchanged": true,
           "status": "PASS"
         },
         {
@@ -525,6 +527,7 @@
           "case": "doctor_and_socket",
           "compatible": true,
           "elapsed_ms": 12,
+          "socket_mode": "0600",
           "status": "PASS"
         },
         {
@@ -666,6 +669,7 @@
           "case": "doctor_and_socket",
           "compatible": true,
           "elapsed_ms": 12,
+          "socket_mode": "0600",
           "status": "PASS"
         },
         {
@@ -735,6 +739,7 @@
           "case": "doctor_and_socket",
           "compatible": true,
           "elapsed_ms": 13,
+          "socket_mode": "0600",
           "status": "PASS"
         },
         {
@@ -846,6 +851,7 @@
           "case": "doctor_and_socket",
           "compatible": true,
           "elapsed_ms": 13,
+          "socket_mode": "0600",
           "status": "PASS"
         },
         {
@@ -890,6 +896,7 @@
           "case": "doctor_and_socket",
           "compatible": true,
           "elapsed_ms": 12,
+          "socket_mode": "0600",
           "status": "PASS"
         },
         {
@@ -1954,6 +1961,94 @@
       "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
       "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
       "start_utc": "2026-11-25T07:12:24.659935+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "b06-full",
+      "duration_seconds": 2465.366076410006,
+      "end_utc": "2026-11-25T15:41:27.478525+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "764aa723a934055cf3a59fb42f306bf53a8e5db1bbb4d8be4a196957f0fa6059"
+      },
+      "run_id": "20261125T150022-8a752493c795",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T15:00:22.112348+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "protocol-original",
+      "duration_seconds": 29.387197998003103,
+      "end_utc": "2026-11-25T18:06:48.981401+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "9a8b2051d103c8eb0741c73b54e832835a4e05e08e4c79f9911dfcc4177a7362"
+      },
+      "run_id": "20261125T180619-627c207de75a",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T18:06:19.593959+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "protocol-fixed",
+      "duration_seconds": 12.404559073009295,
+      "end_utc": "2026-11-25T18:07:54.584704+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 1,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "6243d0d30c869207ad8a7ee9564c0d0c095217959ee82fe94eeeb8b31b160f3c",
+        "stdout": "73dd01b9cbd0ec2c836b0c9927a12c02f65c217ae04cd3da5907bf3b0ce4bae0"
+      },
+      "run_id": "20261125T180742-d2d8d35195f5",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T18:07:42.179946+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "protocol-fixed",
+      "duration_seconds": 9.21883459998935,
+      "end_utc": "2026-11-25T18:10:45.938316+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "4e562811311a7d198529240401e3c267ee42d589ef9ff8c9ec6d4b8f97dd8f2a"
+      },
+      "run_id": "20261125T181036-57f363e55559",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-25T18:10:36.719191+00:00",
       "status": "PASS"
     },
     {
@@ -3910,6 +4005,7 @@
           "case": "doctor_and_socket",
           "compatible": true,
           "elapsed_ms": 11,
+          "socket_mode": "0600",
           "status": "PASS"
         },
         {
@@ -4055,6 +4151,7 @@
           "case": "doctor_and_socket",
           "compatible": true,
           "elapsed_ms": 11,
+          "socket_mode": "0600",
           "status": "PASS"
         },
         {
@@ -4273,6 +4370,123 @@
       "source_sha256_after": "52bb1a3d9ee0d9d27b55207cb8b8fa17f5a6508b9766866be9a0480e4417ffbc",
       "source_sha256_before": "52bb1a3d9ee0d9d27b55207cb8b8fa17f5a6508b9766866be9a0480e4417ffbc",
       "start_utc": "2026-11-23T17:31:59.544702+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "original-uid-receiver",
+      "duration_seconds": 0.005162638000911102,
+      "end_utc": "2026-11-25T18:06:48.970410+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "f258dc13de79d4b631dabf5b0f365cf3695d4785209c131ea925e4b585ac82ba",
+        "stdout": "693f63383ea672ed5e864e835a6f0401f994e916b80fba37abd3dc44413caf96"
+      },
+      "run_id": "20261125T180648-3e03ab126edc",
+      "source_sha256_after": "9a8df66a8bf11d255b755295c582fe2a833e283df72f62b716cb65122d666893",
+      "source_sha256_before": "9a8df66a8bf11d255b755295c582fe2a833e283df72f62b716cb65122d666893",
+      "start_utc": "2026-11-25T18:06:48.965145+00:00",
+      "status": "FAIL"
+    },
+    {
+      "category": "fixed-lint",
+      "duration_seconds": 11.334152496987372,
+      "end_utc": "2026-11-25T18:07:54.307841+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 101,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "d649f2d588d71f836258e47bb28bf9d5c515ec41a9ff64f91178eef82cd17eed",
+        "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "run_id": "20261125T180742-de2c3440d949",
+      "source_sha256_after": "96b0332d95af256f47cfd4d16d4e121aeca9cb9fb11c74a8cdfdc7872bbe72aa",
+      "source_sha256_before": "96b0332d95af256f47cfd4d16d4e121aeca9cb9fb11c74a8cdfdc7872bbe72aa",
+      "start_utc": "2026-11-25T18:07:42.973685+00:00",
+      "status": "FAIL"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "oversized",
+          "committed_results": 0,
+          "error_code": "BAD_FRAME",
+          "record_count_unchanged": true,
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "duplicate_key",
+          "committed_results": 0,
+          "error_code": "DUPLICATE_KEY",
+          "record_count_unchanged": true,
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "unknown_field",
+          "committed_results": 0,
+          "error_code": "UNKNOWN_FIELD",
+          "record_count_unchanged": true,
+          "status": "PASS"
+        },
+        {
+          "admitted_jobs": 0,
+          "case": "wrong_version",
+          "committed_results": 0,
+          "error_code": "UNSUPPORTED_VERSION",
+          "record_count_unchanged": true,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "real_socket_rejection",
+          "directory_mode": "0700",
+          "max_header_bytes": 65536,
+          "socket_mode": "0600",
+          "status": "PASS",
+          "uid_rejection": "UNAUTHORIZED"
+        }
+      ],
+      "category": "fixed-receiver-and-daemon",
+      "duration_seconds": 0.6736321240023244,
+      "end_utc": "2026-11-25T18:10:45.929193+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "ffee058645670fcce2928730776e494b1ff7a1ee2e36e02ecf25165f968eacfd"
+      },
+      "run_id": "20261125T181045-85f8abf61ee2",
+      "source_sha256_after": "42d299200ac026f4e1aa38ea4168fa1e0cbd90f519ed6e54fafa1843597b6da2",
+      "source_sha256_before": "42d299200ac026f4e1aa38ea4168fa1e0cbd90f519ed6e54fafa1843597b6da2",
+      "start_utc": "2026-11-25T18:10:45.255565+00:00",
       "status": "PASS"
     }
   ],

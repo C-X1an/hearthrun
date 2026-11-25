@@ -4,7 +4,7 @@ The locked acceptance specification defines the required paths and assertions. T
 
 | Requirement | Acceptance | Required test | Level | Negative control | Native evidence/status |
 |---|---|---|---|---|---|
-| FR-001 | AC-001 | `tests/acceptance_locked/protocol.rs` | contract | remove size/unknown-field guard | NOT RUN |
+| FR-001 | AC-001 | `tests/acceptance_locked/protocol.rs` | contract | remove size/unknown-field guard | PARTIAL. Live daemon malformed frames and the real kernel UID comparison passed on the owned socket. The independent size/unknown-field negative control remains open. |
 | FR-002 | AC-002 | `tests/acceptance_locked/admission.rs` | system | remove capacity increment | PARTIAL. B-04 verified the exact 4+16 bounds, typed refusal and FIFO in all 30 native trials. The locked negative control remains open. |
 | SEC-001 | AC-003 | `tests/acceptance_locked/doctor.rs` | system | treat unavailable as supported | PARTIAL. Live admission refused seven missing-capability scenarios. A separate unsupported host and negative control remain open. |
 | SEC-002 | AC-004 | `tests/acceptance_locked/barrier.rs` | system | release barrier before limits | NOT RUN |
@@ -24,7 +24,7 @@ The locked acceptance specification defines the required paths and assertions. T
 | FR-003 | AC-018 | `tests/acceptance_locked/profiles.rs` | security | hash then reopen mutable executable | NOT RUN |
 | NFR-002 | AC-019 | `tests/acceptance_locked/reproduce.py` | clean environment | remove required fixture from export | PARTIAL. Fresh-clone scoped profile and missing-fixture control passed. Full native verification remains open. |
 | NFR-003 | AC-020 | `verification/mutation/protocol.md` | mutation | test itself intentionally weakened | PARTIAL. The premature-terminal and ignored-fsync controls passed. |
-| PERF-001 | AC-021 | `benchmarks/protocol.md` | performance | drop failed/slow samples | PARTIAL. B-01, C count/sum, Rust B-02, client-observed cancellation and the four B-04 profiles measured. The omitted-slow-row control passed. Server clocks and remaining workloads are open. |
+| PERF-001 | AC-021 | `benchmarks/protocol.md` | performance | drop failed/slow samples | PARTIAL. B-01, C count/sum, Rust B-02, client-observed cancellation, the four B-04 profiles and B-06 retention measured. The omitted-slow-row control passed. Server clocks and remaining workloads are open. |
 | SEC-006 | AC-022 | `scripts/public_audit.py` | release | add synthetic forbidden private path | PASS for the audited source preview. The forbidden-path control refused the staged file, restoration passed, and 38 components had declared licenses. |
 | UX-001 | AC-023 | `tests/acceptance_locked/demo.rs` | end-to-end | render unescaped guest HTML | NOT RUN |
 | NFR-003 | AC-024 | `verification/independent-review.md` | review | omit initial findings stage | NOT RUN |

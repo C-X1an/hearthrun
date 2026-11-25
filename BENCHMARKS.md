@@ -45,3 +45,17 @@ These are client-observed intervals on the measured host. Exact server receipt a
 The repaired B-04 campaign passed 30 trials each for memory, PIDs, CPU and admission. The CPU windows ranged from 10.251 to 10.270 seconds at 0.996 to 1.004 cores, with throttling counters advancing in every window. Kernel OOM-kill counts advanced in all 30 memory trials and PID-limit events advanced in all 30 PID trials. Every admission trial held four active jobs and sixteen queued jobs, refused the next request with `QUEUE_FULL`, and verified queued starts in order. [Captured B-04 evidence](verification/benchmark-capacity-observed.json)
 
 Across 3,468 supervisor samples, observed RSS ranged from 3,215,360 to 5,607,424 bytes and descriptor counts ranged from 11 to 44. These samples cover the named supervisor processes. The first full campaign preserved 14 passes, one cleanup failure and 105 unrun trials. The repaired campaign is a separate complete run.
+
+## Native lifecycle retention
+
+The complete B-06 run passed 5,000 jobs in five seeds, with one uninterrupted supervisor per seed and 250 four-job waves each. The final check for each seed found 100 retained bundles totaling 27,983,460 bytes, 900 eviction markers and all 1,000 request identities. Teardown found zero owned cgroups. The accepted fixture pauses for 1.5 seconds and rotates five fixed outputs. [Captured B-06 evidence](verification/benchmark-retention-observed.json)
+
+| Measurement | Across the five seeds |
+|---|---:|
+| Observed supervisor peak RSS | 18,055,168–18,137,088 bytes |
+| Open supervisor FDs at idle wave samples | 11 |
+| Late retained result bytes per completed job | 0 |
+| Late catalog and job-record bytes per completed job | 1,370 |
+| Late RSS slope | 12,623–12,875 bytes per completed job |
+
+The late fits use the 126 idle snapshots from jobs 500 through 1,000 in each seed. Positive RSS slopes need further investigation. The measurement does not distinguish live metadata from allocator retention. The first two full attempts stopped before the concurrency observations could be confirmed, and their failed and unrun rows remain preserved. The accepted run uses the durable RUNNING record and samples the same four populated groups before and after a common timestamp.

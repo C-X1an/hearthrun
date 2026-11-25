@@ -1,0 +1,180 @@
+{
+  "analysis_run_id": "20261125T180528-3ac3ad94bed1",
+  "archive": {
+    "entries": 12656,
+    "index_sha256": "2b04a90d1a6f40de1faf304111b77e628814ff1a259b3964c21a9ea89a2b398e",
+    "packed_bytes": 53007070,
+    "raw_bytes": 410987912,
+    "tar_sha256": "2e1940fa02e6cd5da65583cd9fa299e414dfb1e6efd0f08aeec50e00e93321e5"
+  },
+  "archive_run_id": "20261125T180511-ddb6a5fc3de3",
+  "benchmark": "B-06",
+  "build_run_id": "20261125T145248-0d69570ff854",
+  "build_source_sha256": "7d7692c210964019eaefdfee5b3264cc1d5640de1afaf0b71f7b9e3feec470f2",
+  "campaign_status": "PASS",
+  "concurrency": 4,
+  "counts": {
+    "PASS": 5000
+  },
+  "driver_sha256": "7fd9ae4dfbbbf7b2325fa0fc20d426e4f9b3dc9506ad5096bba8ac8cd915546b",
+  "earlier_full_attempts": [
+    {
+      "fail": 4,
+      "not_run": 4872,
+      "pass": 124,
+      "run_id": "20261125T144815-29e00d3e1c50"
+    },
+    {
+      "fail": 4,
+      "not_run": 4876,
+      "pass": 120,
+      "run_id": "20261125T145402-4ca7b500c0e6"
+    }
+  ],
+  "elapsed_seconds": 2465.366076410006,
+  "environment": {
+    "kernel": "6.18.58.1-microsoft-standard-WSL2",
+    "machine": "x86_64",
+    "python": "3.14.4",
+    "system": "Linux"
+  },
+  "fixture_pause_ms": 1500,
+  "fixture_sha256": "6a150f9b0887c3694bf0aa3c3fcec2f675eb72e3cbfb407a4262933ffaa6d7af",
+  "limitations": [
+    "Peak RSS is the kernel VmHWM observed for each supervisor through its last idle sample.",
+    "Late RSS slopes are positive. The measurement does not establish a plateau or identify the cause.",
+    "FD samples cover idle waves. Guest execution metrics and unlike clock origins remain separate.",
+    "The two earlier full attempts remain separate failed populations."
+  ],
+  "mode": "full",
+  "planned": 5000,
+  "raw_channel_sha256": {
+    "attempts.jsonl": "2ae4a16566e101b6cfc86f3c6b316c44a74719a27d5974056241086934e9d9bf",
+    "events.jsonl": "03461a342d7a8559f878b791ecd483878c3834f80ccf46187a5b220976516f58",
+    "samples-recovery.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "samples.jsonl": "59af0ea6173f85945e6545ef8d7c61070142a14759a5d6a7aca0fbbf6e5b5f00"
+  },
+  "restore_run_id": "20261125T180519-0e607c947c77",
+  "run_id": "20261125T150022-8a752493c795",
+  "schedule_sha256": "9acbd85058fc41fcc61cdc289ad825b4df1103a8093ea5f5b2a0d348b785d4af",
+  "schema_version": 1,
+  "scope": "Fixed local workload and owned native process, cgroup, filesystem and kernel observations",
+  "seeds": [
+    {
+      "eviction_markers": 900,
+      "fd_range": [
+        11,
+        11
+      ],
+      "final_ledger_bytes": 1369802,
+      "final_result_bytes": 27983460,
+      "jobs": 1000,
+      "late_slopes_per_job": {
+        "VmHWM_bytes": 12875.222341207349,
+        "VmRSS_bytes": 12875.222341207349,
+        "eviction_marker_bytes": 64.0,
+        "fd_count": 0.0,
+        "ledger_bytes": 1370.0,
+        "result_bytes": 0.0
+      },
+      "peak_rss_bytes_observed": 18083840,
+      "retained_results": 100,
+      "seed_index": 0,
+      "snapshots": 251,
+      "waves": 250
+    },
+    {
+      "eviction_markers": 900,
+      "fd_range": [
+        11,
+        11
+      ],
+      "final_ledger_bytes": 1369807,
+      "final_result_bytes": 27983460,
+      "jobs": 1000,
+      "late_slopes_per_job": {
+        "VmHWM_bytes": 12836.378684664416,
+        "VmRSS_bytes": 12836.378684664416,
+        "eviction_marker_bytes": 64.0,
+        "fd_count": 0.0,
+        "ledger_bytes": 1370.0,
+        "result_bytes": 0.0
+      },
+      "peak_rss_bytes_observed": 18137088,
+      "retained_results": 100,
+      "seed_index": 1,
+      "snapshots": 251,
+      "waves": 250
+    },
+    {
+      "eviction_markers": 900,
+      "fd_range": [
+        11,
+        11
+      ],
+      "final_ledger_bytes": 1369804,
+      "final_result_bytes": 27983460,
+      "jobs": 1000,
+      "late_slopes_per_job": {
+        "VmHWM_bytes": 12702.548373453319,
+        "VmRSS_bytes": 12702.548373453319,
+        "eviction_marker_bytes": 64.0,
+        "fd_count": 0.0,
+        "ledger_bytes": 1370.0,
+        "result_bytes": 0.0
+      },
+      "peak_rss_bytes_observed": 18092032,
+      "retained_results": 100,
+      "seed_index": 2,
+      "snapshots": 251,
+      "waves": 250
+    },
+    {
+      "eviction_markers": 900,
+      "fd_range": [
+        11,
+        11
+      ],
+      "final_ledger_bytes": 1369802,
+      "final_result_bytes": 27983460,
+      "jobs": 1000,
+      "late_slopes_per_job": {
+        "VmHWM_bytes": 12698.68735208099,
+        "VmRSS_bytes": 12698.68735208099,
+        "eviction_marker_bytes": 64.0,
+        "fd_count": 0.0,
+        "ledger_bytes": 1370.0,
+        "result_bytes": 0.0
+      },
+      "peak_rss_bytes_observed": 18108416,
+      "retained_results": 100,
+      "seed_index": 3,
+      "snapshots": 251,
+      "waves": 250
+    },
+    {
+      "eviction_markers": 900,
+      "fd_range": [
+        11,
+        11
+      ],
+      "final_ledger_bytes": 1369808,
+      "final_result_bytes": 27983460,
+      "jobs": 1000,
+      "late_slopes_per_job": {
+        "VmHWM_bytes": 12623.331395575553,
+        "VmRSS_bytes": 12623.331395575553,
+        "eviction_marker_bytes": 64.0,
+        "fd_count": 0.0,
+        "ledger_bytes": 1370.0,
+        "result_bytes": 0.0
+      },
+      "peak_rss_bytes_observed": 18055168,
+      "retained_results": 100,
+      "seed_index": 4,
+      "snapshots": 251,
+      "waves": 250
+    }
+  ],
+  "status": "PASS"
+}

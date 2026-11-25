@@ -2,6 +2,8 @@
 
 The local supervisor listens at `$HEARTHRUN_STATE/control.sock` in a mode 0700 state directory with a mode 0600 socket. It authenticates the current UID via `SO_PEERCRED`. Each connection carries one request with a u32 big-endian header length followed by strict UTF-8 JSON up to 65,536 bytes. Reject unknown fields, duplicate keys at any nesting, trailing JSON, invalid UTF-8, NaN/Infinity, out-of-range integers and nesting beyond 16. Responses use the same framing. The normal request timeout is 5 seconds and the staging payload timeout is 10 seconds. Connections are bounded to 32 and processing queues have separate limits. Closing a client connection does not cancel a job.
 
+Filesystem permissions can block a caller before it connects. If an accepted peer's UID differs from the service owner, the receiver attempts a fixed nonblocking `UNAUTHORIZED` frame and closes that connection before reading a request. A transport error while sending the refusal leaves the service running.
+
 All requests contain v:1 and op. ID fields are32 lowercase hex characters from cryptographic random128-bit IDs; not timestamps. File names use ASCII components [A-Za-z0-9._-], excluding '.' and '..', max64bytes/component, max240bytes/path, max8components, no empty/absolute/backslash paths. This conservative first profile accepts an ASCII subset of UTF-8 and avoids normalization ambiguity. JSON keys sort lexically for canonical request hashing; insignificant whitespace removed; integer fields only, no float normalization ambiguity. argv strings are UTF-8 with no NUL, <=32items and<=4096 total UTF-8 bytes. No environment, UID, mount, syscall or host-path overrides are accepted from clients.
 
 ## Operations
