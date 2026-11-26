@@ -98,3 +98,11 @@ demo-offline:
 verify: tooling-test fmt lint typecheck unit integration acceptance security property fuzz mutation
 teardown:
 	$(PYTHON) -c 'from pathlib import Path; import shutil; p=Path(".work"); assert not p.is_symlink(); shutil.rmtree(p) if p.exists() else None'
+
+# Scoped native runs use existing reviewed binaries and separate NEW work paths.
+# They do not replace the default integration, acceptance, or mutation gates.
+.PHONY: admission-run cancel-run
+admission-run:
+	$(PYTHON) tests/integration/scheduler.py --case admission --bin-dir '$(NATIVE_BIN_DIR)' --doctor '$(NATIVE_DOCTOR)' --fixture '$(NATIVE_FIXTURE)' --cgroup-root "$${HEARTHRUN_JOBS:?set HEARTHRUN_JOBS}" --work "$${HEARTHRUN_ADMISSION_WORK:?set a NEW HEARTHRUN_ADMISSION_WORK}"
+cancel-run:
+	$(PYTHON) tests/integration/scheduler.py --case cancel --bin-dir '$(NATIVE_BIN_DIR)' --doctor '$(NATIVE_DOCTOR)' --fixture '$(NATIVE_FIXTURE)' --cgroup-root "$${HEARTHRUN_JOBS:?set HEARTHRUN_JOBS}" --work "$${HEARTHRUN_CANCEL_WORK:?set a separate NEW HEARTHRUN_CANCEL_WORK}"

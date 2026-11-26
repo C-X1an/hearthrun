@@ -17,8 +17,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+from html.parser import HTMLParser
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -360,6 +362,280 @@ def render_report(renderer: Any, data: dict[str, Any]) -> str:
     return document
 
 
+# Proposed fragment inserted into tests/e2e/demo.py. No standalone execution.
+def evidence_json(data: bytes) -> dict[str, Any]:
+    """Parse the capture format, whose measured duration uses a fractional number."""
+    native.require(len(data) <= MAX_REPORT, "demo evidence exceeds the report byte bound")
+
+    def finite_number(raw: str) -> float:
+        value = float(raw)
+        native.require(math.isfinite(value), "demo evidence contains a nonfinite number")
+        return value
+
+    value = json.loads(data.decode("utf-8"), object_pairs_hook=native.duplicate_checked,
+                       parse_float=finite_number, parse_constant=finite_number)
+    native.require(isinstance(value, dict), "demo evidence must be an object")
+    return value
+
+
+class ReportStructure(HTMLParser):
+    """Observe parsed text, local links and table cells without a browser."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.tags: set[str] = set()
+        self.ids: list[str] = []
+        self.links: list[str] = []
+        self.text: list[str] = []
+        self.record: list[str] = []
+        self.paragraphs: list[str] = []
+        self.timeline: list[str] = []
+        self.headers: list[str] = []
+        self.rows: list[list[str]] = []
+        self._pre = False
+        self._style = False
+        self._cell: list[str] | None = None
+        self._row: list[str] | None = None
+        self._header = False
+        self._paragraph: list[str] | None = None
+        self._ordered = False
+        self._item: list[str] | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        self.tags.add(tag)
+        values = dict(attrs)
+        native.require(len(values) == len(attrs), "report contains duplicate attributes")
+        if values.get("id") is not None:
+            self.ids.append(values["id"])
+        if tag == "a":
+            native.require(isinstance(values.get("href"), str), "report link lacks a destination")
+            self.links.append(values["href"])
+        if tag == "pre":
+            self._pre = True
+        if tag == "style":
+            self._style = True
+        if tag == "p":
+            self._paragraph = []
+        if tag == "ol":
+            self._ordered = True
+        if tag == "li" and self._ordered:
+            self._item = []
+        if tag == "tr":
+            self._row = []
+        if tag in {"td", "th"}:
+            self._cell = []
+            self._header = tag == "th"
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "pre":
+            self._pre = False
+        if tag == "style":
+            self._style = False
+        if tag == "p" and self._paragraph is not None:
+            self.paragraphs.append("".join(self._paragraph))
+            self._paragraph = None
+        if tag == "li" and self._item is not None:
+            self.timeline.append("".join(self._item))
+            self._item = None
+        if tag == "ol":
+            self._ordered = False
+        if tag in {"td", "th"} and self._cell is not None:
+            value = "".join(self._cell)
+            if self._header:
+                self.headers.append(value)
+            elif self._row is not None:
+                self._row.append(value)
+            self._cell = None
+        if tag == "tr" and self._row is not None:
+            if self._row:
+                self.rows.append(self._row)
+            self._row = None
+
+    def handle_data(self, value: str) -> None:
+        if not self._style and not self._pre:
+            self.text.append(value)
+        if self._pre:
+            self.record.append(value)
+        if self._paragraph is not None:
+            self._paragraph.append(value)
+        if self._item is not None:
+            self._item.append(value)
+        if self._cell is not None:
+            self._cell.append(value)
+
+
+def check_report_document(data: dict[str, Any], document: str) -> ReportStructure:
+    """Check report structure and literal text, without claiming focus behavior."""
+    parsed = ReportStructure()
+    parsed.feed(document)
+    parsed.close()
+    run_id = data.get("evidence_run_id", "")
+    native.require(isinstance(run_id, str) and RUN_ID.fullmatch(run_id) is not None,
+                   "saved report has no exact capture identity")
+    anchors = ["demo-summary", "policy", "cleanup", "evidence", "record"]
+    expected = [f"#{name}" for name in anchors] + [
+        f"evidence/{run_id}.json", f"evidence/raw/{run_id}.stdout", f"evidence/raw/{run_id}.stderr",
+        "run/demo-observations.json", "wrapper-cleanup.json", "run/data.ndjson",
+    ]
+    native.require(parsed.ids == anchors and parsed.links == expected,
+                   "report links or unique section targets differ from actual local evidence contract")
+    native.require(evidence_json("".join(parsed.record).encode()) == data,
+                   "rendered sanitized machine record differs from saved report input")
+    native.require(parsed.headers == ["Case", "Journal state", "Policy SHA-256", "Cleanup confirmed", "Result digest"],
+                   "report no longer distinguishes journal, policy, cleanup and result in text")
+    facts = data.get("observations", {}).get("facts", {})
+    expected_rows = []
+    for label, key in (("Approved transformation", "transformation"), ("Guest denial checks", "guest_denial"),
+                       ("Detached cancellation", "cancellation")):
+        fact = facts.get(key, {})
+        expected_rows.append([str(value) for value in (label, fact.get("state", "NOT RUN"),
+            fact.get("policy_sha256", "unavailable"), fact.get("cleanup_confirmed", "unavailable"),
+            fact.get("result_digest", "unavailable"))])
+    native.require(parsed.rows == expected_rows, "report table does not preserve actual distinct observations as literal text")
+    text = "".join(parsed.text)
+    for phrase in ("Policy, cleanup and result are separate", "This refusal did not execute a guest.",
+                   "Final harness teardown:", "Outer ownership check:",
+                   "This finite demo does not establish full containment acceptance."):
+        native.require(phrase in text, "report lost a required textual distinction or scope")
+    native.require(parsed.tags <= {"a", "caption", "code", "div", "h1", "h2", "html", "li", "main", "meta", "nav",
+                                   "ol", "p", "pre", "section", "strong", "style", "table", "tbody", "td", "th",
+                                   "thead", "title", "tr", "ul"}, "report contains an unexpected element")
+    transformation = facts.get("transformation", {})
+    refusal = facts.get("admission_refusal", {})
+    denial = facts.get("guest_denial", {})
+    cancellation = facts.get("cancellation", {})
+    observations = data.get("observations", {})
+    outer = data.get("outer_teardown", {})
+    displayed = {
+        "Actual captured run: ": str(data["status"]),
+        "Observed summary bytes: ": f'{json.dumps(transformation.get("summary"), sort_keys=True)}.',
+        "Typed profile admission refusal: ":
+            f'{refusal.get("code", "NOT RUN")}; admitted: {refusal.get("admitted", "unavailable")}. '
+            "This refusal did not execute a guest.",
+        "Approved guest check: ":
+            f'synthetic host canary unchanged: {denial.get("host_canary_unchanged", "NOT RUN")}; '
+            f'staged input unchanged: {denial.get("staged_input_unchanged", "NOT RUN")}.',
+        "Cancellation observed cgroup members: ":
+            f'{cancellation.get("observed_cgroup_processes", "NOT RUN")}; '
+            f'launcher reaped: {cancellation.get("launcher_reaped", "NOT RUN")}; '
+            f'owned cgroup removed: {cancellation.get("cgroup_removed", "NOT RUN")}.',
+        "Final harness teardown: ": f'{observations.get("teardown", {}).get("status", "unavailable")}.',
+        "Outer ownership check: ":
+            f'{outer.get("status", "unavailable")}; cleanup diagnostics: {outer.get("error_count", "unavailable")}.',
+    }
+    for label, value in displayed.items():
+        native.require([paragraph for paragraph in parsed.paragraphs if paragraph.startswith(label)] == [label + value],
+                       "displayed demo observation differs from the saved record")
+    native.require(parsed.timeline == [f'{row["case"]}: {row["status"]}; observed elapsed {row["elapsed_ms"]} ms'
+                                       for row in observations.get("timeline", [])],
+                   "displayed demo timeline differs from the saved record")
+    return parsed
+
+
+def check_worker_stdout(raw: bytes, observed: dict[str, Any]) -> None:
+    """Match the ordered capture markers with the independent worker observation file."""
+    records = [native.strict_json(line) for line in raw.splitlines()]
+    expected_names = ["doctor_and_socket", "approved_transformation", "typed_admission_refusal",
+                      "guest_canary_and_input_denial", "detached_cancellation"]
+    native.require([record["case"] for record in records] == ["preflight", *expected_names, "demo_teardown", "native_demo"]
+                   and all(record.get("status") == "PASS" for record in records),
+                   "native worker stdout lacks the exact completed observations")
+    timeline = observed["timeline"]
+    native.require([row["case"] for row in timeline] == expected_names
+                   and all(record == {**row["details"], "case": row["case"], "status": row["status"],
+                                      "elapsed_ms": row["elapsed_ms"]} for record, row in zip(records[1:-2], timeline)),
+                   "native worker stdout differs from the observed timeline")
+    native.require(records[-2] == {**observed["teardown"], "case": "demo_teardown"}
+                   and records[-1].get("commands") == observed.get("commands"),
+                   "native worker completion and teardown markers disagree")
+
+
+def check_saved_report(work: Path, command: list[str]) -> dict[str, Any]:
+    """Bind the saved report and its local links to this completed real run."""
+    work = native.absolute(str(work))
+    native.private_directory(work)
+
+    def read(relative: str, maximum: int = native.MAX_HEADER) -> bytes:
+        path = work / relative
+        for parent in reversed(path.parent.relative_to(work).parents):
+            native.private_directory(work / parent)
+        native.private_directory(path.parent)
+        return native.read_file(path, maximum, owner=True, mode=0o600)
+
+    selected = evidence_json(read("report-input.json"))
+    observed = native.strict_json(read("run/demo-observations.json"))
+    wrapper = native.strict_json(read("wrapper-cleanup.json"))
+    run_id = selected.get("evidence_run_id", "")
+    native.require(isinstance(run_id, str) and RUN_ID.fullmatch(run_id) is not None,
+                   "report capture identity is invalid")
+    captured = evidence_json(read(f"evidence/{run_id}.json"))
+    native.require(selected.get("status") == observed.get("status") == captured.get("status") == "PASS"
+                   and selected.get("captured_command_status") == captured["status"]
+                   and selected.get("captured_exit_code") == captured.get("exit_code") == 0
+                   and selected.get("observations") == observed,
+                   "saved report status/observations differ from the actual worker and capture")
+    native.require(observed.get("teardown", {}).get("status") == "PASS"
+                   and observed["teardown"].get("owned_children_reaped") is True
+                   and observed["teardown"].get("owned_cgroups_remaining") == 0
+                   and wrapper.get("status") == selected.get("outer_teardown", {}).get("status") == "PASS"
+                   and wrapper.get("errors") == [] and wrapper.get("error_count") == 0
+                   and selected["outer_teardown"].get("error_count") == 0,
+                   "report lacks separate successful worker and outer owned cleanup observations")
+    source_digest = captured.get("source_sha256_before")
+    duration = captured.get("duration_seconds")
+    native.require(captured.get("run_id") == run_id and captured.get("category") == "native-demo"
+                   and captured.get("command") == command and captured.get("working_directory") == "."
+                   and captured.get("timed_out") is False and captured.get("log_errors") == []
+                   and isinstance(source_digest, str) and native.DIGEST.fullmatch(source_digest) is not None
+                   and captured.get("source_sha256_after") == selected.get("source_sha256_before")
+                       == selected.get("source_sha256_after") == source_digest
+                   and type(duration) is float and duration > 0 and selected.get("actual_duration_seconds") == duration
+                   and selected.get("source_commit") == captured.get("git_commit")
+                   and selected.get("source_dirty") is captured.get("git_dirty")
+                   and selected.get("observed_start_utc") == captured.get("start_utc")
+                   and selected.get("observed_end_utc") == captured.get("end_utc")
+                   and selected.get("environment") == captured.get("environment")
+                   and selected.get("source_changed_during_run") is False,
+                   "report capture is incomplete or its source identity changed")
+    for label in ("stdout", "stderr"):
+        raw = read(f"evidence/raw/{run_id}.{label}", 2 * 1024 * 1024)
+        log = captured.get("logs", {}).get(label, {})
+        digest = hashlib.sha256(raw).hexdigest()
+        native.require(log.get("path") == f"raw/{run_id}.{label}"
+                       and log.get("sha256") == log.get("full_stream_sha256") == digest
+                       and log.get("retained_bytes") == log.get("total_bytes") == len(raw)
+                       and log.get("truncated") is False and log.get("eof_observed") is True,
+                       "linked raw capture bytes differ from the actual capture identity")
+        if label == "stdout":
+            check_worker_stdout(raw, observed)
+    facts = observed.get("facts", {})
+    native.require(facts.get("transformation", {}).get("summary") == {"count": 4, "sum": 16}
+                   and facts.get("admission_refusal", {}).get("code") == "PROFILE_NOT_FOUND"
+                   and facts["admission_refusal"].get("admitted") is False,
+                   "report lacks the real checked transformation and separate typed admission denial")
+    for key, state in (("transformation", "SUCCEEDED"), ("guest_denial", "SUCCEEDED"), ("cancellation", "CANCELLED")):
+        fact = facts.get(key, {})
+        native.require(fact.get("state") == state and fact.get("cleanup_confirmed") is True
+                       and isinstance(fact.get("result_digest"), str) and native.DIGEST.fullmatch(fact["result_digest"]) is not None
+                       and isinstance(fact.get("policy_sha256"), str) and native.DIGEST.fullmatch(fact["policy_sha256"]) is not None,
+                       "report conflates policy, journal/result outcome or cleanup identity")
+    native.require(facts["guest_denial"].get("host_canary_unchanged") is True
+                   and facts["guest_denial"].get("staged_input_unchanged") is True
+                   and facts["cancellation"].get("launcher_reaped") is True
+                   and facts["cancellation"].get("cgroup_removed") is True,
+                   "report lacks actual denial or whole-group cleanup observations")
+    source = read("run/data.ndjson", 4096)
+    native.require(facts.get("input", {}).get("size_bytes") == len(source)
+                   and facts["input"].get("sha256") == hashlib.sha256(source).hexdigest(),
+                   "linked synthetic input differs from the observed input bytes")
+    document = read("report.html", MAX_REPORT).decode("utf-8")
+    parsed = check_report_document(selected, document)
+    return {"links_checked": len(parsed.links), "file_links_checked": 6, "section_targets_checked": 5,
+            "worker_status": observed["status"], "report_status": selected["status"],
+            "browser_keyboard_focus": "HUMAN_REQUIRED_HA004", "browser_visual_check": "NOT RUN",
+            "scope": "machine report checks only; AC-023 keyboard/focus aggregate remains open"}
+
+
 def stop_interrupted_service(prepared: Any) -> list[str]:
     """Never signal a saved numeric PID: pin and revalidate the recorded service."""
     control_path = prepared.work / "run" / "supervisor-identity.json"
@@ -413,6 +689,13 @@ def stop_interrupted_service(prepared: Any) -> list[str]:
         os.close(descriptor)
 
 
+def worker_command(args: argparse.Namespace) -> list[str]:
+    command = [sys.executable, "-B", str(Path(__file__).resolve()), "--worker"]
+    for flag in ("bin-dir", "doctor", "fixture", "cgroup-root"):
+        command.extend([f"--{flag}", str(native.absolute(getattr(args, flag.replace("-", "_"))))])
+    return command + ["--work", str(native.absolute(args.work) / "run")]
+
+
 def outer(args: argparse.Namespace) -> int:
     prepared: Any = None
     renderer: Any = None
@@ -427,10 +710,7 @@ def outer(args: argparse.Namespace) -> int:
         prepared.preflight()
         capture = load("hearthrun_demo_capture", PUBLIC / "scripts" / "capture.py")
         renderer = load("hearthrun_demo_report", PUBLIC / "scripts" / "report.py")
-        command = [sys.executable, "-B", str(Path(__file__).resolve()), "--worker", "--bin-dir", str(prepared.bin_dir),
-            "--doctor", str(prepared.doctor), "--fixture", str(prepared.fixture), "--cgroup-root", str(prepared.cgroup_root),
-            "--work", str(prepared.work / "run")]
-        captured = capture.capture(command, PUBLIC, prepared.work / "evidence", "native-demo",
+        captured = capture.capture(worker_command(args), PUBLIC, prepared.work / "evidence", "native-demo",
                                    ["UX-001", "FR-004", "SEC-003", "REL-001", "REL-002"], timeout=210)
         code = 0 if captured["exit_code"] == 0 else 78 if captured["exit_code"] == 78 else 1
         path = prepared.work / "run" / "demo-observations.json"
@@ -526,12 +806,24 @@ def main() -> int:
     for flag in ("bin-dir", "doctor", "fixture", "cgroup-root", "work"):
         parser.add_argument(f"--{flag}", required=True)
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--check-report", action="store_true",
+                        help="check saved machine observations/links; does not verify browser keyboard/focus")
     args = parser.parse_args()
     def terminate(signum: int, _frame: Any) -> None:
         signal.signal(signum, signal.SIG_DFL)
         raise native.Failure("demo termination requested; reconciling only owned resources")
     signal.signal(signal.SIGTERM, terminate)
-    return worker(args) if args.worker else outer(args)
+    if args.worker:
+        return worker(args)
+    code = outer(args)
+    if code == 0 and args.check_report:
+        try:
+            details = check_saved_report(Path(args.work), worker_command(args))
+            native.emit("demo_report_integrity", "PASS", **details)
+        except Exception as error:
+            native.emit("demo_report_integrity", "FAIL", reason=f"{type(error).__name__}: {error}"[:1024])
+            return 1
+    return code
 
 
 if __name__ == "__main__":

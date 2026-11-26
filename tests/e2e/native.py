@@ -674,21 +674,33 @@ class Harness:
         require(metrics.get("active") == 0 and metrics.get("queued") == 0, "refused input changed scheduler admission")
         return {"rejections": 5, "record_count_unchanged": True}
 
-    def cancel_case(self, stage: str) -> dict[str, Any]:
+    def cancel_case(self, stage: str, *, cleanup_timeout: float | None = None) -> dict[str, Any]:
+        submitted = time.monotonic()
         job = self.submit(secrets.token_hex(16), stage, "hold")
         members, launchers = self.detached_ready(job)
         self.cli("result", job, ok=False, error="NOT_READY")
         require(not (self.state / "results" / job).exists(), "result was published while hold writers were live")
         cancelled = self.cli("cancel", job)
         require(cancelled.get("cancel_requested") is True, "cancellation was not acknowledged")
-        self.terminal(job, "CANCELLED")
+        remaining = 15.0 if cleanup_timeout is None else cleanup_timeout - (time.monotonic() - submitted)
+        require(remaining > 0, "cancel fixture readiness consumed the scoped cleanup window")
+        self.terminal(job, "CANCELLED", timeout=remaining)
         self.cleanup_observed(job, members, launchers)
+        elapsed = time.monotonic() - submitted
+        if cleanup_timeout is not None:
+            require(elapsed < cleanup_timeout, "whole-group owner cleanup was not observed before natural hold completion")
         metadata, stdout, _ = self.verify_result(job, "CANCELLED")
         require(metadata["artifacts"] == [] and b"detached-ready\n" in stdout, "cancel result lacks actual detached fixture readiness or discarded-artifact policy")
         before = self.record(job)
         self.cli("cancel", job)
         require(self.record(job) == before, "repeat cancel overwrote the committed terminal record")
-        return {"job_id": job, "observed_cgroup_processes": len(members), "launcher_reaped": True, "cgroup_removed": True}
+        observed = {"job_id": job, "observed_cgroup_processes": len(members),
+                    "launcher_reaped": True, "cgroup_removed": True}
+        if cleanup_timeout is not None:
+            observed.update(members_before_cancel=members, launchers_before_cancel=launchers,
+                            cancel_reason=before.get("cancel_reason"), result_status=metadata.get("status"),
+                            result_digest=before.get("result_digest"), cleanup_elapsed_ms=round(elapsed * 1000))
+        return observed
 
     def restart_case(self, stage: str) -> dict[str, Any]:
         request = secrets.token_hex(16)

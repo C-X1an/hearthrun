@@ -1,5 +1,5 @@
 {
-  "actual_duration_seconds": 1.1231452149995675,
+  "actual_duration_seconds": 1.082718613994075,
   "captured_command_status": "PASS",
   "captured_exit_code": 0,
   "environment": {
@@ -8,7 +8,7 @@
     "python": "3.14.4",
     "system": "Linux"
   },
-  "evidence_run_id": "20261118T151629-5536f2efe2fe",
+  "evidence_run_id": "20261126T051456-43dbf0ce5448",
   "observations": {
     "captured_bytes": 19798,
     "commands": 35,
@@ -25,15 +25,15 @@
       "cancellation": {
         "cgroup_removed": true,
         "cleanup_confirmed": true,
-        "executable_sha256": "42dd9f38576274a97735346ff4f3439459db3aca540fc41d86e564f4a231adff",
-        "job_id": "b999975a91d54cc98782b21c26305bbf",
+        "executable_sha256": "8ff37c5fda0438e8d7bd5ff0f1bc1ecdbc513b69b8e9664a10308f708c4ec880",
+        "job_id": "9e8b41831a257a9b8eba9be4c78cb603",
         "launcher_reaped": true,
         "metadata": {
           "artifacts": [],
           "cleanup_confirmed": true,
           "environment_id": "linux-x86_64-309504bfab961330b67e5d42e7d9394858a87f7ab228a82c2277de0a770c70cd",
           "exit_code": null,
-          "job_id": "b999975a91d54cc98782b21c26305bbf",
+          "job_id": "9e8b41831a257a9b8eba9be4c78cb603",
           "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
           "signal": null,
           "status": "CANCELLED",
@@ -44,23 +44,23 @@
         "observed_cgroup_processes": 4,
         "observed_exit": null,
         "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
-        "profile_digest": "ab621d0bf7e0e0985937fe6359e76dfa60a9511c8af7b3add54a2282cd834a5c",
-        "result_digest": "3661112b510973da55b3f6ce1da23c391fcb67e9558b6d2ce844302287281bc6",
+        "profile_digest": "9d67e0cfa46d52dad03706a98cae6a83d830afb8ccd7f5362daf395d15d4b9f7",
+        "result_digest": "940d60dd6eb98d92aaa267555c4126c10e16974699492f96870b45bf2fbe40e6",
         "state": "CANCELLED"
       },
       "guest_denial": {
         "cleanup_confirmed": true,
-        "executable_sha256": "42dd9f38576274a97735346ff4f3439459db3aca540fc41d86e564f4a231adff",
+        "executable_sha256": "8ff37c5fda0438e8d7bd5ff0f1bc1ecdbc513b69b8e9664a10308f708c4ec880",
         "guest_check_exit_zero": true,
         "host_canary_sha256": "a9d463fb830bceb63cadcc1f609ff7d8343ce6278560cf3fd82865583645f3cb",
         "host_canary_unchanged": true,
-        "job_id": "dcbc3f6b93f58a89d19fbf8f2c631f27",
+        "job_id": "cbe1dda97b91618e21843c3d9206bda9",
         "metadata": {
           "artifacts": [],
           "cleanup_confirmed": true,
           "environment_id": "linux-x86_64-309504bfab961330b67e5d42e7d9394858a87f7ab228a82c2277de0a770c70cd",
           "exit_code": 0,
-          "job_id": "dcbc3f6b93f58a89d19fbf8f2c631f27",
+          "job_id": "cbe1dda97b91618e21843c3d9206bda9",
           "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
           "signal": null,
           "status": "SUCCEEDED",
@@ -73,8 +73,8 @@
           "signal": null
         },
         "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
-        "profile_digest": "ab621d0bf7e0e0985937fe6359e76dfa60a9511c8af7b3add54a2282cd834a5c",
-        "result_digest": "e4a5a3792e3d3f95f233fe149bbe18b40ea18235fd8c3da5ec7bbc5bdb080e0d",
+        "profile_digest": "9d67e0cfa46d52dad03706a98cae6a83d830afb8ccd7f5362daf395d15d4b9f7",
+        "result_digest": "3b81a15f5ae8570090e50e3422b32936245a6351be314e3bd79efe80802be17c",
         "scope": "one synthetic host canary and the staged input; approved check fixture also checked its fixed environment and descriptors",
         "staged_input_sha256": "a27e53fa6cb709af40792c52aeb7dd44cfcf387758aa603506d992e22678a82e",
         "staged_input_unchanged": true,
@@ -95,8 +95,8 @@
       "transformation": {
         "cgroup_removed": true,
         "cleanup_confirmed": true,
-        "executable_sha256": "42dd9f38576274a97735346ff4f3439459db3aca540fc41d86e564f4a231adff",
-        "job_id": "c03d56b82e9b5044febe80058ee42a61",
+        "executable_sha256": "8ff37c5fda0438e8d7bd5ff0f1bc1ecdbc513b69b8e9664a10308f708c4ec880",
+        "job_id": "43c2de824f76d33856b8e949315c89b3",
         "metadata": {
           "artifacts": [
             {
@@ -108,7 +108,7 @@
           "cleanup_confirmed": true,
           "environment_id": "linux-x86_64-309504bfab961330b67e5d42e7d9394858a87f7ab228a82c2277de0a770c70cd",
           "exit_code": 0,
-          "job_id": "c03d56b82e9b5044febe80058ee42a61",
+          "job_id": "43c2de824f76d33856b8e949315c89b3",
           "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
           "signal": null,
           "status": "SUCCEEDED",
@@ -121,8 +121,8 @@
           "signal": null
         },
         "policy_sha256": "a1360c7ee9e3b366a22d22659b1ea66992878fee195ea4221033ebbdd5d24929",
-        "profile_digest": "ab621d0bf7e0e0985937fe6359e76dfa60a9511c8af7b3add54a2282cd834a5c",
-        "result_digest": "09192b3139d297e6eaacbf8d3c5388e8e4107f1a32c5ec3416c756b345e65adc",
+        "profile_digest": "9d67e0cfa46d52dad03706a98cae6a83d830afb8ccd7f5362daf395d15d4b9f7",
+        "result_digest": "c45d6abb111656b4613d25caad6036e0080628b37a46566a6573c08def2db161",
         "state": "SUCCEEDED",
         "summary": {
           "count": 4,
@@ -146,7 +146,7 @@
           "socket_mode": "0600"
         },
         "elapsed_ms": 12,
-        "started_ms": 400,
+        "started_ms": 379,
         "status": "PASS"
       },
       {
@@ -154,12 +154,12 @@
         "details": {
           "cleanup_confirmed": true,
           "count": 4,
-          "job_id": "c03d56b82e9b5044febe80058ee42a61",
-          "result_digest": "09192b3139d297e6eaacbf8d3c5388e8e4107f1a32c5ec3416c756b345e65adc",
+          "job_id": "43c2de824f76d33856b8e949315c89b3",
+          "result_digest": "c45d6abb111656b4613d25caad6036e0080628b37a46566a6573c08def2db161",
           "sum": 16
         },
-        "elapsed_ms": 173,
-        "started_ms": 426,
+        "elapsed_ms": 153,
+        "started_ms": 402,
         "status": "PASS"
       },
       {
@@ -170,7 +170,7 @@
           "host_canary_unchanged": true
         },
         "elapsed_ms": 13,
-        "started_ms": 599,
+        "started_ms": 555,
         "status": "PASS"
       },
       {
@@ -178,29 +178,29 @@
         "details": {
           "cleanup_confirmed": true,
           "host_canary_unchanged": true,
-          "job_id": "dcbc3f6b93f58a89d19fbf8f2c631f27",
+          "job_id": "cbe1dda97b91618e21843c3d9206bda9",
           "staged_input_unchanged": true
         },
-        "elapsed_ms": 138,
-        "started_ms": 612,
+        "elapsed_ms": 144,
+        "started_ms": 568,
         "status": "PASS"
       },
       {
         "case": "detached_cancellation",
         "details": {
           "cgroup_removed": true,
-          "job_id": "b999975a91d54cc98782b21c26305bbf",
+          "job_id": "9e8b41831a257a9b8eba9be4c78cb603",
           "launcher_reaped": true,
           "observed_cgroup_processes": 4
         },
-        "elapsed_ms": 299,
-        "started_ms": 750,
+        "elapsed_ms": 298,
+        "started_ms": 713,
         "status": "PASS"
       }
     ]
   },
-  "observed_end_utc": "2026-11-18T15:16:30.383443+00:00",
-  "observed_start_utc": "2026-11-18T15:16:29.260094+00:00",
+  "observed_end_utc": "2026-11-26T05:14:57.474188+00:00",
+  "observed_start_utc": "2026-11-26T05:14:56.391226+00:00",
   "outer_teardown": {
     "diagnostics": "inspect private captured diagnostics if errors occurred",
     "error_count": 0,
@@ -211,7 +211,7 @@
   "source_changed_during_run": false,
   "source_commit": null,
   "source_dirty": false,
-  "source_sha256_after": "fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415",
-  "source_sha256_before": "fc261a420bd17f6e21809ca46390eced83c59d302c96ef96f5fc832c22e92415",
+  "source_sha256_after": "6a430254b7c9e2a766fea8c47f4dfc4bb0ed18a7728ac8ddc116ace4ef145ee5",
+  "source_sha256_before": "6a430254b7c9e2a766fea8c47f4dfc4bb0ed18a7728ac8ddc116ace4ef145ee5",
   "status": "PASS"
 }

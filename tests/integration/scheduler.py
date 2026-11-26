@@ -20,8 +20,10 @@ functional suite, not the full mutation/fault/performance acceptance campaign.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import secrets
 import signal
@@ -48,6 +50,8 @@ class SchedulerSuite(native.Harness):
         self.stage: str | None = None
         self.observations: dict[str, Any] = {"schema_version": 1, "suite": "finite_native_scheduler", "cases": {}}
         self.retry_identity: tuple[str, str] | None = None
+        self.selected_case = getattr(args, "case", "all")
+        self.observations["selected_case"] = self.selected_case
 
     def exercise(self) -> None:
         code, stdout, _ = self.command([str(self.bin_dir / "hearthrun-supervisor"), "install-profile",
@@ -63,9 +67,14 @@ class SchedulerSuite(native.Harness):
         stage = staged.get("stage_id")
         native.require(isinstance(stage, str) and native.ID.fullmatch(stage) is not None, "actual staged input ID is invalid")
         self.stage = stage
-        self.case("four_running_sixteen_waiting_fifo", self.capacity_fifo)
-        self.case("whole_group_wall_expiry", self.wall_expiry)
-        self.case("retained_identity_after_restart", self.restart_identity)
+        if self.selected_case in {"all", "admission"}:
+            self.case("four_running_sixteen_waiting_fifo", self.capacity_fifo)
+        if self.selected_case == "cancel":
+            self.case("whole_group_owner_cancel", self.owner_cancel)
+        if self.selected_case in {"all", "cancel"}:
+            self.case("whole_group_wall_expiry", self.wall_expiry)
+        if self.selected_case == "all":
+            self.case("retained_identity_after_restart", self.restart_identity)
 
     def checked_stage(self) -> str:
         native.require(self.stage is not None, "scheduler input stage is unavailable")
@@ -78,9 +87,56 @@ class SchedulerSuite(native.Harness):
         native.require(value.get("admission_open") is True, "scheduler closed admission unexpectedly")
         return value
 
+    def live_stock(self, holders: list[dict[str, Any]],
+                   previous: dict[str, Any] | None = None) -> dict[str, Any]:
+        stock_started = time.monotonic_ns()
+        expected_groups = {self.group_name(holder["job_id"]) for holder in holders}
+        native.require(self.group_names() == expected_groups, "owned cgroup inventory differs from the live holders")
+        groups: dict[str, Any] = {}
+        for holder in holders:
+            job = holder["job_id"]
+            started = time.monotonic_ns()
+            native.require(self.record(job)["state"] == "RUNNING", "holder is no longer durably running")
+            descriptor = self.open_group(job)
+            try:
+                info = os.fstat(descriptor)
+                leaf = [info.st_dev, info.st_ino]
+                if previous is not None:
+                    native.require(leaf == previous["groups"][job]["cgroup"],
+                                   "hold cgroup identity changed within the observation")
+                expected = {member["pid"]: member["start_ticks"] for member in holder["members"]}
+                before = self.control_read(descriptor, "cgroup.procs").splitlines()
+                events_before = self.control_read(descriptor, "cgroup.events").splitlines()
+                native.require(len(before) == len(expected) and all(line.isdigit() for line in before)
+                               and {int(line) for line in before} == set(expected),
+                               "live hold membership changed before identity observation")
+                members: list[dict[str, Any]] = []
+                for pid, start_ticks in sorted(expected.items()):
+                    current = self.process_identity(pid)
+                    native.require(current is not None and current["start_ticks"] == start_ticks
+                                   and current["state"] not in {"Z", "X", "x"},
+                                   "live hold identity changed or stopped")
+                    members.append(current)
+                after = self.control_read(descriptor, "cgroup.procs").splitlines()
+                events_after = self.control_read(descriptor, "cgroup.events").splitlines()
+                native.require(sorted(after) == sorted(before), "live hold membership changed during identity observation")
+                native.require(b"populated 1" in events_before and b"populated 1" in events_after,
+                               "hold cgroup lost its populated witness")
+            finally:
+                os.close(descriptor)
+            groups[job] = {"cgroup": leaf, "members": members, "before_ns": started,
+                           "after_ns": time.monotonic_ns(),
+                           "pids_before": sorted(map(int, before)), "pids_after": sorted(map(int, after)),
+                           "events_before": [line.decode("ascii") for line in events_before],
+                           "events_after": [line.decode("ascii") for line in events_after]}
+        native.require(self.group_names() == expected_groups, "owned cgroup inventory changed within the live observation")
+        return {"groups": groups, "before_ns": stock_started, "after_ns": time.monotonic_ns()}
+
     def capacity_fifo(self) -> dict[str, Any]:
         stage = self.checked_stage()
-        begun = time.monotonic()
+        begun = time.monotonic_ns()
+        admission_deadline = begun + 6_000_000_000
+        fifo_deadline = begun + 6_500_000_000
         holders: list[dict[str, Any]] = []
         waiting: list[dict[str, Any]] = []
         observed: dict[str, Any] = {"holders": holders, "waiting_admission_order": waiting}
@@ -104,25 +160,36 @@ class SchedulerSuite(native.Harness):
             waiting.append({"position": index, "request_id": request, "job_id": job})
         # The fixture window is finite. A slow setup must fail rather than let
         # naturally expired holds turn this into a smaller-capacity substitute.
-        native.require(time.monotonic() - begun < 6, "could not fill the required queue within the live hold fixture window")
+        native.require(time.monotonic_ns() < admission_deadline, "could not fill the required queue within the live hold fixture window")
         full = self.metrics()
         native.require(full["active"] == 4 and full["queued"] == 16 and full.get("retained_requests") == 20,
                        "did not observe the complete four-running/sixteen-waiting boundary")
-        expected_groups = {self.group_name(holder["job_id"]) for holder in holders}
-        native.require(self.group_names() == expected_groups, "queued jobs created cgroups or a running fixture disappeared")
-        for holder in holders:
-            native.require(self.record(holder["job_id"])["state"] == "RUNNING", "holder stopped before full-queue rejection")
         for item in waiting:
             native.require(self.record(item["job_id"])["state"] == "QUEUED", "queued job started while all four running slots remained held")
         before = self.inventory()
+        native.require(before == {item["job_id"] for item in holders + waiting}, "full durable job inventory differs from admitted identities")
+        catalog = self.state / "records" / "catalog.json"
+        before_catalog = native.read_file(catalog, native.MAX_CATALOG, owner=True, mode=0o600)
         rejection_request = secrets.token_hex(16)
+        bracket: dict[str, Any] = {"deadline_ns": admission_deadline, "before": self.live_stock(holders)}
+        observed["admission_bracket"] = bracket
+        bracket["request_started_ns"] = time.monotonic_ns()
+        native.require(bracket["request_started_ns"] < admission_deadline, "full admission observation started after the live window")
         rejection = self.cli("submit", rejection_request, "example", stage, "60000", "--", "empty",
                              ok=False, error="QUEUE_FULL")
+        bracket["reply_received_ns"] = time.monotonic_ns()
+        bracket["after"] = self.live_stock(holders, bracket["before"])
+        native.require(bracket["before"]["after_ns"] <= bracket["request_started_ns"] <= bracket["reply_received_ns"]
+                       <= bracket["after"]["before_ns"] <= bracket["after"]["after_ns"] < admission_deadline,
+                       "QUEUE_FULL was not bracketed by live stock inside the admission window")
         after = self.metrics()
-        native.require(after["active"] == 4 and after["queued"] == 16 and self.inventory() == before
-                       and self.group_names() == expected_groups, "21st rejected admission had a durable or execution side effect")
+        after_catalog = native.read_file(catalog, native.MAX_CATALOG, owner=True, mode=0o600)
+        native.require(rejection.get("retryable") is True, "QUEUE_FULL is not the typed retryable capacity refusal")
+        native.require(after == full and after_catalog == before_catalog and self.inventory() == before,
+                       "21st rejected admission changed metrics, catalog or execution state")
         native.require(all(self.record(job)["request_id"] != rejection_request for job in before),
                        "QUEUE_FULL persisted the rejected request identity")
+        native.require(time.monotonic_ns() < admission_deadline, "could not finish checking the rejection within the live window")
         # Existing identities retain their meaning even while new admission is
         # full. This is an explicit test retry, never a client automatic retry.
         duplicate = self.cli("submit", holders[0]["request_id"], "example", stage, "60000", "--", "hold")
@@ -131,6 +198,8 @@ class SchedulerSuite(native.Harness):
                  ok=False, error="CONFLICT")
         observed["full_metrics"] = full
         observed["after_rejection_metrics"] = after
+        observed["catalog_sha256_before_rejection"] = hashlib.sha256(before_catalog).hexdigest()
+        observed["catalog_sha256_after_rejection"] = hashlib.sha256(after_catalog).hexdigest()
         observed["rejected_request_id"] = rejection_request
         observed["rejection"] = rejection
 
@@ -142,7 +211,7 @@ class SchedulerSuite(native.Harness):
         # Leave the other three holders live: exactly one slot must process all
         # sixteen waiting jobs, making execution-release order observable FIFO.
         while True:
-            metrics = self.metrics()
+            self.metrics()
             for holder in holders[1:]:
                 native.require(self.record(holder["job_id"])["state"] == "RUNNING",
                                "a second slot became free before the one-slot FIFO observation completed")
@@ -150,9 +219,14 @@ class SchedulerSuite(native.Harness):
             for record in records:
                 native.require(record["state"] not in native.TERMINAL or record["state"] == "SUCCEEDED",
                                "an approved queued empty fixture failed")
+            native.require(time.monotonic_ns() < fifo_deadline, "single-slot FIFO drain exceeded the live holder window")
             if all(record["state"] == "SUCCEEDED" for record in records):
+                closing_stock = self.live_stock(holders[1:], bracket["after"])
+                native.require(closing_stock["after_ns"] < fifo_deadline,
+                               "single-slot FIFO drain exceeded the live holder window")
+                observed["fifo_completed_live_stock"] = closing_stock
+                observed["single_slot_drain_elapsed_ms"] = round((closing_stock["after_ns"] - begun) / 1_000_000)
                 break
-            native.require(time.monotonic() - begun < 6.5, "single-slot FIFO drain exceeded the live holder window")
             time.sleep(0.01)
         starts = [record.get("started_monotonic_ns") for record in records]
         native.require(all(type(start) is int and start > 0 for start in starts), "FIFO execution-start observations are missing")
@@ -170,7 +244,6 @@ class SchedulerSuite(native.Harness):
         native.require(all(left < right for left, right in zip(running_events, running_events[1:])),
                        "RUNNING event order differs from FIFO admission order")
         observed["running_event_monotonic_ns"] = running_events
-        observed["single_slot_drain_elapsed_ms"] = round((time.monotonic() - begun) * 1000)
         for holder in holders[1:]:
             cancelled = self.cli("cancel", holder["job_id"])
             native.require(cancelled.get("cancel_requested") is True, "remaining live holder was not cancelled")
@@ -188,6 +261,20 @@ class SchedulerSuite(native.Harness):
         observed["explicit_post_capacity_retry_job_id"] = retried
         return {"running": 4, "waiting": 16, "rejection": "QUEUE_FULL", "fifo_jobs": len(waiting),
                 "fifo_observation": "one released slot; durable start observations and RUNNING events"}
+
+    def owner_cancel(self) -> dict[str, Any]:
+        # The existing native helper observes PID/start identities, the detached
+        # session, NOT_READY, whole-group cleanup and the protected result digest.
+        # Six seconds is below this fixed hold fixture's eight-second lifetime.
+        observed = self.cancel_case(self.checked_stage(), cleanup_timeout=6.0)
+        self.observations["cases"]["owner_cancel"] = observed
+        native.require(observed["cancel_reason"] == "USER_CANCEL"
+                       and observed["result_status"] == "CANCELLED",
+                       "owner cancellation did not preserve its typed cause/result")
+        idle = self.metrics()
+        native.require(idle["active"] == idle["queued"] == 0 and not self.group_names(),
+                       "owner-cancelled whole group retained scheduler capacity")
+        return observed
 
     def wall_expiry(self) -> dict[str, Any]:
         stage = self.checked_stage()
@@ -259,6 +346,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     for flag in ("bin-dir", "doctor", "fixture", "cgroup-root", "work"):
         parser.add_argument(f"--{flag}", required=True)
+    parser.add_argument("--case", choices=("all", "admission", "cancel"), default="all",
+                        help="all preserves the existing suite; locked criteria run in separate fresh work directories")
     args = parser.parse_args()
 
     def terminate(signum: int, _frame: Any) -> None:
@@ -303,7 +392,8 @@ def main() -> int:
                 native.emit("scheduler_teardown", "PASS", owned_children_reaped=True, owned_cgroups_remaining=0)
             if code == 0:
                 native.emit("scheduler_integration", "PASS", passed_cases=harness.passes, commands=harness.commands,
-                            captured_bytes=harness.captured, scope="finite capacity/FIFO/wall-expiry/restart suite")
+                            captured_bytes=harness.captured, selected_case=harness.selected_case,
+                            scope="finite owned native scheduler cases; mutation gates separate")
     return code
 
 

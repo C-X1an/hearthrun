@@ -47,3 +47,23 @@ libc.workspace = true
 serde = { workspace = true, features = ["derive"] }
 serde_json.workspace = true
 sha2.workspace = true
+
+[[test]]
+name = "profile_acceptance"
+path = "../../tests/acceptance_locked/profiles.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "admission_acceptance"
+path = "../../tests/acceptance_locked/admission.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "cancel_acceptance"
+path = "../../tests/acceptance_locked/cancel.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "demo_acceptance"
+path = "../../tests/acceptance_locked/demo.rs"
+required-features = ["native-verification"]
