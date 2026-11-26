@@ -685,6 +685,7 @@
           "elapsed_ms": 17156,
           "status": "PASS",
           "steady_wall_seconds": 10.254527522999524,
+          "throttling_observed": true,
           "used_cores": 1.002636833041779
         },
         {
@@ -755,6 +756,7 @@
           "elapsed_ms": 17261,
           "status": "PASS",
           "steady_wall_seconds": 10.254211786999804,
+          "throttling_observed": true,
           "used_cores": 1.0003597753856492
         },
         {
@@ -900,9 +902,12 @@
           "status": "PASS"
         },
         {
+          "approved_io_bytes": 63,
           "case": "filesystem_environment_descriptors_and_approved_io",
           "elapsed_ms": 216,
-          "status": "PASS"
+          "fd_ceiling": 1048576,
+          "status": "PASS",
+          "synthetic_canary_unchanged": true
         },
         {
           "case": "socket_creation_default_deny",
@@ -919,6 +924,7 @@
         {
           "case": "x32_benign_identity_query_terminated",
           "elapsed_ms": 113,
+          "signal": 31,
           "status": "PASS"
         },
         {
@@ -4811,6 +4817,271 @@
       "source_sha256_after": "6a430254b7c9e2a766fea8c47f4dfc4bb0ed18a7728ac8ddc116ace4ef145ee5",
       "source_sha256_before": "6a430254b7c9e2a766fea8c47f4dfc4bb0ed18a7728ac8ddc116ace4ef145ee5",
       "start_utc": "2026-11-26T05:14:57.496152+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 16,
+          "socket_mode": "0600",
+          "status": "PASS"
+        },
+        {
+          "approved_io_bytes": 63,
+          "case": "filesystem_environment_descriptors_and_approved_io",
+          "elapsed_ms": 331,
+          "fd_ceiling": 1048576,
+          "status": "PASS",
+          "synthetic_canary_unchanged": true
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "policy_security",
+          "passed_cases": 3,
+          "status": "PASS"
+        }
+      ],
+      "category": "locked-positive-filesystem",
+      "duration_seconds": 0.905386661994271,
+      "end_utc": "2026-11-26T10:07:22.225084+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "d1139827f14b94b917c75496c229503fc3c068e5296172a5f4c09c0f9446a102"
+      },
+      "run_id": "20261126T100721-1d4446f7e28f",
+      "source_sha256_after": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
+      "source_sha256_before": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
+      "start_utc": "2026-11-26T10:07:21.319702+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 12,
+          "socket_mode": "0600",
+          "status": "PASS"
+        },
+        {
+          "approved_io_bytes": 63,
+          "case": "filesystem_environment_descriptors_and_approved_io",
+          "elapsed_ms": 496,
+          "fd_ceiling": 1048576,
+          "status": "PASS",
+          "synthetic_canary_unchanged": true
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "policy_security",
+          "passed_cases": 3,
+          "status": "PASS"
+        }
+      ],
+      "category": "locked-positive-authority",
+      "duration_seconds": 1.2353627579868771,
+      "end_utc": "2026-11-26T10:07:23.477024+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "5ee2f65a17e5728684aef4def0b049ae4b0adabcc4e42c8f47ef34fe9803d32d"
+      },
+      "run_id": "20261126T100722-f1e2e769ed5c",
+      "source_sha256_after": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
+      "source_sha256_before": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
+      "start_utc": "2026-11-26T10:07:22.241644+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 22,
+          "socket_mode": "0600",
+          "status": "PASS"
+        },
+        {
+          "approved_io_bytes": 63,
+          "case": "filesystem_environment_descriptors_and_approved_io",
+          "elapsed_ms": 366,
+          "fd_ceiling": 1048576,
+          "status": "PASS",
+          "synthetic_canary_unchanged": true
+        },
+        {
+          "case": "invalid_operation_default_deny",
+          "elapsed_ms": 255,
+          "errno": 1,
+          "status": "PASS"
+        },
+        {
+          "case": "x32_benign_identity_query_terminated",
+          "elapsed_ms": 230,
+          "signal": 31,
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "policy_security",
+          "passed_cases": 5,
+          "status": "PASS"
+        }
+      ],
+      "category": "locked-positive-seccomp",
+      "duration_seconds": 1.6643045420059934,
+      "end_utc": "2026-11-26T10:07:25.167772+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "166d21047b27df00a8fba695a07139478b487ba8fcf665280e680ff8ec031db9"
+      },
+      "run_id": "20261126T100723-e0710493996c",
+      "source_sha256_after": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
+      "source_sha256_before": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
+      "start_utc": "2026-11-26T10:07:23.503450+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 13,
+          "socket_mode": "0600",
+          "status": "PASS"
+        },
+        {
+          "case": "standard_release_without_color",
+          "elapsed_ms": 176,
+          "state": "SUCCEEDED",
+          "status": "PASS",
+          "stderr_bytes": 39,
+          "stdout_bytes": 45
+        },
+        {
+          "case": "cpu_exact_controls_and_ten_second_quota",
+          "elapsed_ms": 17245,
+          "status": "PASS",
+          "steady_wall_seconds": 10.252766499994323,
+          "throttling_observed": true,
+          "used_cores": 1.0020457405331225
+        },
+        {
+          "case": "pids_kernel_limit",
+          "elapsed_ms": 5180,
+          "event_before_teardown": 1,
+          "kernel_counter": "pids.events:max",
+          "reason": "RESOURCE_LIMIT",
+          "state": "FAILED",
+          "status": "PASS"
+        },
+        {
+          "case": "memory_kernel_limit",
+          "elapsed_ms": 4440,
+          "event_before_teardown": 1,
+          "kernel_counter": "memory.events:oom_kill",
+          "reason": "RESOURCE_LIMIT",
+          "state": "FAILED",
+          "status": "PASS"
+        },
+        {
+          "case": "bounded_stream_release",
+          "elapsed_ms": 1412,
+          "event_page_count": 10,
+          "reason": "STREAM_LIMIT",
+          "status": "PASS",
+          "stderr_bytes": 1048576,
+          "stderr_truncated": true,
+          "stdout_bytes": 1048576,
+          "stdout_truncated": true
+        },
+        {
+          "case": "resource_teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "resource_integration",
+          "passed_cases": 7,
+          "status": "PASS"
+        }
+      ],
+      "category": "locked-positive-resources",
+      "duration_seconds": 29.083593593008118,
+      "end_utc": "2026-11-26T10:07:54.264668+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "1713e5fe5f30bf8ae5dd59c141ab09ec2fe4b96916675743000ceec255b63246"
+      },
+      "run_id": "20261126T100725-d496ae3d2b8f",
+      "source_sha256_after": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
+      "source_sha256_before": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
+      "start_utc": "2026-11-26T10:07:25.181094+00:00",
       "status": "PASS"
     },
     {

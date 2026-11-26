@@ -67,3 +67,23 @@ required-features = ["native-verification"]
 name = "demo_acceptance"
 path = "../../tests/acceptance_locked/demo.rs"
 required-features = ["native-verification"]
+
+[[test]]
+name = "resource_acceptance"
+path = "../../tests/acceptance_locked/resources.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "filesystem_acceptance"
+path = "../../tests/acceptance_locked/filesystem.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "authority_acceptance"
+path = "../../tests/acceptance_locked/authority.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "seccomp_acceptance"
+path = "../../tests/acceptance_locked/seccomp.rs"
+required-features = ["native-verification"]

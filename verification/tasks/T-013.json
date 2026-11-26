@@ -1,0 +1,207 @@
+{
+  "compatible_host": {
+    "captures": [
+      {
+        "category": "clean-local-clone",
+        "exit_code": 0,
+        "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+        "raw_hashes": {
+          "stderr": "d855a38e91713e1a6bdf63e76e316842473274a7d30407ae7c890fc614767394",
+          "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "run_id": "20261126T051734-06e2a58f168e",
+        "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "status": "PASS"
+      },
+      {
+        "category": "clean-audit",
+        "exit_code": 0,
+        "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+        "raw_hashes": {
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "2332924478ce876e37377efc965c067df231c2eac261a39ae9cf7c099f58eb5e"
+        },
+        "run_id": "20261126T051734-efe2fc241567",
+        "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "status": "PASS"
+      },
+      {
+        "category": "clean-bootstrap",
+        "exit_code": 0,
+        "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+        "raw_hashes": {
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "9a69091d14d1e4ac447b8cbb9cfb110c87136bac92007be1ea089c9a47149b01"
+        },
+        "run_id": "20261126T051735-812113512d7a",
+        "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "status": "PASS"
+      },
+      {
+        "category": "clean-fetch",
+        "exit_code": 0,
+        "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+        "raw_hashes": {
+          "stderr": "9197fe216addb789882715a66e0b6b87d849a2b487dff11209fdc26272392fc7",
+          "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "run_id": "20261126T051735-b17cdd07b6f5",
+        "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "status": "PASS"
+      },
+      {
+        "category": "clean-sources",
+        "exit_code": 0,
+        "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+        "raw_hashes": {
+          "stderr": "7b4c19dc6d753de8d4a5823b548d6c80f21bff1fad419eeab39f4acdd4c33874",
+          "stdout": "e2bbe9ab646be337cc6f648a439fcd1092800e5e500ed79efb6af8076e900ed3"
+        },
+        "run_id": "20261126T051737-466ed2b15fd9",
+        "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "status": "PASS"
+      },
+      {
+        "category": "clean-native-prerequisites",
+        "exit_code": 0,
+        "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+        "raw_hashes": {
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "084ad6c18a2e2ee7b0f8e3901f9f44f3ebb762b87da8bac6e6223971956ff7f4"
+        },
+        "run_id": "20261126T051827-36e8f398ffcc",
+        "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "status": "PASS"
+      },
+      {
+        "category": "clean-e2e",
+        "exit_code": 0,
+        "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+        "raw_hashes": {
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "b655b922e93c8261657ca57a3a4f06d601a9db628b497993a7388ceb58c171f7"
+        },
+        "run_id": "20261126T051840-36be690f963c",
+        "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "status": "PASS"
+      },
+      {
+        "category": "clean-teardown",
+        "exit_code": 0,
+        "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+        "raw_hashes": {
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "d12dea1ba34ffe28372071e1f073fb0596bce267e9da28b4651172e1ffb31abb"
+        },
+        "run_id": "20261126T051923-d12deeb92c5a",
+        "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+        "status": "PASS"
+      }
+    ],
+    "controller": {
+      "category": "clean-reproduction-r8",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "bf3c81f87382938abedf9734c174042cc7f63e9ed9781faeca7c5580847c5691"
+      },
+      "run_id": "20261126T051734-314c97d470a2",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "status": "PASS"
+    },
+    "environment": "Linux x86-64 WSL2, isolated checkout and fresh Cargo cache"
+  },
+  "criterion": "AC-019",
+  "export_controls": [
+    {
+      "category": "control-baseline",
+      "exit_code": 0,
+      "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "2447814e7a160b1487009027ff98f7dabed9a4e9eb04c580290d149ff3f92e72"
+      },
+      "run_id": "20261126T052252-ee23e76d2a66",
+      "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+      "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+      "status": "PASS"
+    },
+    {
+      "category": "control-forbidden-path",
+      "exit_code": 1,
+      "expected_refusal": "forbidden tracked publication path",
+      "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "eec3517653037d8918e54f1840b3f101f2c04719522b6703b6585858fe8c98e0"
+      },
+      "run_id": "20261126T052253-bc648baa434d",
+      "source_sha256_after": "1b7dc34dfe3f39256987bf4ea0cf8d4d3d5170eb2454ede839ccb8e44e8429fa",
+      "source_sha256_before": "1b7dc34dfe3f39256987bf4ea0cf8d4d3d5170eb2454ede839ccb8e44e8429fa",
+      "status": "FAIL"
+    },
+    {
+      "category": "control-missing-fixture",
+      "exit_code": 1,
+      "expected_refusal": "required public product or reproduction source missing",
+      "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "14042f06e2ae6c2b84bae00683591b2ada1afe7063a1136e5211f8f48f5194de"
+      },
+      "run_id": "20261126T052253-c349b9ea0baf",
+      "source_sha256_after": "cad7cf258f724a5ff684259af96b3ec952a03c32e0733f6ac6e0ff589d8c7149",
+      "source_sha256_before": "cad7cf258f724a5ff684259af96b3ec952a03c32e0733f6ac6e0ff589d8c7149",
+      "status": "FAIL"
+    },
+    {
+      "category": "control-restored",
+      "exit_code": 0,
+      "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "2447814e7a160b1487009027ff98f7dabed9a4e9eb04c580290d149ff3f92e72"
+      },
+      "run_id": "20261126T052253-e5278d11f33c",
+      "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+      "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+      "status": "PASS"
+    }
+  ],
+  "limits": [
+    "Applies to the named revision. A later revision requires its own clean reproduction.",
+    "The separate unsupported Linux host test for AC-003 remains open.",
+    "This result covers AC-019. Full release acceptance remains open."
+  ],
+  "removed_fixture": "fixtures/native/task.c",
+  "schema_version": 1,
+  "scope": "Exact R8 public checkout reproduction",
+  "status": "PASS",
+  "task": "T-013",
+  "tested_revision": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+  "unsupported_host": {
+    "category": "clean-unsupported-windows",
+    "environment": "Windows",
+    "exit_code": 78,
+    "git_commit": "e373664b6a8f23bd2b6042410ee163cd7a5ecd82",
+    "precise_requirement": "Linux x86-64 non-root operator without supplementary groups required",
+    "raw_hashes": {
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "6ebbd8f3ea887022a4e7d69f8510d83ad9a25103da3b391e8bb1a3db83cc2e89"
+    },
+    "run_id": "20261126T102431-2571baeffda7",
+    "source_sha256_after": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+    "source_sha256_before": "765732bcb836965e9bdc9b4c18427f8446e8922ea492014595e91650a1a33720",
+    "status": "BLOCKED"
+  }
+}

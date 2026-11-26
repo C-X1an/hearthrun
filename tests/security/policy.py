@@ -35,7 +35,8 @@ SPEC.loader.exec_module(native)
 
 
 class PolicySuite(native.Harness):
-    def exercise(self) -> None:
+    def exercise(self, selected_case: str = "all") -> None:
+        native.require(selected_case in {"all", "isolation", "seccomp"}, "unknown policy case")
         # This synthetic secret reaches the owned supervisor, never the caller's
         # real environment. The guest must still observe exactly three entries.
         self.secret = secrets.token_hex(24).encode("ascii")
@@ -54,9 +55,11 @@ class PolicySuite(native.Harness):
         self.stage = self.cli("stage", f"probe.txt={source}").get("stage_id")
         native.require(isinstance(self.stage, str) and native.ID.fullmatch(self.stage) is not None, "stage lacks actual identity")
         self.case("filesystem_environment_descriptors_and_approved_io", self.isolation)
-        self.case("socket_creation_default_deny", lambda: self.denials("sockets", ["unix", "ipv4", "ipv6"]))
-        self.case("invalid_operation_default_deny", lambda: self.denials("operations", ["connect", "ptrace", "bpf", "mount", "keyctl", "io_uring_setup", "setns"]))
-        self.case("x32_benign_identity_query_terminated", self.x32)
+        if selected_case == "all":
+            self.case("socket_creation_default_deny", lambda: self.denials("sockets", ["unix", "ipv4", "ipv6"]))
+        if selected_case in {"all", "seccomp"}:
+            self.case("invalid_operation_default_deny", lambda: self.denials("operations", ["connect", "ptrace", "bpf", "mount", "keyctl", "io_uring_setup", "setns"]))
+            self.case("x32_benign_identity_query_terminated", self.x32)
 
     def run_mode(self, mode: str, *arguments: str, expected: str = "SUCCEEDED") -> tuple[str, dict[str, Any], bytes]:
         value = self.cli("submit", secrets.token_hex(16), "example", self.stage, "10000", "--", mode, *arguments)
@@ -100,6 +103,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     for flag in ("bin-dir", "doctor", "fixture", "cgroup-root", "work"):
         parser.add_argument(f"--{flag}", required=True)
+    parser.add_argument("--case", choices=("all", "isolation", "seccomp"), default="all",
+                        help="all preserves the finite suite; scoped positives leave full acceptance controls open")
     args = parser.parse_args()
     def terminate(signum: int, _frame: Any) -> None:
         signal.signal(signum, signal.SIG_DFL)
@@ -110,7 +115,7 @@ def main() -> int:
     try:
         harness = PolicySuite(args)
         harness.preflight()
-        harness.exercise()
+        harness.exercise(args.case)
         code = 0
     except native.Blocked as error:
         native.emit("policy_security", "BLOCKED", reason=str(error)[:1024])
@@ -128,7 +133,7 @@ def main() -> int:
             elif harness.created_work:
                 native.emit("teardown", "PASS", owned_children_reaped=True, owned_cgroups_remaining=0)
             if code == 0:
-                native.emit("policy_security", "PASS", passed_cases=harness.passes, commands=harness.commands, captured_bytes=harness.captured,
+                native.emit("policy_security", "PASS", passed_cases=harness.passes, commands=harness.commands, captured_bytes=harness.captured, selected_case=args.case,
                             scope="finite policy checks; full locked acceptance and mutation controls remain separate")
     return code
 

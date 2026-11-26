@@ -46,6 +46,19 @@ The repaired B-04 campaign passed 30 trials each for memory, PIDs, CPU and admis
 
 Across 3,468 supervisor samples, observed RSS ranged from 3,215,360 to 5,607,424 bytes and descriptor counts ranged from 11 to 44. These samples cover the named supervisor processes. The first full campaign preserved 14 passes, one cleanup failure and 105 unrun trials. The repaired campaign is a separate complete run.
 
+## Native crash recovery
+
+The deterministic suite passed twelve native crash checkpoints with a production restart and independent recovery observations. The separate B-05 campaign schedules 1,200 cases. Each full attempt below stopped independently and retained every planned outcome.
+
+| Attempt | Pass | Fail | Blocked | Unrun | Stop condition |
+|---|---:|---:|---:|---:|---|
+| 1 | 82 | 0 | 1 | 1,117 | A recorded zombie was reaped before its descriptor and mount observation. |
+| 2 | 42 | 0 | 1 | 1,157 | A new live member appeared when the membership bracket closed. |
+| 3 | 73 | 1 | 0 | 1,126 | The observer's mount table digest changed with no owned mount rows remaining. |
+| 4 | 794 | 0 | 1 | 405 | A numeric cgroup member disappeared before the observer could pin its identity. |
+
+Attempt 4 used a private observer mount namespace with identical mount tables before and after. Its verified archive replay reconstructed all 794 successful cases and the blocked observation. Among those 794 successful cases, the observed interval from kill request to verified recovery had median 432.68 ms, p95 542.35 ms and p99 580.85 ms. The complete seeded benchmark remains open. These process-crash tests measure recovery from a killed supervisor.
+
 ## Native lifecycle retention
 
 The complete B-06 run passed 5,000 jobs in five seeds, with one uninterrupted supervisor per seed and 250 four-job waves each. The final check for each seed found 100 retained bundles totaling 27,983,460 bytes, 900 eviction markers and all 1,000 request identities. Teardown found zero owned cgroups. The accepted fixture pauses for 1.5 seconds and rotates five fixed outputs. [Captured B-06 evidence](verification/benchmark-retention-observed.json)
