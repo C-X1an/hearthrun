@@ -1,6 +1,9 @@
 #![cfg(all(target_os = "linux", target_arch = "x86_64"))]
 #![forbid(unsafe_code)]
 
+#[cfg(feature = "cancellation-timing-verification")]
+pub mod cancel_timing;
+
 pub mod artifacts;
 pub mod lifecycle;
 pub mod output;

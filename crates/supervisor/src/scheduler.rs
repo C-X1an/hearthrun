@@ -112,6 +112,8 @@ pub struct Scheduler {
     accepting: bool,
     uncertain: bool,
     next_prune: Instant,
+    #[cfg(feature = "cancellation-timing-verification")]
+    cancel_receipt: Option<crate::cancel_timing::Receipt>,
 }
 
 impl Scheduler {
@@ -179,6 +181,8 @@ impl Scheduler {
             accepting: compatible,
             uncertain: false,
             next_prune: Instant::now(),
+            #[cfg(feature = "cancellation-timing-verification")]
+            cancel_receipt: None,
         };
         scheduler.recover()?;
         Ok(scheduler)
@@ -195,6 +199,21 @@ impl Scheduler {
     /// The authenticated IPC worker may write staging data before responding.
     pub fn retain_storage(&self) -> io::Result<OwnedFd> {
         self.store.retain_lock()
+    }
+
+    /// Internal receipt authority, available only in the instrumented artifact.
+    #[cfg(feature = "cancellation-timing-verification")]
+    pub fn request_observed(
+        &mut self,
+        request: Request,
+        receipt: Option<crate::cancel_timing::Receipt>,
+    ) -> Response {
+        self.cancel_receipt = receipt;
+        let response = self.request(request);
+        if let Some(receipt) = self.cancel_receipt.take() {
+            crate::cancel_timing::no_write(receipt);
+        }
+        response
     }
 
     pub fn request(&mut self, request: Request) -> Response {
@@ -509,6 +528,15 @@ impl Scheduler {
             return Ok(());
         }
         job.stop = Some((outcome, reason));
+        #[cfg(feature = "cancellation-timing-verification")]
+        if reason == "USER_CANCEL"
+            && self
+                .cancel_receipt
+                .as_ref()
+                .is_some_and(|receipt| receipt.job_id == job.id)
+        {
+            job.native.cancel_receipt = self.cancel_receipt.take();
+        }
         let stopped = job.native.stop();
         let state = &self.records[&job.id].state;
         if matches!(state.as_str(), "STARTING" | "RUNNING") {

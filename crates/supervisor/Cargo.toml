@@ -8,6 +8,8 @@ publish = false
 
 [features]
 native-verification = []
+# Instrumented benchmark artifact only; never enable for production delivery.
+cancellation-timing-verification = ["hearthrun-launcher/cancellation-timing-verification", "rustix/time"]
 
 [[test]]
 name = "publication_acceptance"
@@ -86,4 +88,14 @@ required-features = ["native-verification"]
 [[test]]
 name = "seccomp_acceptance"
 path = "../../tests/acceptance_locked/seccomp.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "barrier_acceptance"
+path = "../../tests/acceptance_locked/barrier.rs"
+required-features = ["native-verification"]
+
+[[test]]
+name = "network_acceptance"
+path = "../../tests/acceptance_locked/network.rs"
 required-features = ["native-verification"]

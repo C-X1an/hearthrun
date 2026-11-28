@@ -77,6 +77,16 @@ pub struct JobGroup {
 pub struct KillToken(File);
 
 impl KillToken {
+    /// Test-only userspace bracket around the identical owned control write.
+    /// This is not a kernel syscall-entry timestamp or proof of kill completion.
+    #[cfg(feature = "cancellation-timing-verification")]
+    pub fn fire_observed(mut self, mut clock: impl FnMut() -> u64) -> (io::Result<()>, u64, u64) {
+        let begin = clock();
+        let result = write_command(&mut self.0, "1");
+        let end = clock();
+        (result, begin, end)
+    }
+
     pub fn fire(mut self) -> io::Result<()> {
         write_command(&mut self.0, "1")
     }

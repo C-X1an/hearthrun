@@ -89,7 +89,9 @@ bench: BENCH_MODE=full
 benchmark-smoke bench:
 	$(PYTHON) -B benchmarks/campaign.py --mode $(BENCH_MODE) --workload "$${HEARTHRUN_BENCH_WORKLOAD:-both}" $(if $(HEARTHRUN_BENCH_AGGREGATE),--aggregate-fixture '$(HEARTHRUN_BENCH_AGGREGATE)') --bin-dir '$(BENCH_BIN_DIR)' --doctor '$(NATIVE_DOCTOR)' --fixture '$(NATIVE_FIXTURE)' --cgroup-root "$${HEARTHRUN_JOBS:?set HEARTHRUN_JOBS}" --build-record "$${HEARTHRUN_BENCH_BUILD:?set HEARTHRUN_BENCH_BUILD}" --host-record "$${HEARTHRUN_BENCH_HOST:?set HEARTHRUN_BENCH_HOST}" --work "$${HEARTHRUN_BENCH_WORK:?set a new HEARTHRUN_BENCH_WORK}"
 	$(PYTHON) -B benchmarks/analyze.py --work "$${HEARTHRUN_BENCH_WORK:?set HEARTHRUN_BENCH_WORK}"
-acceptance security mutation:
+acceptance:
+	$(PYTHON) -B scripts/acceptance.py
+security mutation:
 	$(PYTHON) scripts/not_implemented.py $@
 demo-offline:
 	mkdir -p .work

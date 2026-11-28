@@ -7,6 +7,10 @@ rust-version.workspace = true
 description = "Privately gated Linux launcher for HearthRun"
 publish = false
 
+[features]
+# Explicitly test-only instrumentation; absent from all normal builds.
+cancellation-timing-verification = []
+
 [dependencies]
 hearthrun-domain.workspace = true
 libc.workspace = true

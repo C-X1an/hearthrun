@@ -1,0 +1,214 @@
+{
+  "benchmark": "B-05",
+  "campaign": {
+    "attempted": 1200,
+    "b05_seed_requirement_satisfied": true,
+    "counts": {
+      "PASS": 1200
+    },
+    "durations": {
+      "kill_to_reap_ns": {
+        "count": 1200,
+        "max": 21877546,
+        "min": 521975,
+        "p50": 775125,
+        "p95": 1209048,
+        "p99": 1721727
+      },
+      "kill_to_recovery_ns": {
+        "count": 1200,
+        "max": 2229886997,
+        "min": 275304588,
+        "p50": 460219444,
+        "p95": 583865512,
+        "p99": 656289010
+      },
+      "recovery_from_restart_ns": {
+        "count": 1200,
+        "max": 2050964459,
+        "min": 255794831,
+        "p50": 359898250,
+        "p95": 443261380,
+        "p99": 545495130
+      },
+      "restart_ns": {
+        "count": 1200,
+        "max": 2041938358,
+        "min": 249475687,
+        "p50": 352034964,
+        "p95": 434098344,
+        "p99": 523709196
+      },
+      "teardown_ns": {
+        "count": 1200,
+        "max": 31532599,
+        "min": 1121334,
+        "p50": 2858979,
+        "p95": 3207158,
+        "p99": 3789010
+      }
+    },
+    "native_passes": 1200,
+    "scheduled": 1200,
+    "status": "PASS"
+  },
+  "captures": {
+    "archive": {
+      "category": "b05-sixth-full-archive",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "3af8f5d60770b05a024100a6fc821d9d07f55a791442b840e81d0b38151df724"
+      },
+      "run_id": "20261128T180849-531c7a8623e2",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "status": "PASS"
+    },
+    "archive_rehash": {
+      "category": "b05-sixth-full-archive-rehash",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "9616d52cd20ee12ba04212b7e5df7b3c88253fa8e8b9157ba196471ccc7bf1b2"
+      },
+      "run_id": "20261128T180922-9c931962d771",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "status": "PASS"
+    },
+    "controller": {
+      "category": "native-b05-full-handoff-enabled",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "614a4b38e69142b5f939ccee683f1ff6dffa9fcca6ca78c60733715249afdfd1"
+      },
+      "run_id": "20261127T134256-8b797dd9d1e8",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "status": "PASS"
+    },
+    "host": {
+      "category": "b05-full-handoff-enabled-host",
+      "exit_code": 0,
+      "git_commit": "260ec31c41cae85938b9ba419d332d3045785789",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "9c425fcaed6a997d041c621fcd2cf4892aa9be8a059cbc220217ef50be3eecec"
+      },
+      "run_id": "20261127T134257-af7185da4d3a",
+      "source_sha256_after": "edaf698c80b45a24728592635236b774783143f7bec8abfcde7c9f51be1089bb",
+      "source_sha256_before": "edaf698c80b45a24728592635236b774783143f7bec8abfcde7c9f51be1089bb",
+      "status": "PASS"
+    },
+    "native": {
+      "category": "b05-full-handoff-enabled",
+      "exit_code": 0,
+      "git_commit": "260ec31c41cae85938b9ba419d332d3045785789",
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "cdadefec1c6d743434aae61564183529547ceb5d68623df1f681d12a614b062b"
+      },
+      "run_id": "20261127T134257-a77f51f69add",
+      "source_sha256_after": "edaf698c80b45a24728592635236b774783143f7bec8abfcde7c9f51be1089bb",
+      "source_sha256_before": "edaf698c80b45a24728592635236b774783143f7bec8abfcde7c9f51be1089bb",
+      "status": "PASS"
+    },
+    "offline_replay": {
+      "category": "b05-sixth-full-handoff-replay",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "afc85b5e4596bc969682701e77747112e9c03eecbba448ad1c35908ad44ae1b5"
+      },
+      "run_id": "20261128T180922-d29a35949f78",
+      "source_sha256_after": "11f2e83fcdad9132d39c9bb085575300680149fa950f9d4409785a8f9f8366fd",
+      "source_sha256_before": "11f2e83fcdad9132d39c9bb085575300680149fa950f9d4409785a8f9f8366fd",
+      "status": "PASS"
+    }
+  },
+  "earlier_stopped_attempts": [
+    {
+      "counts": {
+        "BLOCKED": 1,
+        "NOT RUN": 1117,
+        "PASS": 82
+      },
+      "run_id": "20261126T045252-c1a69534224b"
+    },
+    {
+      "counts": {
+        "BLOCKED": 1,
+        "NOT RUN": 1157,
+        "PASS": 42
+      },
+      "run_id": "20261126T052853-b8e5dae436ac"
+    },
+    {
+      "counts": {
+        "FAIL": 1,
+        "NOT RUN": 1126,
+        "PASS": 73
+      },
+      "run_id": "20261126T053809-68ba58ec7393"
+    },
+    {
+      "counts": {
+        "BLOCKED": 1,
+        "NOT RUN": 405,
+        "PASS": 794
+      },
+      "run_id": "20261126T101400-b579f9958bc0"
+    },
+    {
+      "counts": {
+        "FAIL": 1,
+        "NOT RUN": 1196,
+        "PASS": 3
+      },
+      "run_id": "20261127T034630-4a917697495a"
+    }
+  ],
+  "limitations": [
+    "All six attempts use the same seeded schedule. The populations are separate.",
+    "Replay verifies retained bytes and recorded relationships. The native run supplies historical kernel observations.",
+    "This process-crash campaign leaves abrupt power-loss checks and the rest of AC-021 open."
+  ],
+  "mount_envelope": {
+    "mount_count": 55,
+    "mountinfo_sha256": "06a7d5dcc6d980fd96ce42391ef0ee73dcf16797f10b0a662feedce7750965f9",
+    "propagation_fields": 0,
+    "unchanged": true
+  },
+  "production_base_commit": "260ec31c41cae85938b9ba419d332d3045785789",
+  "readiness_coverage": {
+    "attempted_c06": 100,
+    "profile": "handoff-v1",
+    "proved_c06": 100,
+    "scheduled_c06": 100,
+    "scope": "selected handoff records only; separate campaign/native seed criteria still apply",
+    "status": "PASS"
+  },
+  "replay": {
+    "case_proofs": 1200,
+    "excluded_regular_file_contents_unavailable": 18064,
+    "retained_nested_files_rehashed": 82354
+  },
+  "retained_archive": {
+    "entries": 1208,
+    "index_sha256": "a18f4651d9a2c82135ebf43a9c44f430b577071ed21e2b9f79ed4a65f39556f6",
+    "packed_bytes": 12591767,
+    "raw_bytes": 154813295,
+    "tar_sha256": "0b4bee2b578d6017c2de78b84620f2dbd824ba0a9c831241fb538fc31b643c9b"
+  },
+  "schedule_seed": 1729,
+  "schedule_sha256": "60d851261e4665b9229cc4dcd8698376e8a250865cfb6619e4762265b2aae288",
+  "schema_version": 1,
+  "scope": "Seeded supervisor-process recovery on R9 production binaries with reviewed startup and test-only handoff observers",
+  "status": "PASS"
+}

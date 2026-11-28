@@ -1,0 +1,103 @@
+{
+  "controller": {
+    "category": "native-stream-control",
+    "exit_code": 0,
+    "git_commit": null,
+    "raw_hashes": {
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "786eeb2c1c3777d023a0021294364496be685f2988a0d801a4f0289abf828b2b"
+    },
+    "run_id": "20261125T071224-e6931889228a",
+    "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+    "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+    "status": "PASS"
+  },
+  "criterion": "AC-015",
+  "native_positive": {
+    "capture": {
+      "category": "stream-native-flood",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "b77cc48f4895806b9f4d9def7744d98cf8ddcade09b5fbca58cfcf95d0b09000"
+      },
+      "run_id": "20261125T071245-27ff16d45f3b",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "status": "PASS"
+    },
+    "stream_flood": {
+      "reason": "STREAM_LIMIT",
+      "rendering": "CLI JSON; actual retained excerpts escaped in static report",
+      "stderr_bytes": 1048576,
+      "stderr_truncated": true,
+      "stdout_bytes": 1048576,
+      "stdout_truncated": true
+    },
+    "synthetic_event_rollover_through_scheduler": {
+      "case": "event_ring_rollover",
+      "retained_events": 1024,
+      "stale_cursor_truncated": true,
+      "status": "PASS",
+      "synthetic_events_emitted": 1027
+    },
+    "teardown": {
+      "case": "resource_teardown",
+      "owned_cgroups_remaining": 0,
+      "owned_children_reaped": true,
+      "status": "PASS"
+    }
+  },
+  "schema_version": 1,
+  "scope": "Exact recorded stream-bound mechanism, native flood and synthetic scheduler rollover. The control contributes no AC-020 native mutant credit. Later source revisions need their own evidence.",
+  "status": "PASS",
+  "task": "T-042",
+  "tested_source_sha256": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+  "unbounded_buffer_control": {
+    "captures": [
+      {
+        "category": "stream-baseline",
+        "exit_code": 0,
+        "git_commit": null,
+        "raw_hashes": {
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "5a6acc204865ba336ffa69329400085f96215cc38eaa51a82ed69c2ffd4d8138"
+        },
+        "run_id": "20261125T071245-12fcedfaabc6",
+        "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+        "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+        "status": "PASS"
+      },
+      {
+        "category": "stream-negative",
+        "exit_code": 101,
+        "expected_failure": "retained stream exceeded exactly 1 MiB",
+        "git_commit": null,
+        "raw_hashes": {
+          "stderr": "7cb5d483867d81c5e92173508e6d20787317da6aa6b2efde2594348e7654186c",
+          "stdout": "e339c6a3c67f32c1874fa7a5e73f861005b78f602d8ab9154c4b830470cea64e"
+        },
+        "run_id": "20261125T071249-d9a0183e194e",
+        "source_sha256_after": "6a7f5224ccd8c3591a5dd16a71971d34ebb2dc4a5a8fd8f5dd386bbb1d4705e1",
+        "source_sha256_before": "6a7f5224ccd8c3591a5dd16a71971d34ebb2dc4a5a8fd8f5dd386bbb1d4705e1",
+        "status": "FAIL"
+      },
+      {
+        "category": "stream-restored",
+        "exit_code": 0,
+        "git_commit": null,
+        "raw_hashes": {
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "5a6acc204865ba336ffa69329400085f96215cc38eaa51a82ed69c2ffd4d8138"
+        },
+        "run_id": "20261125T071251-69ae0a8eb84b",
+        "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+        "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+        "status": "PASS"
+      }
+    ],
+    "mutation_level": "unit",
+    "patch_sha256": "690a30a045b7f38acc0b6187959216dc707eb6e23dbd9e771b169715f822e44d"
+  }
+}

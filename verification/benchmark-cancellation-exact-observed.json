@@ -1,0 +1,261 @@
+{
+  "archive": {
+    "attempts_sha256": "ea4a8dbf123c48efe7df53e9fb2ab22f5ea56cb5c74953cab089e897cd72de50",
+    "bytes": 36619937,
+    "entries": 307,
+    "manifest_sha256": "06db6a3563f34966360e033424117373581a49dd223c7845858e65f6be2f0285",
+    "samples_sha256": "5eda8f4aa3042992c660af516af2a2c0b0e307b1dcf74d12623cbb2866d82858",
+    "shard_traces": 50
+  },
+  "benchmark": "B-03",
+  "build": {
+    "base_commit": "260ec31c41cae85938b9ba419d332d3045785789",
+    "default_supervisor": {
+      "bytes": 1253808,
+      "sha256": "fe896ec58a2eefde3e31bbac501ea7e024cb6b7bf046b2d8a9ddfd5492d537c9"
+    },
+    "fixture": {
+      "bytes": 1321952,
+      "sha256": "fc5327fc48e8ab8d10ac0646e872645ce9b36f36400208dd07bc001bb0d0dde7"
+    },
+    "instrumented_supervisor": {
+      "bytes": 1303224,
+      "sha256": "f9521ddada389ff94bf70f4586295c57977dd3fdfe0ccfdc739c84056676639e"
+    },
+    "release_capture": "20261128T181438-d23fb99822d7",
+    "startup_helper_sha256": "dc1dc1eaf2ae2b9a715c04c27ef2ea641787b6e9c64fd1549ae99cc51cf39671"
+  },
+  "captures": {
+    "build": {
+      "category": "cancellation-exact-build-reviewed-startup",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "2edb8646b13a59601fd6b531a442c13f499fb818c7ebe620e88f938ab2d242e9"
+      },
+      "run_id": "20261128T181354-96dea31dbfdd",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "status": "PASS"
+    },
+    "controller": {
+      "category": "cancellation-exact-full",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "74c332af37fea7f86295d08dfc1fa92081b3b58e9114e22543585a7619d65bc8"
+      },
+      "run_id": "20261128T181643-9ca5ca6b732c",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "status": "PASS"
+    },
+    "native": {
+      "category": "b03-exact-timing-full",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "f60956bae253e68ad3c48de9085fcc0a174bec4b94ff67a09b3ff3b4fbf9ba48"
+      },
+      "run_id": "20261128T181643-a18764cf680f",
+      "source_sha256_after": "25e66a53e97aa002199341d2ae35d7d841d3c63a19f6ecafd29a6368fbc8cdc4",
+      "source_sha256_before": "25e66a53e97aa002199341d2ae35d7d841d3c63a19f6ecafd29a6368fbc8cdc4",
+      "status": "PASS"
+    },
+    "offline_replay": {
+      "category": "b03-reviewed-startup-full-replay",
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "87ffeabea482b3f8dd94155cb66d603b957bb19d673c488991064ce8dfc28e05"
+      },
+      "run_id": "20261128T182300-47f9ae2c22cb",
+      "source_sha256_after": "25e66a53e97aa002199341d2ae35d7d841d3c63a19f6ecafd29a6368fbc8cdc4",
+      "source_sha256_before": "25e66a53e97aa002199341d2ae35d7d841d3c63a19f6ecafd29a6368fbc8cdc4",
+      "status": "PASS"
+    }
+  },
+  "counts": {
+    "PASS": 3000
+  },
+  "earlier_instrumented_full": {
+    "counts": {
+      "NOT RUN": 1800,
+      "PASS": 1200
+    },
+    "run_id": "20261127T133616-26e51d0f5b16",
+    "stop": "Startup socket metadata refusal before dispatch in shard 21"
+  },
+  "groups": [
+    {
+      "concurrency": 1,
+      "count": 500,
+      "receipt_to_cleanup_ns": {
+        "max_ns": 26998380,
+        "min_ns": 6653088,
+        "p50_ns": 8361835,
+        "p95_ns": 9290883,
+        "p99_ns": 10621798
+      },
+      "receipt_to_write_begin_ns": {
+        "max_ns": 3565349,
+        "min_ns": 2928544,
+        "p50_ns": 3117289,
+        "p95_ns": 3214903,
+        "p99_ns": 3283456
+      },
+      "workload": "detached",
+      "write_bracket_ns": {
+        "max_ns": 17847977,
+        "min_ns": 39443,
+        "p50_ns": 57510,
+        "p95_ns": 109646,
+        "p99_ns": 178254
+      }
+    },
+    {
+      "concurrency": 4,
+      "count": 500,
+      "receipt_to_cleanup_ns": {
+        "max_ns": 70922063,
+        "min_ns": 7113755,
+        "p50_ns": 21368853,
+        "p95_ns": 52170369,
+        "p99_ns": 65736392
+      },
+      "receipt_to_write_begin_ns": {
+        "max_ns": 8568966,
+        "min_ns": 170024,
+        "p50_ns": 3625716,
+        "p95_ns": 4826809,
+        "p99_ns": 5504188
+      },
+      "workload": "detached",
+      "write_bracket_ns": {
+        "max_ns": 802995,
+        "min_ns": 19138,
+        "p50_ns": 65950,
+        "p95_ns": 126335,
+        "p99_ns": 369461
+      }
+    },
+    {
+      "concurrency": 1,
+      "count": 500,
+      "receipt_to_cleanup_ns": {
+        "max_ns": 82317421,
+        "min_ns": 6494253,
+        "p50_ns": 8031331,
+        "p95_ns": 8733137,
+        "p99_ns": 9099637
+      },
+      "receipt_to_write_begin_ns": {
+        "max_ns": 3404805,
+        "min_ns": 2982508,
+        "p50_ns": 3118133,
+        "p95_ns": 3230458,
+        "p99_ns": 3308902
+      },
+      "workload": "output",
+      "write_bracket_ns": {
+        "max_ns": 201669,
+        "min_ns": 23410,
+        "p50_ns": 44442,
+        "p95_ns": 92117,
+        "p99_ns": 127712
+      }
+    },
+    {
+      "concurrency": 4,
+      "count": 500,
+      "receipt_to_cleanup_ns": {
+        "max_ns": 65589931,
+        "min_ns": 6985025,
+        "p50_ns": 19648600,
+        "p95_ns": 42985204,
+        "p99_ns": 56164682
+      },
+      "receipt_to_write_begin_ns": {
+        "max_ns": 5413069,
+        "min_ns": 2976731,
+        "p50_ns": 3382527,
+        "p95_ns": 4035471,
+        "p99_ns": 4608324
+      },
+      "workload": "output",
+      "write_bracket_ns": {
+        "max_ns": 810992,
+        "min_ns": 26889,
+        "p50_ns": 50690,
+        "p95_ns": 82563,
+        "p99_ns": 157539
+      }
+    },
+    {
+      "concurrency": 1,
+      "count": 500,
+      "receipt_to_cleanup_ns": {
+        "max_ns": 55008502,
+        "min_ns": 4339038,
+        "p50_ns": 8409383,
+        "p95_ns": 9423015,
+        "p99_ns": 11517701
+      },
+      "receipt_to_write_begin_ns": {
+        "max_ns": 4311628,
+        "min_ns": 248438,
+        "p50_ns": 3116798,
+        "p95_ns": 3224161,
+        "p99_ns": 3328449
+      },
+      "workload": "spin",
+      "write_bracket_ns": {
+        "max_ns": 185047,
+        "min_ns": 18770,
+        "p50_ns": 35793,
+        "p95_ns": 82062,
+        "p99_ns": 107438
+      }
+    },
+    {
+      "concurrency": 4,
+      "count": 500,
+      "receipt_to_cleanup_ns": {
+        "max_ns": 105843882,
+        "min_ns": 7183617,
+        "p50_ns": 20798602,
+        "p95_ns": 49188820,
+        "p99_ns": 67868945
+      },
+      "receipt_to_write_begin_ns": {
+        "max_ns": 9395513,
+        "min_ns": 2799975,
+        "p50_ns": 3638022,
+        "p95_ns": 5059963,
+        "p99_ns": 5770022
+      },
+      "workload": "spin",
+      "write_bracket_ns": {
+        "max_ns": 252535,
+        "min_ns": 14802,
+        "p50_ns": 44038,
+        "p95_ns": 98657,
+        "p99_ns": 132227
+      }
+    }
+  ],
+  "instrumentation_feature": "cancellation-timing-verification",
+  "limitations": [
+    "This instrumented run is separate from ordinary client-observed timings.",
+    "The cleanup endpoint is observed by the test client on the same boot and clock.",
+    "Cross-host measurements and the rest of AC-021 remain open."
+  ],
+  "population": "explicitly instrumented test-feature artifact only",
+  "schema_version": 1,
+  "semantics": "userspace observation after complete authenticated EOF; bracket of owned File::write request, not kernel syscall entry or kill completion",
+  "status": "PASS"
+}

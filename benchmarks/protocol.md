@@ -307,8 +307,19 @@ spin, detached descendants and output at concurrency one and four. It brackets
 cleanup with owned process and cgroup observations and verifies terminal bundles.
 The clock starts before the client issues cancel and ends when the client has
 observed launcher reaping and cgroup emptiness. Captured samples distinguish
-directly observed emptiness from verified cgroup removal. Exact server receipt
-and kill issuance remain unmeasured. [Native cancellation measurements](../BENCHMARKS.md#native-cancellation)
+directly observed emptiness from verified cgroup removal.
+
+For the separate instrumented campaign, build the pinned workspace with
+`--features hearthrun-supervisor/cancellation-timing-verification` and a
+dedicated target directory. The build record must identify the exact
+instrumented binaries and list `cancellation-timing-verification` in
+`verification_features`. Use the existing cancellation command with
+`--exact-timing` and a fresh work directory. Run
+`python3 -B benchmarks/analyze_exact_cancellation.py --work ABS_NEW_WORK` to
+verify the retained clocks and result evidence. This records complete
+authenticated receipt and the bracket of the owned kill write. Keep results
+separate from the ordinary client-observed population.
+[Native cancellation measurements](../BENCHMARKS.md#native-cancellation)
 
 ## Native retention campaign
 
@@ -352,5 +363,7 @@ population, build and host reserve, owned supervisor samples, and each retained
 shard archive. Use the observed per-profile measurements on the recorded host.
 
 The archived Rust B-02 analysis refused the omitted-slow-row control between
-passing runs. Exact B-03 server clocks, seeded B-05, stable-host
+passing runs. Seeded B-05 completed 1,200 cases and replay verified all selected
+handoffs. The instrumented B-03 campaign completed 3,000 cases, with userspace
+receipt and owned write timestamps recorded on the same clock. Stable-host
 confirmation and full AC-021 remain open. B-07 is optional. [Measured campaigns](../BENCHMARKS.md)

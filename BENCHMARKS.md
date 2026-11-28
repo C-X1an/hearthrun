@@ -38,7 +38,20 @@ The completed B-03 campaign verified 3,000 cancellations across five seeds, with
 | Output | 1 | 500 | 11.80 ms | 111 |
 | Output | 4 | 500 | 46.48 ms | 58 |
 
-These are client-observed intervals on the measured host. Exact server receipt and kill-issuance times remain open. The earlier full attempt stopped on a denied descriptor observation. Its failed and unrun rows remain in the private archive. The verified rerun counted denied observations and required a positive readiness witness within the same deadline.
+These are client-observed intervals on the measured host. The earlier full attempt stopped on a denied descriptor observation. Its failed and unrun rows remain in the private archive. The verified rerun counted denied observations and required a positive readiness witness within the same deadline.
+
+The separate instrumented run passed 3,000 cases across 50 shards. It measured from complete authenticated cancel receipt to the start of the owned `cgroup.kill` write and to client-observed cleanup on the same monotonic clock. Each workload and concurrency pair contributed 500 samples. [Instrumented B-03 evidence](verification/benchmark-cancellation-exact-observed.json)
+
+| Workload | Concurrency | Receipt to write start p95 | Receipt to observed cleanup p95 |
+|---|---:|---:|---:|
+| Detached | 1 | 3.21 ms | 9.29 ms |
+| Detached | 4 | 4.83 ms | 52.17 ms |
+| Output | 1 | 3.23 ms | 8.73 ms |
+| Output | 4 | 4.04 ms | 42.99 ms |
+| Spin | 1 | 3.22 ms | 9.42 ms |
+| Spin | 4 | 5.06 ms | 49.19 ms |
+
+The write timestamps bracket a userspace call. That call and the later observed cleanup have separate recorded clocks. The first instrumented full attempt retained 1,200 passes and 1,800 unrun rows after the startup harness hit a socket metadata refusal. It remains separate from the successful full run and the ordinary client-observed run.
 
 ## Native resource limits and admission
 
@@ -48,7 +61,7 @@ Across 3,468 supervisor samples, observed RSS ranged from 3,215,360 to 5,607,424
 
 ## Native crash recovery
 
-The deterministic suite passed twelve native crash checkpoints with a production restart and independent recovery observations. The separate B-05 campaign schedules 1,200 cases. Each full attempt below stopped independently and retained every planned outcome.
+The deterministic suite passed twelve native crash checkpoints with a production restart and independent recovery observations. The sixth seeded B-05 campaign passed all 1,200 scheduled cases across twelve cuts. Replay verified all 100 selected pre-RUNNING readiness handoffs, all 1,200 case archives and an unchanged private observer mount table. [Captured B-05 evidence](verification/benchmark-recovery-observed.json)
 
 | Attempt | Pass | Fail | Blocked | Unrun | Stop condition |
 |---|---:|---:|---:|---:|---|
@@ -56,8 +69,10 @@ The deterministic suite passed twelve native crash checkpoints with a production
 | 2 | 42 | 0 | 1 | 1,157 | A new live member appeared when the membership bracket closed. |
 | 3 | 73 | 1 | 0 | 1,126 | The observer's mount table digest changed with no owned mount rows remaining. |
 | 4 | 794 | 0 | 1 | 405 | A numeric cgroup member disappeared before the observer could pin its identity. |
+| 5 | 3 | 1 | 0 | 1,196 | The restart harness probed a stale socket and the client refused the changing identity. |
+| 6 | 1,200 | 0 | 0 | 0 | All cases completed with the reviewed startup wait and test-only readiness handoff. |
 
-Attempt 4 used a private observer mount namespace with identical mount tables before and after. Its verified archive replay reconstructed all 794 successful cases and the blocked observation. Among those 794 successful cases, the observed interval from kill request to verified recovery had median 432.68 ms, p95 542.35 ms and p99 580.85 ms. The complete seeded benchmark remains open. These process-crash tests measure recovery from a killed supervisor.
+Attempt 4 had a kill-to-recovery median of 432.68 ms, p95 of 542.35 ms and p99 of 580.85 ms across its 794 passes. Attempt 6 measured 460.22 ms, 583.87 ms and 656.29 ms across all 1,200 cases. The six attempts reuse the same seeded schedule and stay separate. Each measures recovery after killing the supervisor process. Abrupt power loss and the remainder of AC-021 stay open.
 
 ## Native lifecycle retention
 

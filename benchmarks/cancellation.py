@@ -126,8 +126,18 @@ class Evidence:
 
 
 class Shard(b.Shard):
+    def start(self) -> None:
+        if self.args.exact_timing:
+            self.environment.update({
+                "HEARTHRUN_CANCEL_TRACE": str(self.work / "cancel-timing.jsonl"),
+                "HEARTHRUN_CANCEL_RUN_ID": self.args.exact_run_id,
+                "HEARTHRUN_CANCEL_SHARD": self.args.exact_shard,
+            })
+        super().start()
+
     def __init__(self, args: argparse.Namespace):
         super().__init__(args)
+        self.args = args
         self.deadline = time.monotonic() + 900
 
     def ready(self, row: dict[str, Any]) -> dict[str, Any] | None:
@@ -361,6 +371,8 @@ def main() -> int:
         parser.add_argument(f"--{name}", required=True)
     parser.add_argument("--mode", choices=("smoke", "full"), default="smoke")
     parser.add_argument("--seed", type=int, default=21083)
+    parser.add_argument("--exact-timing", action="store_true",
+                        help="require explicit test-feature build and fail-closed per-shard observer evidence")
     args = parser.parse_args()
     def terminate(_signum: int, _frame: Any) -> None:
         signal.signal(signal.SIGTERM, signal.SIG_DFL)
@@ -446,6 +458,15 @@ def main() -> int:
                 if field == "cpuinfo":
                     raw = "\n".join(sorted({line for line in raw.splitlines() if line.startswith(("model name", "cpu cores", "siblings"))}))
                 environment[field] = raw
+            if args.exact_timing:
+                from cancel_timing import FEATURE
+                n.require(build.get("verification_features") == [FEATURE],
+                          "exact timing requires a separately captured explicit test-feature build")
+                n.require(time.get_clock_info("monotonic").implementation == "clock_gettime(CLOCK_MONOTONIC)",
+                          "harness monotonic clock differs from observer CLOCK_MONOTONIC")
+                environment["exact_timing"] = {"feature": FEATURE, "clock_identity": {
+                    "clock": "CLOCK_MONOTONIC", "boot_id": environment["boot_id"],
+                    "time_namespace": os.readlink("/proc/self/ns/time")}}
             environment["environment_id"] = hashlib.sha256(b.encode(environment)).hexdigest()
             b.json_file(root / "environment.json", environment)
         except BaseException:
@@ -481,6 +502,9 @@ def main() -> int:
                 n.require(time.monotonic() < deadline, "campaign deadline expired")
                 shard_args = argparse.Namespace(**vars(args))
                 shard_args.work = str(root / f"shard-{shard_index:04d}")
+                if args.exact_timing:
+                    shard_args.exact_run_id = run_id
+                    shard_args.exact_shard = f"shard-{shard_index:04d}"
                 active = Shard(shard_args)
                 stage = active.prepare(b'{"value":1}\n')
                 for offset in range(0, len(shard_rows), concurrency):
@@ -489,11 +513,29 @@ def main() -> int:
                 n.require(len(active.inventory()) == len(shard_rows) <= shard_bound, "shard inventory differs from schedule")
                 errors = active.cleanup()
                 n.require(not errors and all(child.proc.poll() is not None for child in active.children), f"shard cleanup failed: {errors}")
+                if args.exact_timing:
+                    # A complete collector footer precedes its final fsync. An
+                    # already-exited owner can therefore still report failure.
+                    n.require(active.server is not None and any(child is active.server for child in active.children)
+                              and active.server.proc.poll() == 0,
+                              "exact timing owned supervisor must exit successfully")
+                    supervisor_exit = {"pid": active.server.proc.pid, "exit_code": 0}
                 stopped = active
                 active = None
+                if args.exact_timing:
+                    from cancel_timing import read_trace, validate_trace
+                    records = read_trace(stopped.work / "cancel-timing.jsonl")
+                    observed = validate_trace(records, shard_rows,
+                        run_id=run_id, shard=shard_args.exact_shard,
+                        clock_identity=environment["exact_timing"]["clock_identity"])
+                    n.require(records[0]["pid"] == supervisor_exit["pid"], "trace differs from owned supervisor")
+                    b.json_file(stopped.work / "exact-timing.json", {"status": "PASS", "samples": observed,
+                                "supervisor_exit": supervisor_exit})
                 b.compact_shard(stopped)
                 teardown = {"type": "shard_teardown", "shard": shard_index, "status": "PASS", "jobs": len(shard_rows),
                             "owned_children_reaped": True, "owned_cgroups_remaining": 0}
+                if args.exact_timing:
+                    teardown["exact_timing_supervisor_exit"] = supervisor_exit
                 b.json_file(stopped.work / "teardown.json", teardown)
                 evidence.save("events.jsonl", teardown)
                 checkpoint("after-shard")

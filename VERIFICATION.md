@@ -46,3 +46,5 @@ Dependency failure: inspect platform/version/network, choose supported compatibl
 ## Explicit extended commands
 
 `make property` and `make fuzz` run deterministic domain and parser checks. `make public-audit` checks tracked paths, history and workflow policy. `make dependency-audit` needs the real audit tool and an existing current advisory snapshot. `make sbom` and `make license-audit` use the resolved locked graph. `make clean-verify` exercises the implemented profile in a fresh clone. The full mutation, acceptance and clean-verification gates remain open. [Operations](OPERATIONS.md) · [Benchmark protocol](benchmarks/protocol.md)
+
+The scoped `make acceptance` command runs the actual admission, cancellation and report-aware demo checks. It reports each native outcome separately and returns a nonzero aggregate while the locked inventory remains incomplete. [Acceptance command](ACCEPTANCE_RUNNER.md)

@@ -523,10 +523,18 @@ impl Incoming {
             &mut extra,
             self.payload.deadline,
         ) {
-            Ok(0) => Ok(ValidatedRequest {
-                request: self.request,
-                connection: self.payload.connection,
-            }),
+            Ok(0) => {
+                // Authentication, strict parse and exact EOF already succeeded.
+                // The test-only clock is observed after the final receive returns.
+                #[cfg(feature = "cancellation-timing-verification")]
+                let receipt = crate::cancel_timing::received(&self.request);
+                Ok(ValidatedRequest {
+                    request: self.request,
+                    connection: self.payload.connection,
+                    #[cfg(feature = "cancellation-timing-verification")]
+                    receipt,
+                })
+            }
             Ok(_) => Err(self.payload.connection.failure(
                 ErrorCode::BadFrame,
                 "surplus bytes after request",
@@ -554,9 +562,16 @@ impl Incoming {
 pub struct ValidatedRequest {
     pub request: Request,
     connection: Connection,
+    #[cfg(feature = "cancellation-timing-verification")]
+    receipt: Option<crate::cancel_timing::Receipt>,
 }
 
 impl ValidatedRequest {
+    #[cfg(feature = "cancellation-timing-verification")]
+    pub fn take_receipt(&mut self) -> Option<crate::cancel_timing::Receipt> {
+        self.receipt.take()
+    }
+
     pub fn respond(self, reply: Reply) -> io::Result<()> {
         self.connection.respond(reply)
     }

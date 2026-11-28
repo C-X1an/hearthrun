@@ -164,6 +164,105 @@ def mount_for(path: Path) -> tuple[str, set[str]]:
     return filesystem, options
 
 
+class _StartupSocket:
+    """Pin one stale generation and the first replacement; never chase replacements."""
+
+    def __init__(self, path: Path):
+        self.path = path
+        self.directory = self._open_directory()
+        self.stale: int | None = None
+        self.fresh: int | None = None
+        self.secured = False
+        try:
+            self.stale = self._open_socket()
+            if self.stale is not None:
+                self._socket_metadata(self.stale, {0o600})
+            self._check_directory()
+        except BaseException:
+            self.close()
+            raise
+
+    @staticmethod
+    def _identity(info: os.stat_result) -> tuple[int, int]:
+        return info.st_dev, info.st_ino
+
+    def _open_directory(self) -> int:
+        require(self.path.is_absolute() and ".." not in self.path.parts, "startup directory must be absolute")
+        flags = os.O_PATH | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
+        descriptor = os.open(self.path.anchor, flags)
+        try:
+            for name in self.path.parts[1:]:
+                child = os.open(name, flags, dir_fd=descriptor)
+                os.close(descriptor)
+                descriptor = child
+            info = os.fstat(descriptor)
+            require(stat.S_ISDIR(info.st_mode) and info.st_uid == os.geteuid()
+                    and stat.S_IMODE(info.st_mode) == 0o700, "startup directory must be owner0700")
+            return descriptor
+        except BaseException:
+            os.close(descriptor)
+            raise
+
+    def _check_directory(self) -> None:
+        current = self._open_directory()
+        try:
+            require(self._identity(os.fstat(current)) == self._identity(os.fstat(self.directory)),
+                    "startup directory identity changed")
+        finally:
+            os.close(current)
+
+    def _open_socket(self) -> int | None:
+        try:
+            return os.open("control.sock", os.O_PATH | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=self.directory)
+        except FileNotFoundError:
+            return None
+
+    def _socket_metadata(self, descriptor: int, modes: set[int]) -> os.stat_result:
+        info = os.fstat(descriptor)
+        require(stat.S_ISSOCK(info.st_mode) and info.st_uid == os.geteuid() and info.st_nlink == 1
+                and stat.S_IMODE(info.st_mode) in modes, "startup socket must be an owned single-link socket with expected mode")
+        named = os.stat("control.sock", dir_fd=self.directory, follow_symlinks=False)
+        require(self._identity(named) == self._identity(info), "startup socket identity changed while opening")
+        return info
+
+    def ready(self) -> bool:
+        self._check_directory()
+        current = self._open_socket()
+        if current is None:
+            require(self.fresh is None, "startup socket disappeared after first fresh generation")
+            return False
+        try:
+            identity = self._identity(os.fstat(current))
+            if self.fresh is None and self.stale is not None and identity == self._identity(os.fstat(self.stale)):
+                # This exact inode was validated and pinned before spawn. Its
+                # link/name may now retire normally; it is never a connection
+                # candidate. Strict metadata/name checks apply only to fresh.
+                self._check_directory()
+                return False
+            if self.fresh is None:
+                # preflight's inherited umask077 gives bind mode0700, then
+                # Server::bind chmods this same inode to0600 before listen.
+                self._socket_metadata(current, {0o700, 0o600})
+                self.fresh, current = current, None
+            else:
+                require(identity == self._identity(os.fstat(self.fresh)), "startup socket identity changed after first fresh generation")
+            info = self._socket_metadata(self.fresh, {0o600} if self.secured else {0o700, 0o600})
+            self._check_directory()
+            if stat.S_IMODE(info.st_mode) != 0o600:
+                return False
+            self.secured = True
+            return True
+        finally:
+            if current is not None:
+                os.close(current)
+
+    def close(self) -> None:
+        for descriptor in (self.fresh, self.stale, self.directory):
+            if descriptor is not None:
+                os.close(descriptor)
+        self.fresh = self.stale = self.directory = None
+
+
 class Process:
     """A direct owned child with bounded pipe capture and explicit reaping."""
 
@@ -318,27 +417,46 @@ class Harness:
 
     def start(self) -> None:
         require(self.server is None or self.server.proc.poll() is not None, "refusing a second active supervisor")
-        number = len([child for child in self.children if child.name.startswith("server-")]) + 1
-        self.server = Process(self, f"server-{number:02d}", [str(self.bin_dir / "hearthrun-supervisor"), "serve",
-            str(self.state), str(self.cgroup_root), str(self.bin_dir / "hearthrun-launcher"), str(self.doctor)])
-        self.children.append(self.server)
-        deadline = min(self.deadline, time.monotonic() + 30)
-        while time.monotonic() < deadline:
-            require(self.server.poll() is None, "supervisor exited before opening its socket; inspect captured server logs")
-            if (self.state / "control.sock").exists():
-                code, stdout, stderr = self.command([str(self.bin_dir / "hearthrun"), "--state", str(self.state), "doctor"])
-                value = strict_json(stdout if stdout.strip() else stderr)
-                if value.get("ok") is True:
-                    report = value.get("result", {})
-                    if code == 78 or report.get("compatible") is not True:
-                        emit("doctor", "BLOCKED", report=report)
-                        raise Blocked("operational doctor did not authorize native execution")
-                    require(code == 0, "compatible doctor returned an unsuccessful exit")
-                    self.read_instance()
-                    return
-                require(value.get("error", {}).get("code") == "IO_UNCERTAIN", "startup connection refusal was not transient I/O")
-            time.sleep(0.02)
-        raise Failure("supervisor readiness deadline expired")
+        observed = _StartupSocket(self.state)
+        try:
+            number = len([child for child in self.children if child.name.startswith("server-")]) + 1
+            owner = Process(self, f"server-{number:02d}", [str(self.bin_dir / "hearthrun-supervisor"), "serve",
+                str(self.state), str(self.cgroup_root), str(self.bin_dir / "hearthrun-launcher"), str(self.doctor)])
+            self.server = owner
+            self.children.append(owner)
+            deadline = min(self.deadline, time.monotonic() + 30)
+            while time.monotonic() < deadline:
+                require(self.server is owner and owner.poll() is None, "supervisor exited or changed before socket readiness; inspect captured server logs")
+                if observed.ready():
+                    code, stdout, stderr = self.command([str(self.bin_dir / "hearthrun"), "--state", str(self.state), "doctor"],
+                        timeout=min(25, max(0.001, deadline - time.monotonic())))
+                    require(self.server is owner and owner.poll() is None, "supervisor exited or changed during socket readiness")
+                    require(observed.ready(), "startup socket lost secured readiness")
+                    require(time.monotonic() < deadline, "supervisor readiness deadline expired")
+                    value = strict_json(stdout if stdout.strip() else stderr)
+                    require(isinstance(value, dict) and value.get("v") == 1 and type(value.get("ok")) is bool,
+                            "startup doctor did not return a typed v1 envelope")
+                    if value["ok"]:
+                        report = value.get("result", {})
+                        require(isinstance(report, dict), "startup doctor result is not an object")
+                        if code == 78 or report.get("compatible") is not True:
+                            emit("doctor", "BLOCKED", report=report)
+                            raise Blocked("operational doctor did not authorize native execution")
+                        require(code == 0, "compatible doctor returned an unsuccessful exit")
+                        self.read_instance()
+                        require(observed.ready(), "startup socket lost secured readiness")
+                        require(self.server is owner and owner.poll() is None, "supervisor exited or changed after readiness")
+                        require(time.monotonic() < deadline, "supervisor readiness deadline expired")
+                        return
+                    error = value.get("error")
+                    require(code == 2 and isinstance(error, dict) and error.get("code") == "IO_UNCERTAIN"
+                            and error.get("retryable") is False and error.get("message") ==
+                            "cannot connect to owner-only supervisor: Connection refused (os error 111)",
+                            "startup doctor refusal is not the same-generation pre-listen connection refusal")
+                time.sleep(0.02)
+            raise Failure("supervisor readiness deadline expired")
+        finally:
+            observed.close()
 
     def read_instance(self) -> str:
         value = strict_json(read_file(self.state / "instance.json", 256, owner=True, mode=0o600))

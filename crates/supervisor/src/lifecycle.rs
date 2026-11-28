@@ -61,6 +61,8 @@ pub(crate) enum CleanupPause {
 
 pub struct Native {
     pub group: JobGroup,
+    #[cfg(feature = "cancellation-timing-verification")]
+    pub(crate) cancel_receipt: Option<crate::cancel_timing::Receipt>,
     child: Option<Child>,
     pidfd: Option<OwnedFd>,
     streams_safe: bool,
@@ -86,6 +88,8 @@ impl Native {
     pub fn new(group: JobGroup) -> io::Result<Self> {
         Ok(Self {
             group,
+            #[cfg(feature = "cancellation-timing-verification")]
+            cancel_receipt: None,
             child: None,
             pidfd: None,
             streams_safe: false,
@@ -284,11 +288,27 @@ impl Native {
         // Arm before release so a stalled durable write after release cannot
         // extend the guest deadline. This thread holds no filesystem paths.
         let deadline = Instant::now() + wall;
+        #[cfg(feature = "cancellation-timing-verification")]
+        let watched_job = self
+            .group
+            .name()
+            .rsplit('-')
+            .next()
+            .expect("validated group name")
+            .to_owned();
         self.watchdog = Some(
             thread::Builder::new()
                 .name("hearthrun-deadline".into())
                 .stack_size(128 * 1024)
-                .spawn(move || watch_wall(pidfd, kill, deadline))?,
+                .spawn(move || {
+                    watch_wall(
+                        pidfd,
+                        kill,
+                        deadline,
+                        #[cfg(feature = "cancellation-timing-verification")]
+                        watched_job,
+                    )
+                })?,
         );
         wire::send_plain(socket, &self.nonce, wire::EXECUTE, 0)?;
         self.released = true;
@@ -319,7 +339,14 @@ impl Native {
         let group = if self.group_removed {
             Ok(())
         } else {
-            self.group.kill()
+            #[cfg(not(feature = "cancellation-timing-verification"))]
+            let result = self.group.kill();
+            #[cfg(feature = "cancellation-timing-verification")]
+            let result = match self.cancel_receipt.take() {
+                Some(receipt) => crate::cancel_timing::owner_kill(&self.group, receipt),
+                None => self.group.kill(),
+            };
+            result
         };
         // A failed attach can leave the child outside this cgroup. Target the
         // held direct child/pidfd in addition to the group on all stop paths.
@@ -424,7 +451,12 @@ impl Native {
     }
 }
 
-fn watch_wall(pidfd: OwnedFd, kill: KillToken, deadline: Instant) -> io::Result<bool> {
+fn watch_wall(
+    pidfd: OwnedFd,
+    kill: KillToken,
+    deadline: Instant,
+    #[cfg(feature = "cancellation-timing-verification")] job_id: String,
+) -> io::Result<bool> {
     let mut fds = [PollFd::new(&pidfd, PollFlags::IN)];
     loop {
         let remaining = deadline.saturating_duration_since(Instant::now());
@@ -445,19 +477,36 @@ fn watch_wall(pidfd: OwnedFd, kill: KillToken, deadline: Instant) -> io::Result<
             }
             Err(rustix::io::Errno::INTR) => continue,
             failure => {
-                deadline_stop(&pidfd, kill)?;
+                deadline_stop(
+                    &pidfd,
+                    kill,
+                    #[cfg(feature = "cancellation-timing-verification")]
+                    &job_id,
+                )?;
                 return Err(failure
                     .err()
                     .map_or_else(|| invalid("unexpected pidfd poll event"), io::Error::from));
             }
         }
     }
-    deadline_stop(&pidfd, kill)?;
+    deadline_stop(
+        &pidfd,
+        kill,
+        #[cfg(feature = "cancellation-timing-verification")]
+        &job_id,
+    )?;
     Ok(true)
 }
 
-fn deadline_stop(pidfd: &OwnedFd, kill: KillToken) -> io::Result<()> {
+fn deadline_stop(
+    pidfd: &OwnedFd,
+    kill: KillToken,
+    #[cfg(feature = "cancellation-timing-verification")] job_id: &str,
+) -> io::Result<()> {
+    #[cfg(not(feature = "cancellation-timing-verification"))]
     let group = kill.fire();
+    #[cfg(feature = "cancellation-timing-verification")]
+    let group = crate::cancel_timing::deadline_kill(kill, job_id);
     let launcher = match process::pidfd_send_signal(pidfd, Signal::KILL) {
         Ok(()) | Err(rustix::io::Errno::SRCH) => Ok(()),
         Err(error) => Err(error.into()),

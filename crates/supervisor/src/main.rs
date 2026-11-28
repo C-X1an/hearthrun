@@ -18,7 +18,14 @@ mod linux {
     use std::time::{Duration, Instant};
 
     type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
+    #[cfg(not(feature = "cancellation-timing-verification"))]
     type Work = (Request, mpsc::SyncSender<Response>);
+    #[cfg(feature = "cancellation-timing-verification")]
+    type Work = (
+        Request,
+        mpsc::SyncSender<Response>,
+        Option<hearthrun_supervisor::cancel_timing::Receipt>,
+    );
     static STOP: AtomicBool = AtomicBool::new(false);
 
     extern "C" fn signal_stop(_: libc::c_int) {
@@ -63,9 +70,17 @@ mod linux {
             Ok(valid) => valid,
             Err(error) => return error.respond(),
         };
+        #[cfg(feature = "cancellation-timing-verification")]
+        let mut valid = valid;
+        #[cfg(feature = "cancellation-timing-verification")]
+        let receipt = valid.take_receipt();
         let (request, responder) = valid.into_parts();
         let (reply, waiting) = mpsc::sync_channel(1);
-        if work.try_send((request, reply)).is_err() {
+        #[cfg(not(feature = "cancellation-timing-verification"))]
+        let sent = work.try_send((request, reply));
+        #[cfg(feature = "cancellation-timing-verification")]
+        let sent = work.try_send((request, reply, receipt));
+        if sent.is_err() {
             return responder.respond(Reply::error(
                 ErrorCode::QueueFull,
                 "local request lanes are busy",
@@ -99,6 +114,8 @@ mod linux {
     }
 
     fn serve(cfg: Config) -> Result<()> {
+        #[cfg(feature = "cancellation-timing-verification")]
+        let trace = hearthrun_supervisor::cancel_timing::Trace::start()?;
         install_signals()?;
         let state = cfg.state.clone();
         let mut scheduler = Scheduler::open(cfg)?;
@@ -147,16 +164,24 @@ mod linux {
                 }
             }
             for _ in 0..MAX_CONNECTIONS {
-                let Ok((request, reply)) = requests.try_recv() else {
+                let Ok(work) = requests.try_recv() else {
                     break;
                 };
+                #[cfg(not(feature = "cancellation-timing-verification"))]
+                let (request, reply) = work;
+                #[cfg(feature = "cancellation-timing-verification")]
+                let (request, reply, receipt) = work;
                 let response = if failure.is_some() {
                     Response::Immediate(Reply::error(
                         ErrorCode::IoUncertain,
                         "service requires recovery",
                     ))
                 } else {
-                    scheduler.request(request)
+                    #[cfg(not(feature = "cancellation-timing-verification"))]
+                    let result = scheduler.request(request);
+                    #[cfg(feature = "cancellation-timing-verification")]
+                    let result = scheduler.request_observed(request, receipt);
+                    result
                 };
                 // A disconnected client does not revoke the durable request.
                 if reply.send(response).is_err() {
@@ -180,6 +205,8 @@ mod linux {
             thread::sleep(Duration::from_millis(3));
         }
         socket.close()?;
+        #[cfg(feature = "cancellation-timing-verification")]
+        trace.finish(failure.is_none())?;
         if let Some(error) = failure {
             return Err(error);
         }

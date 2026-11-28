@@ -2080,6 +2080,106 @@
       "status": "PASS"
     },
     {
+      "acceptance": {
+        "aggregate_exit_code": 1,
+        "aggregate_status": "INCOMPLETE",
+        "locked_criteria_incomplete": 24,
+        "negative_controls_run": 0,
+        "runner_teardown": "PASS",
+        "scoped_native_positives": {
+          "AC-002": {
+            "category": "acceptance-scoped",
+            "duration_seconds": 4.776753077981994,
+            "end_utc": "2026-11-28T18:12:16.225563+00:00",
+            "environment": {
+              "kernel": "6.18.58.1-microsoft-standard-WSL2",
+              "machine": "x86_64",
+              "python": "3.14.4",
+              "system": "Linux"
+            },
+            "exit_code": 0,
+            "git_commit": null,
+            "raw_hashes": {
+              "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stdout": "e764adec7dea10795bdf5d1701b7d81ea140679ac0c9cd2f7b1b29a79a1746ca"
+            },
+            "run_id": "20261128T181210-58a591370fde",
+            "source_sha256_after": "65c9fc7863e53e4f397d3df6e6110d149a2f46cda62a2caedac683637289737b",
+            "source_sha256_before": "65c9fc7863e53e4f397d3df6e6110d149a2f46cda62a2caedac683637289737b",
+            "start_utc": "2026-11-28T18:12:11.448542+00:00",
+            "status": "PASS",
+            "teardown_status": "PASS"
+          },
+          "AC-010": {
+            "category": "acceptance-scoped",
+            "duration_seconds": 4.971527076035272,
+            "end_utc": "2026-11-28T18:12:23.346613+00:00",
+            "environment": {
+              "kernel": "6.18.58.1-microsoft-standard-WSL2",
+              "machine": "x86_64",
+              "python": "3.14.4",
+              "system": "Linux"
+            },
+            "exit_code": 0,
+            "git_commit": null,
+            "raw_hashes": {
+              "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stdout": "362f5160f4ded6834224488f63c44b9a75baa86d75ccafd12098e3086e40527b"
+            },
+            "run_id": "20261128T181217-c6236cb081fe",
+            "source_sha256_after": "65c9fc7863e53e4f397d3df6e6110d149a2f46cda62a2caedac683637289737b",
+            "source_sha256_before": "65c9fc7863e53e4f397d3df6e6110d149a2f46cda62a2caedac683637289737b",
+            "start_utc": "2026-11-28T18:12:18.375071+00:00",
+            "status": "PASS",
+            "teardown_status": "PASS"
+          },
+          "AC-023": {
+            "category": "acceptance-scoped",
+            "duration_seconds": 3.926066952990368,
+            "end_utc": "2026-11-28T18:12:29.101935+00:00",
+            "environment": {
+              "kernel": "6.18.58.1-microsoft-standard-WSL2",
+              "machine": "x86_64",
+              "python": "3.14.4",
+              "system": "Linux"
+            },
+            "exit_code": 0,
+            "git_commit": null,
+            "raw_hashes": {
+              "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stdout": "d91a20e31398203a2f6c2636979dd61e6b4282988d8df55bf4b469adc748b966"
+            },
+            "run_id": "20261128T181224-3e8ce708ffdf",
+            "source_sha256_after": "65c9fc7863e53e4f397d3df6e6110d149a2f46cda62a2caedac683637289737b",
+            "source_sha256_before": "65c9fc7863e53e4f397d3df6e6110d149a2f46cda62a2caedac683637289737b",
+            "start_utc": "2026-11-28T18:12:25.175855+00:00",
+            "status": "PASS",
+            "teardown_status": "PASS"
+          }
+        }
+      },
+      "category": "native-scoped-acceptance-make",
+      "duration_seconds": 24.164968779019546,
+      "end_utc": "2026-11-28T18:12:29.982087+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 2,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "154e861cede745f7099bd3749515c1b05d202b6ae97c9743e9d36af3b5f6178d",
+        "stdout": "7252914e536598a081ae9f4868c76a749e10e9041b3a139a963f637d9c7dfec6"
+      },
+      "run_id": "20261128T181205-2fde091ac672",
+      "source_sha256_after": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "source_sha256_before": "66397ccdbc626afd105f6045934469980362f50e23c34a3047ce95362e901be6",
+      "start_utc": "2026-11-28T18:12:05.816872+00:00",
+      "status": "FAIL"
+    },
+    {
       "category": "fsync-control-baseline",
       "duration_seconds": 0.010306133000028694,
       "end_utc": "2026-11-22T15:54:37.647666+00:00",
@@ -5082,6 +5182,175 @@
       "source_sha256_after": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
       "source_sha256_before": "b94f211b83ff778193da08e4daa394d46eff34b625f625b942288fa2f03e3050",
       "start_utc": "2026-11-26T10:07:25.181094+00:00",
+      "status": "PASS"
+    },
+    {
+      "barrier": {
+        "authenticated_ready_cases": 2,
+        "expected_summary_present_after_release": true,
+        "launcher_reaped_cases": 2,
+        "owned_group_removed_cases": 2,
+        "owned_runtime_cleanup": "PASS",
+        "stable_parked_processes": 3,
+        "summary_absent_while_withheld": true,
+        "withheld_last_observation_ns": 203816726,
+        "withheld_observations": 51
+      },
+      "category": "locked-barrier-native",
+      "duration_seconds": 0.68596161599271,
+      "end_utc": "2026-11-26T16:07:40.022047+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "c9d95d297746e50df6e4949e788ca60f68b74ec848ebe09329191cad67d1a8c5",
+        "stdout": "7dec8ae1c3f08c93649b24f920ecce6e95bfc026d2bf791c28d80f2a05db73ab"
+      },
+      "run_id": "20261126T160739-2bb082f8a0ab",
+      "source_sha256_after": "67b2eb08a4fc5f07975cec1e20f33afa9b2245e7071891633a97578968d60486",
+      "source_sha256_before": "67b2eb08a4fc5f07975cec1e20f33afa9b2245e7071891633a97578968d60486",
+      "start_utc": "2026-11-26T16:07:39.336086+00:00",
+      "status": "PASS"
+    },
+    {
+      "cases": [
+        {
+          "case": "preflight",
+          "status": "PASS"
+        },
+        {
+          "case": "doctor_and_socket",
+          "compatible": true,
+          "elapsed_ms": 13,
+          "socket_mode": "0600",
+          "status": "PASS"
+        },
+        {
+          "case": "summary_and_idempotency",
+          "count": 4,
+          "elapsed_ms": 153,
+          "status": "PASS",
+          "sum": 16
+        },
+        {
+          "case": "refusal_has_no_execution_side_effect",
+          "elapsed_ms": 50,
+          "record_count_unchanged": true,
+          "status": "PASS"
+        },
+        {
+          "case": "detached_cancellation",
+          "cgroup_removed": true,
+          "elapsed_ms": 246,
+          "launcher_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "interrupted_restart_without_replay",
+          "elapsed_ms": 1125,
+          "state": "INTERRUPTED",
+          "status": "PASS"
+        },
+        {
+          "case": "teardown",
+          "owned_cgroups_remaining": 0,
+          "owned_children_reaped": true,
+          "status": "PASS"
+        },
+        {
+          "case": "native_e2e",
+          "passed_cases": 6,
+          "status": "PASS"
+        }
+      ],
+      "category": "repaired-startup-native-integration",
+      "duration_seconds": 2.389252266002586,
+      "end_utc": "2026-11-27T13:40:24.981107+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "c0cf799c970e358a201c3fa5ca8ee211ee04510d517c4609c4ab3e27cfb4ffb8"
+      },
+      "run_id": "20261127T134022-8083cd4fd6fb",
+      "source_sha256_after": "188665555d86ff851c84b8bd7a7bc51857b3b3c9a27bd3fbaf88debcd9bd4707",
+      "source_sha256_before": "188665555d86ff851c84b8bd7a7bc51857b3b3c9a27bd3fbaf88debcd9bd4707",
+      "start_utc": "2026-11-27T13:40:22.591580+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "startup-repaired-product-tooling",
+      "duration_seconds": 0.477464185009012,
+      "end_utc": "2026-11-27T13:48:27.410597+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "raw_hashes": {
+        "stderr": "45c39fa7f26aed96e3eef5f3a09a983d12ea9277852ebc1768b39946a40ba224",
+        "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "run_id": "20261127T134826-5d9ebc94cc02",
+      "source_sha256_after": "b0d6c534641ffd45ebc4677f2ff542fbcf37e430ba837b3c3eeb4c880a27ba9c",
+      "source_sha256_before": "b0d6c534641ffd45ebc4677f2ff542fbcf37e430ba837b3c3eeb4c880a27ba9c",
+      "start_utc": "2026-11-27T13:48:26.932871+00:00",
+      "status": "PASS"
+    },
+    {
+      "category": "locked-network-native",
+      "duration_seconds": 3.611224775959272,
+      "end_utc": "2026-11-28T18:11:28.439085+00:00",
+      "environment": {
+        "kernel": "6.18.58.1-microsoft-standard-WSL2",
+        "machine": "x86_64",
+        "python": "3.14.4",
+        "system": "Linux"
+      },
+      "exit_code": 0,
+      "git_commit": null,
+      "network": {
+        "connect_send_attempted": false,
+        "control_messages_after": 4,
+        "control_messages_before": 4,
+        "guest_accepts": 0,
+        "guest_messages": 0,
+        "guest_observation_ms_after_terminal": 250,
+        "inherited_fd": "NOT RUN",
+        "locked_criterion_status": "PARTIAL",
+        "negative_control": "NOT RUN",
+        "owned_cgroups_remaining": 0,
+        "owned_network_handles_closed": true,
+        "socket_refusals": {
+          "dns": "EPERM",
+          "tcp": "EPERM",
+          "udp": "EPERM",
+          "unix": "EPERM"
+        },
+        "system_resolver": "NOT RUN"
+      },
+      "raw_hashes": {
+        "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "5058b2d07276c52be28a1045960a30d6821f105d2010cb143f7876c458d44408"
+      },
+      "run_id": "20261128T181124-81d839b58375",
+      "source_sha256_after": "5297fc919afff1c947f79fcfcbcb12ca4f51dd33fa723c582d4b4eafc96b9940",
+      "source_sha256_before": "5297fc919afff1c947f79fcfcbcb12ca4f51dd33fa723c582d4b4eafc96b9940",
+      "start_utc": "2026-11-28T18:11:24.827849+00:00",
       "status": "PASS"
     },
     {
